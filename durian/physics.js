@@ -1,4 +1,4 @@
-import{beginWrap,advanceWrap,WRAP_SECONDS}from'./wrap.js?v=r6';
+import{beginWrap,advanceWrap,WRAP_SECONDS}from'./wrap.js?v=r7';
 export const STEP=1/240;
 export function classifyImpact(e){if(e.caught)return'intact';return e.speed>=650||(!e.hadClothContact&&e.dropDistance>700)?'shattered':'partial'}
 export const MATERIAL={clothDamping:.996,fruitInverseMass:.018,gravity:600};
@@ -6,7 +6,7 @@ export function integrateParticle(p,dt,damp,gravity=MATERIAL.gravity){let x=p.x,
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export class Study{
  constructor(){this.totals={whole:0,pulp:0,snacks:0};this.round=0;this.reset()}
- reset(){this.controller=null;this.catchLocked=false;this.catchProof=null;this.bounce=null;this.impactTier=null;this.impactEvidence=null;this.lastContactY=null;this.lastContactTime=null;this.supportReleaseY=null;this.dropOriginY=-850;this.partialCredited=false;this.snagHoldTime=0;this.stage="ready";this.outcome=null;this.eaten=false;this.collectReady=false;this.collection=null;this.credited=false;this.impactSpeed=0;this.arrivalSpeed=0;this.peakFruitSpeed=0;this.time=0;this.acc=0;this.running=false;this.demo=false;this.contactTime=null;this.maxStrain=0;this.broken=false;this.success=false;this.grounded=false;this.wrapEstablished=false;this.supportTime=0;this.strictSupportTime=0;this.lastSupportEvidence=-Infinity;this.unsupportedTime=0;this.contactHand=null;this.heldTime=0;this.yielded=false;this.snagCooldown=new Map();this.checkpoint=false;this.continueMode=false;this.hand={x:315,y:405};this.target={...this.hand};this.nodes=[];this.links=[];this.snags=[];this.fruit={x:408,y:-850,z:0,px:408,py:-850,pz:0,r:19,w:MATERIAL.fruitInverseMass};this.cols=9;this.rows=12;
+ reset(){this.controller=null;this.catchLocked=false;this.controlledPlacement=false;this.groundContactSpeed=null;this.catchProof=null;this.bounce=null;this.impactTier=null;this.impactEvidence=null;this.lastContactY=null;this.lastContactTime=null;this.supportReleaseY=null;this.dropOriginY=-850;this.partialCredited=false;this.snagHoldTime=0;this.stage="ready";this.outcome=null;this.eaten=false;this.collectReady=false;this.collection=null;this.credited=false;this.impactSpeed=0;this.arrivalSpeed=0;this.peakFruitSpeed=0;this.time=0;this.acc=0;this.running=false;this.demo=false;this.contactTime=null;this.maxStrain=0;this.broken=false;this.success=false;this.grounded=false;this.wrapEstablished=false;this.supportTime=0;this.strictSupportTime=0;this.lastSupportEvidence=-Infinity;this.unsupportedTime=0;this.contactHand=null;this.heldTime=0;this.yielded=false;this.snagCooldown=new Map();this.checkpoint=false;this.continueMode=false;this.hand={x:315,y:405};this.target={...this.hand};this.nodes=[];this.links=[];this.snags=[];this.fruit={x:408,y:-850,z:0,px:408,py:-850,pz:0,r:19,w:MATERIAL.fruitInverseMass};this.cols=9;this.rows=12;
  for(let j=0;j<this.rows;j++)for(let i=0;i<this.cols;i++){let x=315+j*1.3+Math.sin(i*1.8+j*.7)*2,y=405+j*11,z=(i-4)*10;this.nodes.push({x,y,z,px:x,py:y,pz:z,w:j===0&&(i===0||i===8)?0:1});}
  const add=(a,b,k=1)=>{let p=this.nodes[a],q=this.nodes[b];this.links.push({a,b,d:Math.hypot(p.x-q.x,p.y-q.y,p.z-q.z),k})};
  for(let j=0;j<12;j++)for(let i=0;i<9;i++){let a=j*9+i;if(i<8)add(a,a+1);if(j<11)add(a,a+9);if(i<8&&j<11){add(a,a+10,.25);add(a+1,a+9,.25)}if(j<10)add(a,a+18,.002)}
@@ -17,7 +17,7 @@ export class Study{
  get catchClock(){return Math.max(0,(this.time-1.45)/.6)}
  resetTotals(){this.totals={whole:0,pulp:0,snacks:0}}
  eat(){if(!this.canEat)return false;this.eaten=true;if(!this.isDemoRound){this.totals.pulp=Math.max(0,this.totals.pulp-1);this.totals.snacks++;}return true}
- requestCollect(){if(!this.catchLocked||this.outcome||this.collection||!this.running)return false;this.collectReady=false;this.collection={time:0,origin:{x:this.fruit.x,y:this.fruit.y,z:this.fruit.z},handOrigin:{...this.hand},target:{x:188,y:510,z:0},settle:0,automatic:true,catchProof:this.catchProof,wrap:beginWrap(this.nodes,this.fruit,this.catchProof,this.handVelocity)};this.stage="collecting";this.snags=[];this.broken=true;return true}
+ requestCollect(){if(!this.catchLocked||this.outcome||this.collection||!this.running)return false;this.collectReady=false;this.collection={time:0,origin:{x:this.fruit.x,y:this.fruit.y,z:this.fruit.z},handOrigin:{...this.hand},target:{x:this.fruit.x-128,y:533,z:0},settle:0,automatic:true,catchProof:this.catchProof,wrap:beginWrap(this.nodes,this.fruit,this.catchProof,this.handVelocity)};this.stage="collecting";this.snags=[];this.broken=true;return true}
 
  finish(outcome){if(this.outcome||this.catchLocked&&outcome!=='whole')return;this.outcome=outcome;this.stage="result";this.running=false;this.collectReady=false;if(outcome==="whole"&&!this.credited){this.credited=true;if(!this.isDemoRound)this.totals.whole++;}if(outcome==='pulp'&&!this.partialCredited){this.partialCredited=true;if(!this.isDemoRound)this.totals.pulp++;}}
  aim(x,y){if(!this.inputOpen)return false;this.target={x:clamp(x,245,455),y:clamp(y,265,475)};return true}
@@ -66,19 +66,26 @@ export class Study{
  beginBounce(){this.recordImpact();this.impactTier='intact';const f=this.fruit;f.y=533;const rebound=Math.min(180,Math.max(0,this.impactSpeed*.4));f.py=f.y+rebound*STEP;f.px=f.x-(f.x-f.px)*.5;this.collection=null;this.collectReady=false;this.stage='ground-recovery';this.bounce={time:0,settle:0,rebounded:true};}
  stepBounce(dt){const f=this.fruit,b=this.bounce;b.time+=dt;integrateParticle(f,dt,.995);if(f.y>=533){f.y=533;f.py=533;f.px=f.x-(f.x-f.px)*.75;b.settle+=dt;}else b.settle=0;if(b.settle>.25){this.success=true;this.finish('whole');}}
  stepCollection(dt){
-  // R5 rule: a verified local snag locks the result. This authored resisted catch
-  // and carry preserves the body's incoming velocity; it is not ongoing free cloth retention.
-  const c=this.collection,f=this.fruit;c.time+=dt;const previousY=f.y;
-  const ease=v=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v)};
-  const settlePoint={x:c.origin.x-42,y:Math.min(445,c.origin.y+105),z:c.origin.z*.5};
-  const first=c.time<WRAP_SECONDS,u=ease(first?c.time/WRAP_SECONDS:(c.time-WRAP_SECONDS)/1.5),a=first?c.origin:settlePoint,b=first?settlePoint:c.target;
-  const goal={x:a.x+(b.x-a.x)*u,y:a.y+(b.y-a.y)*u,z:a.z+(b.z-a.z)*u};
-  for(const k of ['x','y','z']){const pk='p'+k,v=(f[k]-f[pk])/dt,old=f[k],acceleration=70*(goal[k]-f[k])-16*v;f[k]+=v*dt+acceleration*dt*dt;f[pk]=old;}
-  if(f.y>533){this.supportReleaseY=previousY;this.impactSpeed=Math.hypot(f.x-f.px,f.y-f.py,f.z-f.pz)/dt;f.y=533;this.grounded=true;this.beginBounce();return;}
+  // R7: gravity keeps pulling downward; cloth tension brakes the descent.
+  // The genuine snag still locks success, but no basket carry or upward return exists.
+  const c=this.collection,f=this.fruit;c.time+=dt;
+  const remaining=Math.max(0,533-f.y),progress=Math.max(0,Math.min(1,(f.y-c.origin.y)/Math.max(1,533-c.origin.y)));
+  const xGoal=c.origin.x-128*Math.sin(progress*Math.PI/2),vy=(f.y-f.py)/dt;
+  const desiredDownSpeed=Math.max(12,Math.min(350,remaining*1.5));
+  const clothTension=Math.max(0,MATERIAL.gravity+12*(vy-desiredDownSpeed));
+  c.gravity=MATERIAL.gravity;c.tension=clothTension;c.downSpeed=vy;c.phase=this.grounded?'settling':remaining<70?'braking':'down-swing';
+  for(const k of['x','z']){const pk='p'+k,v=(f[k]-f[pk])/dt,old=f[k],goal=k==='x'?xGoal:0;f[k]+=v*dt+(70*(goal-f[k])-16*v)*dt*dt;f[pk]=old;}
+  if(!this.grounded){const old=f.y;f.y+=vy*dt+(MATERIAL.gravity-clothTension)*dt*dt;f.py=old;if(f.y>=533){this.groundContactSpeed=Math.hypot(f.x-f.px,f.y-f.py,f.z-f.pz)/dt;this.controlledPlacement=true;this.grounded=true;f.y=533;f.py=533;c.phase='settling';}}
+  const previousHandY=this.hand.y;
+  c.wrap.releaseBlend=c.releaseTime===undefined?0:Math.min(1,(c.time-c.releaseTime)/.65);
   advanceWrap(this.nodes,f,c.wrap,c.time,this.links);
+  const gripY=(this.nodes[0].y+this.nodes[8].y)/2,follow=Math.max(0,previousHandY-gripY);
+  if(follow&&c.releaseTime===undefined)for(let i=0;i<27;i++)this.nodes[i].y+=follow*(1-Math.floor(i/9)/3);
   this.hand.x=(this.nodes[0].x+this.nodes[8].x)/2;this.hand.y=(this.nodes[0].y+this.nodes[8].y)/2;
-  const speed=Math.hypot(f.x-f.px,f.y-f.py,f.z-f.pz)/dt,d=Math.hypot(f.x-c.target.x,f.y-c.target.y,f.z-c.target.z);
-  c.settle=c.time>WRAP_SECONDS+1.5&&d<5&&speed<25?c.settle+dt:0;
-  if(c.settle>.3){this.success=true;this.finish('whole');}
+  const speed=Math.hypot(f.x-f.px,f.y-f.py,f.z-f.pz)/dt;
+  c.settle=this.grounded&&speed<10?c.settle+dt:0;
+  if(c.settle>.3&&c.releaseTime===undefined){c.releaseTime=c.time;c.recoveryHand={...this.hand};c.phase='release';}
+  if(c.releaseTime!==undefined){const u=Math.min(1,(c.time-c.releaseTime)/.65),e=u*u*(3-2*u);this.hand.x=c.recoveryHand.x+(315-c.recoveryHand.x)*e;this.hand.y=c.recoveryHand.y+(405-c.recoveryHand.y)*e;c.phase='recover';if(u===1){this.success=true;this.finish('whole');}}
+
  }
 }

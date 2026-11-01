@@ -12,7 +12,7 @@ export function catcherPose(hand,collecting=false,motion={}){
  const cast=smooth(0,1,clamp((405-hand.y)/125,0,1));
  // A single critically damped compression: onset is continuous, with no repeated bounce.
  const impact=age>=0?(age/.12)*Math.exp(1-age/.12):0;
- const carried=collecting?smooth(.25,.9,collectionTime):0;
+ const carried=collecting?smooth(0,1,clamp((315-hand.x)/65,0,1)):0;
  const bend=clamp((hand.y-340)/130,0,1);
  const hip={x:267+clamp((hand.x-315)*.2,-26,30)+cast*5-prep*5-impact*3,y:440+bend*31+prep*7-cast*5+impact*9};
  const angle=Math.atan2((hand.x-315)*.65+20+clamp(vx*.008,-4,4)-impact*9,105);

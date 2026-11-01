@@ -1,7 +1,7 @@
-import{Study}from'./physics.js?v=r6';
-import{cameraFor}from'./camera.js?v=r6';
-import{catcherPose}from'./pose.js?v=r6';
-import{HalfArcController}from'./gesture.js?v=r6';
+import{Study}from'./physics.js?v=r7';
+import{cameraFor}from'./camera.js?v=r7';
+import{catcherPose}from'./pose.js?v=r7';
+import{HalfArcController}from'./gesture.js?v=r7';
 const canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d'),sim=new Study();window.study=sim;const controller=new HalfArcController();window.gesture=controller;
 let slow=false,mesh=false,drag=null,last=0,visualTime=0,impactAt=null,impactPoint=null,lastOutcome=null,arcTrace=[];
 const $=s=>document.querySelector(s),P=p=>({x:p.x+(p.z||0)*.48,y:p.y-(p.z||0)*.24});
@@ -51,17 +51,17 @@ function clothMesh(front){for(let j=0;j<11;j++)for(let i=0;i<8;i++){let ns=[sim.
  for(let row of[0,11]){let ns=sim.nodes.slice(row*9,row*9+9);if((ns[4].z>=sim.fruit.z)===front)line(ns.map(P),'#173e3a',1.5)}}
 function actionInk(){if(arcTrace.length>1){ctx.save();ctx.globalAlpha=.5;line(arcTrace.map(p=>({x:p.x,y:p.y})),'#cb472a',2);ctx.restore()}}
 function paperGrain(){ctx.save();ctx.strokeStyle='#173e3a';ctx.globalAlpha=.065;ctx.lineWidth=.55;for(let i=0;i<160;i++){let x=(i*167.3)%640,y=(i*71.9)%600;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+3+(i%6),y-.6);ctx.stroke()}ctx.restore()}
-function ui(){const stage=sim.stage||'ready',out=sim.outcome;let phase='准备 · 从树冠开始',hint='向上甩布 · 挂住就自动入筐';
+function ui(){const stage=sim.stage||'ready',out=sim.outcome;let phase='准备 · 从树冠开始',hint='甩布黏住 · 顺势下甩卸力';
  if(stage==='falling'){phase=sim.time>=1.2?'准备 · 向上甩布':'落果 · 看准时机';hint=sim.time>=1.2?'向上滑一小段，系统辅助迎住落果':'等提示亮起，再向上甩'}
- if(sim.inputOpen){phase=sim.contactTime!==null?'擦到布面 · 正在迎果':'接果窗口 · 向上甩';hint='只需向上甩 · 真的挂住后自动缓冲、收回'}
- if(sim.catchLocked){phase=(sim.collection?.time||0)<.55?'挂住了 · 麻布顺势裹住':'收回中 · 轻轻入筐';hint='已经挂住，松手也不会掉 · 自动收进筐'}
+ if(sim.inputOpen){phase=sim.contactTime!==null?'擦到布面 · 正在迎果':'接果窗口 · 向上甩';hint='只需向上甩 · 黏住后重果带布向下，自动卸力落地'}
+ if(sim.catchLocked){phase=sim.grounded?(sim.collection?.phase==='recover'?'完整落地 · 松布起身':'卸力停稳 · 完整落地'):sim.collection?.phase==='braking'?'顺势卸力 · 慢慢落地':'甩布黏住 · 随重力下甩';hint='黏住后自动顺势下甩卸力 · 不是向上兜住收回'}
  if(stage==='ground-recovery'){phase='落地缓冲 · 整果保留';hint='已接住的整果弹一下缓冲 · 不会摔碎'}
- if(out==='whole'){phase=sim.isDemoRound?'示范完成 · 整果保留':sim.impactTier==='intact'?'整果保留 · 待售 +1':'完整入筐 · 待售整果 +1';hint=sim.isDemoRound?'示范不计收成 · 换你来采下一颗':'这一颗留着卖 · 再采下一颗'}
+ if(out==='whole'){phase=sim.isDemoRound?'示范完成 · 完整落地':sim.impactTier==='intact'?'整果保留 · 待售 +1':'完整落地 · 待售整果 +1';hint=sim.isDemoRound?'示范不计收成 · 换你来采下一颗':'这一颗留着卖 · 再采下一颗'}
  if(out==='pulp'){phase=sim.eaten?'果肉吃掉了':'摔成几瓣 · 留下可用果肉';hint=sim.eaten?'已消耗一份果肉 · 再接下一颗':sim.isDemoRound?'示范不计收成':'收获一份果肉，不算整果 · 可以自己吃'}
  if(out==='smashed'){phase='冲击太大 · 完全粉碎';hint='碎块飞散，没有可用果肉 · 下一颗看准时机'}
  const feedback=controller.feedback(sim);if(out&&out!=='whole'&&!sim.eaten&&feedback?.text)hint=feedback.text;
- $('#phase').textContent=phase;$('#hint').textContent=hint;const catchSlow=false;$('#mode').textContent=(sim.isDemoRound?'示范 · 不计收成':'R6 · 木刻采收')+' / '+(catchSlow?'接住慢镜':slow?'0.35×':'1×');
- const cue=$('#window-cue');cue.hidden=!(sim.running&&!sim.catchLocked&&!sim.outcome&&sim.time>=1.2);cue.textContent=sim.inputOpen?'向上甩布 ↑ 挂住就收果':'准备向上甩 ↑';$('#load-meter').hidden=!(sim.catchLocked&&!sim.outcome&&!sim.bounce&&(sim.collection?.time||0)<.8);const speed=Math.hypot(sim.fruit.x-sim.fruit.px,sim.fruit.y-sim.fruit.py,sim.fruit.z-sim.fruit.pz)*240;$('#load-fill').style.width=`${Math.round(Math.min(1,speed/1200)*100)}%`;$('#whole-count').textContent=String(sim.totals.whole);$('#pulp-count').textContent=String(sim.totals.pulp);$('#snack-count').textContent=String(sim.totals.snacks);$('#eat').hidden=!sim.canEat;$('#start').innerHTML=stage==='ready'?'开始采收 <span>↗</span>':sim.running?'重新来一颗 <span>↻</span>':'再采一颗 <span>↗</span>';
+ $('#phase').textContent=phase;$('#hint').textContent=hint;const catchSlow=false;$('#mode').textContent=(sim.isDemoRound?'示范 · 不计收成':'R7 · 木刻采收')+' / '+(catchSlow?'接住慢镜':slow?'0.35×':'1×');
+ const cue=$('#window-cue');cue.hidden=!(sim.running&&!sim.catchLocked&&!sim.outcome&&sim.time>=1.2);cue.textContent=sim.inputOpen?'向上甩布 ↑ 黏住后下甩卸力':'准备向上甩 ↑';$('#load-meter').hidden=!(sim.catchLocked&&!sim.outcome&&!sim.bounce&&(sim.collection?.time||0)<.8);const speed=Math.hypot(sim.fruit.x-sim.fruit.px,sim.fruit.y-sim.fruit.py,sim.fruit.z-sim.fruit.pz)*240;$('#load-fill').style.width=`${Math.round(Math.min(1,speed/1200)*100)}%`;$('#whole-count').textContent=String(sim.totals.whole);$('#pulp-count').textContent=String(sim.totals.pulp);$('#snack-count').textContent=String(sim.totals.snacks);$('#eat').hidden=!sim.canEat;$('#start').innerHTML=stage==='ready'?'开始采收 <span>↗</span>':sim.running?'重新来一颗 <span>↻</span>':'再采一颗 <span>↗</span>';
 }
 function draw(){const rect=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2),w=Math.round(rect.width*dpr),h=Math.round(rect.height*dpr);if(canvas.width!==w)canvas.width=w;if(canvas.height!==h)canvas.height=h;const scale=Math.min(w/640,h/600),offsetX=(w-640*scale)/2,offsetY=(h-600*scale)/2;ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#f1dfb5';ctx.fillRect(0,0,w,h);ctx.setTransform(scale,0,0,scale,offsetX,offsetY);const cam=cameraFor(sim);ctx.save();ctx.translate(320,300);ctx.scale(cam.zoom,cam.zoom);ctx.translate(-cam.x,-cam.y);background();basket();person();trail();cloth(false);if(!sim.outcome||sim.outcome==='whole')drawFruitAt();cloth(true);if(sim.impactTier==='intact'||sim.outcome==='pulp'||sim.outcome==='smashed')debris();actionInk();
  if(sim.inputOpen&&sim.contactTime===null){ctx.setLineDash([4,7]);ctx.beginPath();ctx.moveTo(330,390);ctx.bezierCurveTo(373,335,429,276,434,305);ctx.strokeStyle='#73865790';ctx.lineWidth=1.7;ctx.stroke();ctx.setLineDash([])}
