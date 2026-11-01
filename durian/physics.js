@@ -15,7 +15,7 @@ export class Study{
  get catchClock(){return Math.max(0,(this.time-1.45)/.6)}
  resetTotals(){this.totals={whole:0,snacks:0}}
  eat(){if(!this.canEat)return false;this.eaten=true;if(!this.isDemoRound)this.totals.snacks++;return true}
- requestCollect(){if(!this.collectReady||this.outcome||this.collection||!this.supported||!this.running)return false;this.collection={time:0,origin:{x:this.fruit.x,y:this.fruit.y,z:this.fruit.z},target:{x:188,y:510,z:0},settle:0};this.stage="collecting";this.snags=[];this.broken=true;return true}
+ requestCollect(){if(!this.collectReady||this.outcome||this.collection||!this.supported||!this.running)return false;this.collectReady=false;this.collection={time:0,origin:{x:this.fruit.x,y:this.fruit.y,z:this.fruit.z},target:{x:188,y:510,z:0},settle:0};this.stage="collecting";this.snags=[];this.broken=true;return true}
  finish(outcome){if(this.outcome)return;this.outcome=outcome;this.stage="result";this.running=false;this.collectReady=false;if(outcome==="whole"&&!this.credited){this.credited=true;if(!this.isDemoRound)this.totals.whole++;}}
  aim(x,y){if(!this.inputOpen)return false;this.target={x:clamp(x,245,455),y:clamp(y,265,475)};return true}
  cancel(){if(this.collection||this.outcome)return;this.target={...this.hand};this.demo=false}
