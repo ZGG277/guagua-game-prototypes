@@ -5,6 +5,7 @@ const ARM=65;
 // two fixed 65-unit bones; the torso shifts before IK instead of stretching sleeves.
 function elbow(a,b,side=1){const dx=b.x-a.x,dy=b.y-a.y,d=Math.max(.001,Math.hypot(dx,dy)),along=d/2,height=Math.sqrt(Math.max(0,ARM*ARM-along*along));return{x:a.x+dx/d*along-dy/d*height*side,y:a.y+dy/d*along+dx/d*height*side}}
 export function catcherPose(hand,collecting=false,motion={}){
+ const alignment=motion.alignment||0;hand={...hand,x:hand.x-alignment};
  const time=Number.isFinite(motion.time)?motion.time:0,age=Number.isFinite(motion.catchAge)?motion.catchAge:-1;
  const v=motion.handVelocity||{},vx=clamp(v.x||0,-600,600),vy=clamp(v.y||0,-600,600);
  const collectionTime=collecting?(Number.isFinite(motion.collectionProgress)?motion.collectionProgress:1):0;
@@ -26,5 +27,5 @@ export function catcherPose(hand,collecting=false,motion={}){
  const facing=1-2*carried;
  const head={x:shoulder.x+4-9*carried-clamp(vx*.006,-3,3),y:shoulder.y-36-clamp(vy*.005,-2.5,2.5)-impact*2};
  const knees=[{x:hip.x-32-bend*8-prep*3,y:500+bend*5+impact*2},{x:hip.x+28+cast*3,y:499+bend*8+impact*2}];
- return{bend,hip,shoulder,head,arms,knees,feet:[{x:234,y:539},{x:293,y:541}],facing,anticipation:prep,catchCompression:impact,carryBlend:carried};
+ const feet=[{x:234,y:539},{x:293,y:541}];if(alignment){for(const p of[hip,shoulder,head,...knees,...feet])p.x+=alignment;for(const a of arms)for(const p of[a.shoulder,a.elbow,a.hand])p.x+=alignment;}return{bend,hip,shoulder,head,arms,knees,feet,facing,anticipation:prep,catchCompression:impact,carryBlend:carried};
 }
