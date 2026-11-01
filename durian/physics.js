@@ -1,3 +1,4 @@
+import{beginWrap,advanceWrap,WRAP_SECONDS}from'./wrap.js?v=r6';
 export const STEP=1/240;
 export function classifyImpact(e){if(e.caught)return'intact';return e.speed>=650||(!e.hadClothContact&&e.dropDistance>700)?'shattered':'partial'}
 export const MATERIAL={clothDamping:.996,fruitInverseMass:.018,gravity:600};
@@ -16,7 +17,7 @@ export class Study{
  get catchClock(){return Math.max(0,(this.time-1.45)/.6)}
  resetTotals(){this.totals={whole:0,pulp:0,snacks:0}}
  eat(){if(!this.canEat)return false;this.eaten=true;if(!this.isDemoRound){this.totals.pulp=Math.max(0,this.totals.pulp-1);this.totals.snacks++;}return true}
- requestCollect(){if(!this.catchLocked||this.outcome||this.collection||!this.running)return false;this.collectReady=false;this.collection={time:0,origin:{x:this.fruit.x,y:this.fruit.y,z:this.fruit.z},handOrigin:{...this.hand},target:{x:188,y:510,z:0},settle:0,automatic:true,catchProof:this.catchProof};this.stage="collecting";this.snags=[];this.broken=true;return true}
+ requestCollect(){if(!this.catchLocked||this.outcome||this.collection||!this.running)return false;this.collectReady=false;this.collection={time:0,origin:{x:this.fruit.x,y:this.fruit.y,z:this.fruit.z},handOrigin:{...this.hand},target:{x:188,y:510,z:0},settle:0,automatic:true,catchProof:this.catchProof,wrap:beginWrap(this.nodes,this.fruit,this.catchProof,this.handVelocity)};this.stage="collecting";this.snags=[];this.broken=true;return true}
 
  finish(outcome){if(this.outcome||this.catchLocked&&outcome!=='whole')return;this.outcome=outcome;this.stage="result";this.running=false;this.collectReady=false;if(outcome==="whole"&&!this.credited){this.credited=true;if(!this.isDemoRound)this.totals.whole++;}if(outcome==='pulp'&&!this.partialCredited){this.partialCredited=true;if(!this.isDemoRound)this.totals.pulp++;}}
  aim(x,y){if(!this.inputOpen)return false;this.target={x:clamp(x,245,455),y:clamp(y,265,475)};return true}
@@ -26,7 +27,7 @@ export class Study{
  step(){if(!this.running)return;const dt=STEP;this.time+=dt;if(this.controller)this.controller.update(this,dt);
  if(this.bounce){this.stepBounce(dt);return;}if(this.collection){this.stepCollection(dt);return;}
  this.stage=this.time<1.45?'falling':this.contactTime===null?'window':'catching';
- if(this.demo)this.target=this.demoTarget(this.time);let dx=this.target.x-this.hand.x,dy=this.target.y-this.hand.y,d=Math.hypot(dx,dy),f=Math.min(1,780*dt/(d||1));this.hand.x+=dx*f;this.hand.y+=dy*f;
+ if(this.demo)this.target=this.demoTarget(this.time);let dx=this.target.x-this.hand.x,dy=this.target.y-this.hand.y,d=Math.hypot(dx,dy),f=Math.min(1,780*dt/(d||1));this.handVelocity={x:dx*f/dt,y:dy*f/dt};this.hand.x+=dx*f;this.hand.y+=dy*f;
  const integrate=(p,damp)=>integrateParticle(p,dt,damp);for(const p of this.nodes)if(p.w)integrate(p,MATERIAL.clothDamping);integrate(this.fruit,1);
  const pin=()=>{for(const i of [0,8]){let p=this.nodes[i];p.x=this.hand.x;p.y=this.hand.y;p.z=(i-4)*6}};
  pin();for(const sn of this.snags){const p=this.nodes[sn.i],distance=Math.hypot(p.x-this.fruit.x,p.y-this.fruit.y,p.z-this.fruit.z);sn.localContact=distance<=24;if(distance>27||this.time-sn.created>2.2){sn.dead=true;this.snagCooldown.set(sn.i,this.time+.15)}}this.snags=this.snags.filter(sn=>!sn.dead);let hit=[],pressing=new Map();for(let it=0;it<7;it++){for(const l of this.links){const a=this.nodes[l.a],b=this.nodes[l.b],dx=b.x-a.x,dy=b.y-a.y,dz=b.z-a.z,d=Math.hypot(dx,dy,dz)||1,w=a.w+b.w;if(!w)continue;let s=(d-l.d)/d*l.k/w;a.x+=dx*s*a.w;a.y+=dy*s*a.w;a.z+=dz*s*a.w;b.x-=dx*s*b.w;b.y-=dy*s*b.w;b.z-=dz*s*b.w}
@@ -70,15 +71,14 @@ export class Study{
   const c=this.collection,f=this.fruit;c.time+=dt;const previousY=f.y;
   const ease=v=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v)};
   const settlePoint={x:c.origin.x-42,y:Math.min(445,c.origin.y+105),z:c.origin.z*.5};
-  const first=c.time<.4,u=ease(first?c.time/.4:(c.time-.4)/1.5),a=first?c.origin:settlePoint,b=first?settlePoint:c.target;
+  const first=c.time<WRAP_SECONDS,u=ease(first?c.time/WRAP_SECONDS:(c.time-WRAP_SECONDS)/1.5),a=first?c.origin:settlePoint,b=first?settlePoint:c.target;
   const goal={x:a.x+(b.x-a.x)*u,y:a.y+(b.y-a.y)*u,z:a.z+(b.z-a.z)*u};
   for(const k of ['x','y','z']){const pk='p'+k,v=(f[k]-f[pk])/dt,old=f[k],acceleration=70*(goal[k]-f[k])-16*v;f[k]+=v*dt+acceleration*dt*dt;f[pk]=old;}
   if(f.y>533){this.supportReleaseY=previousY;this.impactSpeed=Math.hypot(f.x-f.px,f.y-f.py,f.z-f.pz)/dt;f.y=533;this.grounded=true;this.beginBounce();return;}
-  const gather=ease(c.time/.4),handGoal={x:c.handOrigin.x+(f.x-c.handOrigin.x)*gather,y:c.handOrigin.y+(f.y-14-c.handOrigin.y)*gather};
-  this.hand.x=handGoal.x;this.hand.y=handGoal.y;
-  for(const p of this.nodes){let vx=(p.x-p.px)*.96,vy=(p.y-p.py)*.96,vz=(p.z-p.pz)*.96,old={x:p.x,y:p.y,z:p.z};p.x+=vx+(f.x-p.x)*dt*3;p.y+=vy+(f.y+12-p.y)*dt*3;p.z+=vz+(0-p.z)*dt*.6;p.px=old.x;p.py=old.y;p.pz=old.z;}
+  advanceWrap(this.nodes,f,c.wrap,c.time,this.links);
+  this.hand.x=(this.nodes[0].x+this.nodes[8].x)/2;this.hand.y=(this.nodes[0].y+this.nodes[8].y)/2;
   const speed=Math.hypot(f.x-f.px,f.y-f.py,f.z-f.pz)/dt,d=Math.hypot(f.x-c.target.x,f.y-c.target.y,f.z-c.target.z);
-  c.settle=c.time>1.9&&d<5&&speed<25?c.settle+dt:0;
+  c.settle=c.time>WRAP_SECONDS+1.5&&d<5&&speed<25?c.settle+dt:0;
   if(c.settle>.3){this.success=true;this.finish('whole');}
  }
 }

@@ -1,9 +1,9 @@
-import{Study}from'./physics.js?v=r5';
-import{cameraFor}from'./camera.js?v=r5';
-import{catcherPose}from'./pose.js?v=r5';
-import{HalfArcController}from'./gesture.js?v=r5';
+import{Study}from'./physics.js?v=r6';
+import{cameraFor}from'./camera.js?v=r6';
+import{catcherPose}from'./pose.js?v=r6';
+import{HalfArcController}from'./gesture.js?v=r6';
 const canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d'),sim=new Study();window.study=sim;const controller=new HalfArcController();window.gesture=controller;
-let slow=false,mesh=false,drag=null,last=0,visualTime=0,impactAt=null,impactPoint=null,lastOutcome=null,contactFlash=null,arcTrace=[];
+let slow=false,mesh=false,drag=null,last=0,visualTime=0,impactAt=null,impactPoint=null,lastOutcome=null,arcTrace=[];
 const $=s=>document.querySelector(s),P=p=>({x:p.x+(p.z||0)*.48,y:p.y-(p.z||0)*.24});
 function line(points,color,width){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.lineCap='round';ctx.lineJoin='round';if(width>=8){ctx.strokeStyle='#173e3a';ctx.lineWidth=width+3.5;ctx.stroke()}ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke()}
 function ellipse(x,y,rx,ry,c,angle=0){ctx.beginPath();ctx.ellipse(x,y,Math.max(0,rx),Math.max(0,ry),angle,0,Math.PI*2);ctx.fillStyle=c;ctx.fill();if(rx>12&&ry>9){ctx.strokeStyle='#173e3a';ctx.lineWidth=1.8;ctx.stroke()}}
@@ -46,29 +46,29 @@ function person(){const old=person.motion,dt=old?sim.time-old.time:0;let vx=0,vy
 }
 function drawFruitAt(obj=sim.fruit,small=1){let f=P(obj);ctx.save();ctx.translate(f.x,f.y);ctx.scale(small,small);ctx.rotate((obj.x-408)*.017);for(let i=0;i<22;i++){let a=i/22*Math.PI*2;poly([{x:Math.cos(a-.1)*18,y:Math.sin(a-.1)*20},{x:Math.cos(a)*25,y:Math.sin(a)*27},{x:Math.cos(a+.1)*18,y:Math.sin(a+.1)*20}],'#173e3a')};ellipse(0,0,19,22,'#d8a033');for(let i=0;i<26;i++){let a=i*2.399,r=Math.sqrt(i/26)*17,x=Math.cos(a)*r,y=Math.sin(a)*r*1.1;poly([{x:x-3,y:y+2},{x,y:y-4},{x:x+3,y:y+2}],i%2?'#216356':'#f1dfb5')}line([{x:0,y:-20},{x:3,y:-28}],'#79744a',3);ctx.restore()}
 function bundle(front){const f=P(sim.fruit);ctx.save();ctx.translate(f.x,f.y);ctx.beginPath();ctx.moveTo(-28,-10);ctx.bezierCurveTo(-40,6,-28,33,0,34);ctx.bezierCurveTo(28,33,39,7,27,-10);ctx.bezierCurveTo(17,front?18:-1,-16,front?20:-4,-28,-10);ctx.fillStyle=front?'#d8a033':'#9a6335';ctx.fill();for(let i=-3;i<=3;i++)line([{x:i*7,y:front?17:2},{x:i*5,y:30}],'#d0ad745c',1);line([{x:-28,y:-10},{x:-19,y:12},{x:-9,y:20},{x:10,y:20},{x:23,y:9},{x:27,y:-10}],'#f1dfb5',1.3);ctx.restore()}
-function cloth(front){if(sim.collection){let u=Math.min(1,sim.collection.time/.4),blend=u*u*(3-2*u);ctx.save();ctx.globalAlpha=1-blend;clothMesh(front);ctx.restore();ctx.save();ctx.globalAlpha=blend;bundle(front);ctx.restore();return;}clothMesh(front)}
+function cloth(front){clothMesh(front)}
 function clothMesh(front){for(let j=0;j<11;j++)for(let i=0;i<8;i++){let ns=[sim.nodes[j*9+i],sim.nodes[j*9+i+1],sim.nodes[(j+1)*9+i+1],sim.nodes[(j+1)*9+i]],z=ns.reduce((a,n)=>a+n.z,0)/4;if((z>=sim.fruit.z)!==front)continue;let ps=ns.map(P),shade=Math.max(0,Math.min(1,(ns[2].x-ns[0].x+18)/44));poly(ps,(shade<.3?'#9a6335':shade<.68?'#c58d30':'#dfb45e'));ctx.strokeStyle=mesh?'#173e3a':'#5b492850';ctx.lineWidth=mesh?1:.55;ctx.stroke();for(let t of [.28,.55,.8]){let a={x:ps[0].x+(ps[1].x-ps[0].x)*t,y:ps[0].y+(ps[1].y-ps[0].y)*t},b={x:ps[3].x+(ps[2].x-ps[3].x)*t,y:ps[3].y+(ps[2].y-ps[3].y)*t};line([a,b],'#f1dfb56b',.7)}}
  for(let row of[0,11]){let ns=sim.nodes.slice(row*9,row*9+9);if((ns[4].z>=sim.fruit.z)===front)line(ns.map(P),'#173e3a',1.5)}}
-function actionInk(){if(arcTrace.length>1){ctx.save();ctx.globalAlpha=.5;line(arcTrace.map(p=>({x:p.x,y:p.y})),'#cb472a',2);ctx.restore()}if(contactFlash!==null){const t=visualTime-contactFlash;if(t<.22){const f=P(sim.fruit);ctx.save();ctx.globalAlpha=1-t/.22;for(let i=0;i<7;i++){let a=i/7*Math.PI*2,r=32+t*32;line([{x:f.x+Math.cos(a)*r,y:f.y+Math.sin(a)*r},{x:f.x+Math.cos(a)*(r+10),y:f.y+Math.sin(a)*(r+10)}],'#cb472a',3)}ctx.restore()}}}
+function actionInk(){if(arcTrace.length>1){ctx.save();ctx.globalAlpha=.5;line(arcTrace.map(p=>({x:p.x,y:p.y})),'#cb472a',2);ctx.restore()}}
 function paperGrain(){ctx.save();ctx.strokeStyle='#173e3a';ctx.globalAlpha=.065;ctx.lineWidth=.55;for(let i=0;i<160;i++){let x=(i*167.3)%640,y=(i*71.9)%600;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+3+(i%6),y-.6);ctx.stroke()}ctx.restore()}
 function ui(){const stage=sim.stage||'ready',out=sim.outcome;let phase='准备 · 从树冠开始',hint='向上甩布 · 挂住就自动入筐';
  if(stage==='falling'){phase=sim.time>=1.2?'准备 · 向上甩布':'落果 · 看准时机';hint=sim.time>=1.2?'向上滑一小段，系统辅助迎住落果':'等提示亮起，再向上甩'}
  if(sim.inputOpen){phase=sim.contactTime!==null?'擦到布面 · 正在迎果':'接果窗口 · 向上甩';hint='只需向上甩 · 真的挂住后自动缓冲、收回'}
- if(sim.catchLocked){phase=(sim.collection?.time||0)<.4?'接住了 · 自动收回':'收回中 · 轻轻入筐';hint='已经挂住，松手也不会掉 · 自动收进筐'}
+ if(sim.catchLocked){phase=(sim.collection?.time||0)<.55?'挂住了 · 麻布顺势裹住':'收回中 · 轻轻入筐';hint='已经挂住，松手也不会掉 · 自动收进筐'}
  if(stage==='ground-recovery'){phase='落地缓冲 · 整果保留';hint='已接住的整果弹一下缓冲 · 不会摔碎'}
  if(out==='whole'){phase=sim.isDemoRound?'示范完成 · 整果保留':sim.impactTier==='intact'?'整果保留 · 待售 +1':'完整入筐 · 待售整果 +1';hint=sim.isDemoRound?'示范不计收成 · 换你来采下一颗':'这一颗留着卖 · 再采下一颗'}
  if(out==='pulp'){phase=sim.eaten?'果肉吃掉了':'摔成几瓣 · 留下可用果肉';hint=sim.eaten?'已消耗一份果肉 · 再接下一颗':sim.isDemoRound?'示范不计收成':'收获一份果肉，不算整果 · 可以自己吃'}
  if(out==='smashed'){phase='冲击太大 · 完全粉碎';hint='碎块飞散，没有可用果肉 · 下一颗看准时机'}
  const feedback=controller.feedback(sim);if(out&&out!=='whole'&&!sim.eaten&&feedback?.text)hint=feedback.text;
- $('#phase').textContent=phase;$('#hint').textContent=hint;const catchSlow=sim.catchLocked&&controller.realTime-controller.contactReal<.35;$('#mode').textContent=(sim.isDemoRound?'示范 · 不计收成':'R5 · 木刻采收')+' / '+(catchSlow?'接住慢镜':slow?'0.35×':'1×');
+ $('#phase').textContent=phase;$('#hint').textContent=hint;const catchSlow=false;$('#mode').textContent=(sim.isDemoRound?'示范 · 不计收成':'R6 · 木刻采收')+' / '+(catchSlow?'接住慢镜':slow?'0.35×':'1×');
  const cue=$('#window-cue');cue.hidden=!(sim.running&&!sim.catchLocked&&!sim.outcome&&sim.time>=1.2);cue.textContent=sim.inputOpen?'向上甩布 ↑ 挂住就收果':'准备向上甩 ↑';$('#load-meter').hidden=!(sim.catchLocked&&!sim.outcome&&!sim.bounce&&(sim.collection?.time||0)<.8);const speed=Math.hypot(sim.fruit.x-sim.fruit.px,sim.fruit.y-sim.fruit.py,sim.fruit.z-sim.fruit.pz)*240;$('#load-fill').style.width=`${Math.round(Math.min(1,speed/1200)*100)}%`;$('#whole-count').textContent=String(sim.totals.whole);$('#pulp-count').textContent=String(sim.totals.pulp);$('#snack-count').textContent=String(sim.totals.snacks);$('#eat').hidden=!sim.canEat;$('#start').innerHTML=stage==='ready'?'开始采收 <span>↗</span>':sim.running?'重新来一颗 <span>↻</span>':'再采一颗 <span>↗</span>';
 }
 function draw(){const rect=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2),w=Math.round(rect.width*dpr),h=Math.round(rect.height*dpr);if(canvas.width!==w)canvas.width=w;if(canvas.height!==h)canvas.height=h;const scale=Math.min(w/640,h/600),offsetX=(w-640*scale)/2,offsetY=(h-600*scale)/2;ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#f1dfb5';ctx.fillRect(0,0,w,h);ctx.setTransform(scale,0,0,scale,offsetX,offsetY);const cam=cameraFor(sim);ctx.save();ctx.translate(320,300);ctx.scale(cam.zoom,cam.zoom);ctx.translate(-cam.x,-cam.y);background();basket();person();trail();cloth(false);if(!sim.outcome||sim.outcome==='whole')drawFruitAt();cloth(true);if(sim.impactTier==='intact'||sim.outcome==='pulp'||sim.outcome==='smashed')debris();actionInk();
  if(sim.inputOpen&&sim.contactTime===null){ctx.setLineDash([4,7]);ctx.beginPath();ctx.moveTo(330,390);ctx.bezierCurveTo(373,335,429,276,434,305);ctx.strokeStyle='#73865790';ctx.lineWidth=1.7;ctx.stroke();ctx.setLineDash([])}
 
  ctx.restore();paperGrain();ui();}
-function frame(t){const dt=last?Math.min((t-last)/1000,.1):0;last=t;if(!document.hidden){const elapsed=dt*(slow?.35:1);visualTime+=elapsed;controller.advance(sim,dt,slow?.35:1);if(sim.catchLocked&&contactFlash===null)contactFlash=visualTime;if(sim.running&&!sim.collection&&['casting','yielding'].includes(controller.phase))arcTrace.push({...P({...sim.hand,z:0}),t:visualTime});arcTrace=arcTrace.filter(p=>visualTime-p.t<.34).slice(-25);if(impactAt===null&&(sim.bounce||sim.outcome==='pulp'||sim.outcome==='smashed')){impactAt=visualTime;impactPoint=P(sim.fruit)}if(sim.outcome!==lastOutcome)lastOutcome=sim.outcome;}draw();requestAnimationFrame(frame)}requestAnimationFrame(frame);
-function start(demo){release();sim.start(demo);sim.demo=false;controller.reset();controller.demo=demo;sim.controller=controller;impactAt=null;impactPoint=null;lastOutcome=null;contactFlash=null;arcTrace=[];}
+function frame(t){const dt=last?Math.min((t-last)/1000,.1):0;last=t;if(!document.hidden){const elapsed=dt*(slow?.35:1);visualTime+=elapsed;controller.advance(sim,dt,slow?.35:1);if(sim.running&&!sim.collection&&['casting','yielding'].includes(controller.phase))arcTrace.push({...P({...sim.hand,z:0}),t:visualTime});arcTrace=arcTrace.filter(p=>visualTime-p.t<.34).slice(-25);if(impactAt===null&&(sim.bounce||sim.outcome==='pulp'||sim.outcome==='smashed')){impactAt=visualTime;impactPoint=P(sim.fruit)}if(sim.outcome!==lastOutcome)lastOutcome=sim.outcome;}draw();requestAnimationFrame(frame)}requestAnimationFrame(frame);
+function start(demo){release();sim.start(demo);sim.demo=false;controller.reset();controller.demo=demo;sim.controller=controller;impactAt=null;impactPoint=null;lastOutcome=null;arcTrace=[];}
 function eventClock(e){return controller.realTime+(last?Math.max(0,Math.min(.1,((e.timeStamp||last)-last)/1000)):0);}
 function screen(e){const r=canvas.getBoundingClientRect(),s=Math.min(r.width/640,r.height/600);return{x:(e.clientX-r.left-(r.width-640*s)/2)/s,y:(e.clientY-r.top-(r.height-600*s)/2)/s}}
 canvas.addEventListener('pointerdown',e=>{if(e.button!==0||!e.isPrimary||drag||sim.catchLocked)return;if(!sim.running)start(false);drag={id:e.pointerId};controller.demo=false;controller.queue('begin',screen(e),eventClock(e));canvas.setPointerCapture(e.pointerId)});
