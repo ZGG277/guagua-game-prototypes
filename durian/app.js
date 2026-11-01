@@ -1,9 +1,9 @@
-import{freshSeed}from'./random.js?v=r9';
-import{ClothAudio}from'./cloth-audio.js?v=r9';
-import{Study}from'./physics.js?v=r9';
-import{cameraFor}from'./camera.js?v=r9';
-import{catcherPose}from'./pose.js?v=r9';
-import{HalfArcController}from'./gesture.js?v=r9';
+import{freshSeed}from'./random.js?v=r9_1';
+import{ClothAudio}from'./cloth-audio.js?v=r9_1';
+import{Study}from'./physics.js?v=r9_1';
+import{cameraFor}from'./camera.js?v=r9_1';
+import{catcherPose}from'./pose.js?v=r9_1';
+import{HalfArcController}from'./gesture.js?v=r9_1';
 const canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d'),sim=new Study({seed:freshSeed()});const sound=new ClothAudio();window.clothSound=sound;window.study=sim;const controller=new HalfArcController();window.gesture=controller;
 let slow=false,mesh=false,drag=null,last=0,visualTime=0,impactAt=null,impactPoint=null,lastOutcome=null,heardRound=null,arcTrace=[];
 const $=s=>document.querySelector(s),P=p=>({x:p.x+(p.z||0)*.48,y:p.y-(p.z||0)*.24});
@@ -61,7 +61,7 @@ function ui(){const stage=sim.stage||'ready',out=sim.outcome;let phase='准备 �
  if(out==='pulp'){phase=sim.eaten?'果肉吃掉了':'摔成几瓣 · 留下可用果肉';hint=sim.eaten?'已消耗一份果肉 · 再接下一颗':sim.isDemoRound?'示范不计收成':'收获一份果肉，不算整果 · 可以自己吃'}
  if(out==='smashed'){phase='冲击太大 · 完全粉碎';hint='碎块飞散，没有可用果肉 · 下一颗看准时机'}
  const feedback=controller.feedback(sim);if(out&&out!=='whole'&&!sim.eaten&&feedback?.text)hint=feedback.text;
- $('#phase').textContent=phase;$('#hint').textContent=hint;const catchSlow=false;$('#mode').textContent=(sim.isDemoRound?'示范 · 不计收成':'R9 · 木刻采收')+' / '+(catchSlow?'接住慢镜':slow?'0.35×':'1×');
+ $('#phase').textContent=phase;$('#hint').textContent=hint;const catchSlow=false;$('#mode').textContent=(sim.isDemoRound?'示范 · 不计收成':'R9.1 · 木刻采收')+' / '+(catchSlow?'接住慢镜':slow?'0.35×':'1×');
  const cue=$('#window-cue');cue.hidden=!(sim.running&&!sim.catchLocked&&!sim.outcome&&sim.time>=1.2);cue.textContent=sim.time>=1.72?'果子近身 · 向上轻兜 ↑':'左右移动 · 判断落点 ↔';$('#load-meter').hidden=!(sim.catchLocked&&!sim.outcome&&!sim.bounce&&(sim.collection?.time||0)<.8);const speed=Math.hypot(sim.fruit.x-sim.fruit.px,sim.fruit.y-sim.fruit.py,sim.fruit.z-sim.fruit.pz)*240;$('#load-fill').style.width=`${Math.round(Math.min(1,speed/1200)*100)}%`;$('#whole-count').textContent=String(sim.totals.whole);$('#pulp-count').textContent=String(sim.totals.pulp);$('#snack-count').textContent=String(sim.totals.snacks);$('#eat').hidden=!sim.canEat;$('#start').innerHTML=stage==='ready'?'开始采收 <span>↗</span>':sim.running?'重新来一颗 <span>↻</span>':'再采一颗 <span>↗</span>';
 }
 function draw(){const rect=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2),w=Math.round(rect.width*dpr),h=Math.round(rect.height*dpr);if(canvas.width!==w)canvas.width=w;if(canvas.height!==h)canvas.height=h;const scale=Math.min(w/640,h/600),offsetX=(w-640*scale)/2,offsetY=(h-600*scale)/2;ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#f1dfb5';ctx.fillRect(0,0,w,h);ctx.setTransform(scale,0,0,scale,offsetX,offsetY);const cam=cameraFor(sim);ctx.save();ctx.translate(320,300);ctx.scale(cam.zoom,cam.zoom);ctx.translate(-cam.x,-cam.y);background();basket();trail();cloth(false,'behind');if(sim.fruit.z<0&&(!sim.outcome||sim.outcome==='whole'))drawFruitAt();cloth(true,'behind');person();cloth(false,'front');if(sim.fruit.z>=0&&(!sim.outcome||sim.outcome==='whole'))drawFruitAt();cloth(true,'front');if(sim.impactTier==='intact'||sim.outcome==='pulp'||sim.outcome==='smashed')debris();actionInk();
@@ -75,7 +75,7 @@ function eventClock(e){return controller.realTime+(last?Math.max(0,Math.min(.1,(
 function screen(e){const r=canvas.getBoundingClientRect(),s=Math.min(r.width/640,r.height/600);return{x:(e.clientX-r.left-(r.width-640*s)/2)/s,y:(e.clientY-r.top-(r.height-600*s)/2)/s}}
 canvas.addEventListener('pointerdown',e=>{if(e.button!==0||!e.isPrimary||drag||sim.catchLocked)return;sound.unlock();if(!sim.running)start(false);drag={id:e.pointerId};controller.demo=false;controller.queue('begin',screen(e),eventClock(e));canvas.setPointerCapture(e.pointerId)});
 canvas.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;const samples=typeof e.getCoalescedEvents==='function'?e.getCoalescedEvents():[];for(const sample of samples)controller.queue('move',screen(sample),eventClock(sample));if(!samples.length||samples[samples.length-1].timeStamp!==e.timeStamp)controller.queue('move',screen(e),eventClock(e))});
-function release(e){if(!drag&&controller.demo&&e&&['blur','resize','visibility'].includes(e.type))return;const pointer=e&&e.pointerId!==undefined;if(pointer&&(!drag||e.pointerId!==drag.id))return;if(drag){const id=drag.id;drag=null;if(canvas.hasPointerCapture(id))canvas.releasePointerCapture(id)}if(e&&(e.type==='pointerup'||e.type==='pointercancel')&&Number.isFinite(e.timeStamp))controller.queue('cancel',null,eventClock(e));else controller.cancel(sim)}
+function release(e){if(!drag&&controller.demo&&e&&['blur','resize','visibility'].includes(e.type))return;const pointer=e&&e.pointerId!==undefined;if(pointer&&(!drag||e.pointerId!==drag.id))return;if(drag){const id=drag.id;drag=null;if(canvas.hasPointerCapture(id))canvas.releasePointerCapture(id)}if(e&&(e.type==='pointerup'||e.type==='pointercancel')&&Number.isFinite(e.timeStamp))controller.queue(e.type==='pointerup'?'finish':'cancel',null,eventClock(e));else controller.cancel(sim)}
 canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',release);canvas.addEventListener('lostpointercapture',release);window.addEventListener('blur',release);window.addEventListener('resize',release);document.addEventListener('visibilitychange',()=>{if(document.hidden){release({type:'visibility'});sound.pause();}last=0});
 $('#start').onclick=()=>{sound.unlock();start(false)};$('#demo').onclick=()=>{sound.unlock();start(true)};$('#eat').onclick=()=>sim.eat();$('#reset-totals').onclick=()=>sim.resetTotals();$('#slow').onclick=e=>{sound.unlock();slow=!slow;e.currentTarget.setAttribute('aria-pressed',String(slow));e.currentTarget.textContent=slow?'速度 0.35×':'速度 1×'};$('#mesh').onchange=e=>mesh=e.target.checked;
 
