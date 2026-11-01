@@ -10,3 +10,5 @@
 
 /* R5 authorized readability exception; original woodcut art styles above remain unchanged. */
 @media(min-width:760px){.hint{font-size:15px;line-height:1.6}.window-cue{font-size:19px}.scene-top #phase{font-size:14px}.scene-top #mode{font-size:11px}}
+/* R5b: keep the readable hint below the canvas so floor impacts stay visible. */
+.hint{position:static;width:auto;transform:none;margin:0 14px;padding:6px 8px;left:auto;right:auto;bottom:auto}
