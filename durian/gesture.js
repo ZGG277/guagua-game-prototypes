@@ -1,4 +1,5 @@
-import {STEP} from './physics.js?v=r7';
+import{castHand}from'./circle-motion.js?v=r8';
+import {STEP} from './physics.js?v=r8';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function path(points,t){for(let i=1;i<points.length;i++)if(t<=points[i][0]){const a=points[i-1],b=points[i];let u=clamp((t-a[0])/(b[0]-a[0]),0,1);u=u*u*(3-2*u);return{x:a[1]+(b[1]-a[1])*u,y:a[2]+(b[2]-a[2])*u}}const p=points.at(-1);return{x:p[1],y:p[2]}}
 export class HalfArcController{
@@ -15,15 +16,15 @@ export class HalfArcController{
  cancel(sim){this.releaseTime=this.realTime;this.pending=[];this.anchor=null;this.active=false;this.demo=false;this.phase='released';sim.cancel()}
  timeScale(sim){this.observeContact(sim);this.slowRemaining=0;return 1}
  update(sim,dt){if(!this.active||!sim.running||sim.collection||sim.outcome)return;this.observeContact(sim);if(this.castStart===null&&this.realTime-this.lastUp>.5)this.up=0;if(!sim.inputOpen){this.phase='ready';return;}
-  if(!this.contactSeen){if(this.castStart===null){const ready=sim.demoTarget(Math.min(sim.time,1.618));sim.aim(ready.x,ready.y);}if(this.castStart===null&&this.up>=12&&this.realTime-this.lastUp<.5){this.castStart=sim.time;this.upIntentAt=this.realTime;this.phase='casting';}
-   if(this.castStart!==null){const h=sim.demoTarget(Math.min(sim.time,1.912));sim.aim(h.x,h.y);}
+  if(!this.contactSeen){if(this.castStart===null){const ready={x:315,y:405};sim.aim(ready.x,ready.y);}if(this.castStart===null&&this.up>=12&&this.realTime-this.lastUp<.5){this.castStart=sim.time;sim.circleStart=sim.time;sim.circleCancelled=false;this.upIntentAt=this.realTime;this.phase='casting';}
+   if(this.castStart!==null){const h=castHand(sim.time,this.castStart);sim.aim(h.x,h.y);}
   }else{
    this.engaged=!!(sim.catchLocked||sim.snags.length);this.load=this.engaged?Math.min(1,Math.hypot(sim.fruit.x-sim.fruit.px,sim.fruit.y-sim.fruit.py,sim.fruit.z-sim.fruit.pz)/dt/1200):0;this.phase=sim.catchLocked?'caught':this.engaged?'snagging':'brushed';
   }
  }
  feedback(sim){
   if(sim.outcome==='whole')return{kind:'whole',text:sim.isDemoRound?'示范完整落地 · 不计收成':'完整落地 · 待售整果 +1'};
-  if(sim.catchLocked)return{kind:'caught',text:sim.grounded?'卸力停稳 · 完整落地':'甩布黏住 · 顺势下甩卸力'};
+  if(sim.catchLocked)return{kind:'caught',text:sim.grounded?'卸力停稳 · 完整落地':'甩圈黏果 · 顺势下甩卸力'};
   if(sim.outcome){if(!this.castStart)return{kind:'no-cast',text:this.maxUp>=12?'甩得太早了 · 等提示亮起再向上甩':'还没甩开布 · 向上滑一小段'};if(sim.contactTime!==null)return{kind:'brushed',text:'擦过布面但没黏住 · 再试一颗'};return{kind:'missed',text:this.castStart>1.68?'甩晚了，果子已冲过 · 稍早一点甩':'布没迎上落果 · 看准弧线再甩'};}
   if(this.releaseTime!==null)return{kind:'released',text:'已松手 · 只要麻布黏住，仍会自动收果'};
   return{kind:sim.inputOpen?'cast':'prepare',text:sim.inputOpen?'现在向上甩 ↑ 黏住后自动卸力落地':'准备 · 等提示亮起再向上甩'};
