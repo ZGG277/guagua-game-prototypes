@@ -61,7 +61,10 @@ export function createRenderer(canvas,{images=null,pixelRatio=null}={}){
  }
  function character(wall){
   const b=wall.body,feet=b.grounded&&b.feet.length?b.feet.map(project):[project(b),project(b)],foot={x:feet.reduce((s,p)=>s+p.x,0)/feet.length,y:feet.reduce((s,p)=>s+p.y,0)/feet.length};
-  const pose=characterPose(wall),index=ATLAS.girl.poses.indexOf(pose),scaleX=width*.09/92*(overview?.45:1),scaleY=width/390*.33*(overview?.45:1);
+  // Leaves use a bounded world-camera scale; the character must not grow with
+  // desktop browser chrome while those leaves stay the same size.
+  const playWidth=Math.min(width,430);
+  const pose=characterPose(wall),index=ATLAS.girl.poses.indexOf(pose),scaleX=playWidth*.09/92*(overview?.45:1),scaleY=playWidth/390*.33*(overview?.45:1);
   const w=160*scaleX,h=320*scaleY;
   // Atlas charge/landing poses already crouch above an unchanged sole baseline.
   const x=foot.x-80*scaleX,y=foot.y-ATLAS.girl.footY*scaleY;

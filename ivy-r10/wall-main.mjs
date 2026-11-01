@@ -1,6 +1,6 @@
 import {pullAim, pullPower, cuePosition, directionLabel, pullInstruction, gestureVector, projectedArrow} from './wall-gesture.mjs?v=20261101-atlas-r10';
 import {Wall, launchVelocity, CHARGE_TIME} from './wall-physics.mjs?v=20261101-atlas-r10';
-import {createRenderer} from './wall-atlas-renderer.mjs?v=20261101-atlas-r10';
+import {createRenderer} from './wall-atlas-renderer.mjs?v=20261101-atlas-r10p2';
 const $=s=>document.querySelector(s),canvas=$('#scene'),wall=new Wall({progressive:true});let renderer;
 try{renderer=createRenderer(canvas);}catch(e){$('#error').hidden=false;$('#error').textContent='画面未能初始化：'+e.message;throw e;}
 let last=0,pointer=null,keyHeld=false,overview=false,paused=false,focused=true;let learnedFirstJump=false,coverOpen=true,menuOpen=false,idleKey=null,idleGuidance=null,preview=null,previewAt=-Infinity,best=0;
@@ -37,7 +37,7 @@ function render(){
  $('#best-progress').style.bottom=best+'%';$('#best-label').textContent=`纪录 ${best}%`;
  $('#phase').textContent=names[wall.body.phase]||'在叶间';
  $('#complete').hidden=!wall.completed;$('#cover').hidden=!coverOpen;$('#help-panel').hidden=!menuOpen;
- $('#pause').setAttribute('aria-pressed',String(paused));$('#pause').textContent=paused?'▶':'Ⅱ';
+ $('#pause').setAttribute('aria-pressed',String(paused));$('#pause').textContent=paused?'继续':'暂停';$('#pause').setAttribute('aria-label',paused?'继续':'暂停');
  $('#falls').textContent=`回到根部 ${wall.falls} 次`;
  if(wall.body.grounded&&wall.standId>0)learnedFirstJump=true;
  const g=stableGuidance(),first=!learnedFirstJump&&wall.standId===0&&!overview;
