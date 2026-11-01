@@ -136,7 +136,7 @@ export function createGirl({lowDetail=false}={}){
   const baseTorsoPosition=body.position.clone().sub(clearanceOffset);
   const projectionTargets=reaching?plannedHands?.map((h,i)=>{const end=norm(h),start=reachStartWorld?.[i]||end.map((v,k)=>v+root[k]);return end.map((v,k)=>start[k]+(v+root[k]-start[k])*reachEase-root[k]+(k===1?.025*Math.sin(Math.PI*reachT):k===0?skirtOutside*.12*Math.sin(Math.PI*reachT):0));}):hands;
   if((climbing&&contactCount)||(reaching&&projectionTargets?.length))for(let pass=0;pass<8;pass++)for(let i=0;i<2;i++){
-   if(!projectionTargets?.[i])continue;const side=i===0?-1:1,shoulder=V([side*.098,.588+side*weightShift,-.008]).applyMatrix4(body.matrix),target=V(norm(projectionTargets[i]));target.y+=.013*(reaching?reachEase:1);const delta=target.sub(shoulder),distance=delta.length();if(distance>.312){body.position.addScaledVector(delta,1-.312/distance);body.updateMatrix();}
+   if(!projectionTargets?.[i])continue;const side=i===0?-1:1,shoulder=V([side*.098,.588+side*weightShift,-.008]).applyMatrix4(body.matrix),target=V(norm(projectionTargets[i]));target.y+=.015*(reaching?reachEase:1);const delta=target.sub(shoulder),distance=delta.length();if(distance>.312){body.position.addScaledVector(delta,1-.312/distance);body.updateMatrix();}
   }
   if(climbing)lastClimbTorsoOffset.copy(body.position).sub(baseTorsoPosition);else if(releasing){body.position.addScaledVector(lastClimbTorsoOffset,1-releaseBlend);body.updateMatrix();}
   const bodyPoint=p=>V(p).applyMatrix4(body.matrix).toArray();clothRig.updateMatrix();const bp=waistBridge.geometry.attributes.position;for(let i=0;i<=20;i++){const a=i/20*Math.PI*2,top=bodyPoint([Math.cos(a)*.068,.445,-.005+Math.sin(a)*.048]),bottom=V([Math.cos(a)*.071,.002,Math.sin(a)*.051]).applyMatrix4(clothRig.matrix).applyMatrix4(body.matrix);bp.setXYZ(i,...top);bp.setXYZ(21+i,bottom.x,bottom.y,bottom.z);}bp.needsUpdate=true;if(!lowDetail)waistBridge.geometry.computeVertexNormals();
@@ -146,15 +146,24 @@ export function createGirl({lowDetail=false}={}){
   // Millimetric clearance for the sprung blade: lift only the lower strap anchor, not the parcel.
   let strapIndex=0;for(const mesh of body.children)if(mesh.name==='vine-shoulder-strap'){const side=strapIndex++===0?-1:1,bagPoint=p=>V([p[0],p[1]-.58,p[2]]).applyMatrix4(bundle.matrix).toArray(),a=bagPoint([side*.04,.49,.12]),b=bagPoint([side*.025,.575,.10]);a[1]+=.003*bagTuck;const fresh=tubeGeometry([a,b,[side*.078,.603,.026],[side*.061,.615,-.028],[side*.053,.542,-.057],[side*.043,.462,-.047]],[.0035,.004,.004,.004,.0035,.003],6,!lowDetail);mesh.geometry.attributes.position.array.set(fresh.attributes.position.array);mesh.geometry.attributes.position.needsUpdate=true;if(!lowDetail)mesh.geometry.computeVertexNormals();fresh.dispose();}
   const handDepth=contactCount?hands.filter(Boolean).reduce((s,p)=>s+norm(p)[2],0)/contactCount:0;
-  // Extra 2 mm swing clearance vanishes at takeoff/plant; supplied planted soles always win below.
-  const steppingFeet=[-.065,.065].map((x,i)=>{const t=clamp((cp-(i?.20:.08))/(i?.61:.52),0,1),across=clamp((t-.48)/.52,0,1),acrossEase=across*across*(3-2*across),lift=clamp(t/.48,0,1),liftEase=lift*lift*(3-2*lift);const target=plannedFeet?.[i]?norm(plannedFeet[i]):[x,contactHeight,handDepth];return[x+(target[0]-x)*acrossEase,target[1]*liftEase+Math.sin(t*Math.PI)*.112,target[2]*acrossEase+Math.sin(t*Math.PI)*.035];});
+  // r9: a small outward free-foot arc clears the cuff before crossing the
+  // leaf edge. It vanishes at takeoff/plant; supplied planted soles always win.
+  const steppingFeet=[-.065,.065].map((x,i)=>{
+   const t=clamp((cp-(i?.20:.08))/(i?.61:.52),0,1),across=clamp((t-.48)/.52,0,1),acrossEase=across*across*(3-2*across),lift=clamp(t/.48,0,1),liftEase=lift*lift*(3-2*lift),target=plannedFeet?.[i]?norm(plannedFeet[i]):[x,contactHeight,handDepth];
+   const plannedNormal=plannedFeet?.[i]?.normal,n=plannedNormal?V(Array.isArray(plannedNormal)?plannedNormal:[plannedNormal.x,plannedNormal.y,plannedNormal.z]).normalize():Y;
+   // An unplanted boot lifts around the narrower rear edge (25 mm Z arc),
+   // then turns toward its upcoming sole plane. Planted contacts override
+   // the entire 18 mm outward arc and remain exactly on the physical blade.
+   const normal=Y.clone().lerp(n,acrossEase).normalize();
+   return {x:x+(target[0]-x)*acrossEase+skirtOutside*.018*Math.sin(t*Math.PI)*(1-acrossEase),y:target[1]*liftEase+Math.sin(t*Math.PI)*.112,z:target[2]*acrossEase-Math.sin(t*Math.PI)*.025,normal};
+  });
   const freeFeet=climbing?steppingFeet:airborne?[[-.074,.13*flightTuck,-.085*flightTuck],[.077,.23*flightTuck,.045*flightTuck]]:[[-.065,0,0],[.065,0,0]];
   const footTargets=freeFeet.map((p,i)=>feet?.[i]||p);
   const recordedFeet=[],recordedHands=[],recordedJoints=[];
   for(let i=0;i<2;i++){
    const side=i===0?-1:1,t=norm(footTargets[i]),rawNormal=footTargets[i]?.normal,nv=rawNormal?V(Array.isArray(rawNormal)?rawNormal:[rawNormal.x,rawNormal.y,rawNormal.z]).normalize():Y,hip=V([side*(.052-.017*c),-.06+.005*c,.045*c]).applyMatrix4(clothRig.matrix).applyMatrix4(body.matrix).toArray(),ankle=[t[0]+nv.x*.075,t[1]+nv.y*.075,t[2]+nv.z*.075+.004],knee=joint(hip,ankle,.18,.175,[climbing?skirtOutside*.3:side*.2,climbing?1:.1,climbing?-.1:-1]);
    // The hidden thigh root follows the same tiny swing lift; hips return unchanged once the sole plants.
-   if(climbing&&!feet?.[i])hip[1]+=.002*Math.sin(Math.PI*clamp((cp-(i?.20:.08))/(i?.61:.52),0,1));
+   if(climbing&&!feet?.[i]){const enter=clamp(cp/.03,0,1),leave=clamp((cp-.10)/.10,0,1);hip[1]+=.002*Math.sin(Math.PI*clamp((cp-(i?.20:.08))/(i?.61:.52),0,1))+.001*enter*enter*(3-2*enter)*(1-leave*leave*(3-2*leave));}
    updateTube(legs[i],[hip,knee,ankle],[.033,.031,.025]);footMeshes[i].position.set(...t);const fn=footTargets[i]?.normal;if(fn){const nv=V(Array.isArray(fn)?fn:[fn.x,fn.y,fn.z]).normalize();footMeshes[i].quaternion.setFromUnitVectors(Y,nv);}else footMeshes[i].quaternion.identity();recordedFeet.push(t.slice());
    const shoulder=bodyPoint([side*.098,.588+side*weightShift,-.008]);
    // The leading hand reaches; the trailing elbow remains folded close to the ribs.
@@ -164,7 +173,7 @@ export function createGirl({lowDetail=false}={}){
    if(reaching&&plannedHands?.[i]){const end=norm(plannedHands[i]),start=reachStartWorld?.[i]||end.map((v,k)=>v+root[k]);target=end.map((v,k)=>start[k]+(v+root[k]-start[k])*reachEase-root[k]+(k===1?.025*Math.sin(Math.PI*reachT):k===0?skirtOutside*.12*Math.sin(Math.PI*reachT):0));}
    if(!climbing&&!reaching&&!releasing&&balanceHands&&balanceT<1)target=target.map((v,k)=>balanceHands[i][k]+(v-balanceHands[i][k])*balanceBlend);
    if(releasing&&!hands?.[i])target=target.map((v,k)=>lastClimbHands[i][k]+(v-lastClimbHands[i][k])*releaseBlend);
-   const contactTarget=target.slice();if(hands?.[i]||releasing||reaching)target=[target[0],target[1]+.013*(reaching?reachEase:releasing?1-releaseBlend:1),target[2]];if(!hands?.[i]&&!reaching){const d=V(target).sub(V(shoulder)),len=d.length();if(len>.312)target=V(shoulder).addScaledVector(d,.312/len).toArray();}
+   const contactTarget=target.slice();if(hands?.[i]||releasing||reaching)target=[target[0],target[1]+.015*(reaching?reachEase:releasing?1-releaseBlend:1),target[2]];if(!hands?.[i]&&!reaching){const d=V(target).sub(V(shoulder)),len=d.length();if(len>.312)target=V(shoulder).addScaledVector(d,.312/len).toArray();}
    const resting=!climbing&&!reaching&&!airborne&&phase!=='sliding'&&phase!=='charging',armLength=resting?.13:.16;const elbow=joint(shoulder,target,armLength,armLength,[(climbing||reaching)?skirtOutside*1.3:side*.22,climbing?-.2:0,(climbing||reaching)?-1:.25]);const cuff=elbow.map((v,k)=>v*.8+target[k]*.2);const foreMid=cuff.map((v,k)=>(v+target[k])*.5);if(climbing||reaching){const f=reaching?reachEase:1;foreMid[0]+=(target[0]+skirtOutside*.10-foreMid[0])*f;foreMid[1]+=(target[1]+.025-foreMid[1])*f;foreMid[2]+=(target[2]-.035-foreMid[2])*f;}
    updateTube(arms[i].upper,[[shoulder[0]-side*.009,shoulder[1]-.006,shoulder[2]],elbow,cuff],[.029,.026,.022]);updateTube(arms[i].lower,[cuff,foreMid,target],[.018,.015,.011]);arms[i].hand.position.set(...target);arms[i].hand.rotation.set(hands?.[i]?Math.PI/2:reaching?Math.PI/2*reachEase:releasing?Math.PI/2*(1-releaseBlend):0,0,hands?.[i]?0:side*(.12+c*.2));recordedHands.push(contactTarget);recordedJoints.push({shoulder,elbow,wrist:target,hip,knee,ankle,handContact:!!hands?.[i],footContact:!!feet?.[i]});
   }
