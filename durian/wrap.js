@@ -1,6 +1,12 @@
 // R6: one persistent cloth mesh. Authored post-snag gathering, not new geometry.
 export const WRAP_SECONDS=.55;
 const ease=u=>{u=Math.max(0,Math.min(1,u));return u*u*u*(u*(u*6-15)+10)};
+export function sphericalDirection(from,to,u){
+ const dot=Math.max(-1,Math.min(1,from.reduce((a,v,j)=>a+v*to[j],0))),theta=Math.acos(dot),sin=Math.sqrt(Math.max(0,1-dot*dot));
+ if(theta<1e-7)return [...to];
+ let tangent;if(sin>1e-6)tangent=to.map((v,j)=>(v-dot*from[j])/sin);else{const axis=Math.abs(from[0])<.8?[1,0,0]:[0,1,0],projection=axis.reduce((a,v,j)=>a+v*from[j],0);tangent=axis.map((v,j)=>v-projection*from[j]);const length=Math.hypot(...tangent);tangent=tangent.map(v=>v/length);}
+ return from.map((v,j)=>v*Math.cos(theta*u)+tangent[j]*Math.sin(theta*u));
+}
 export function beginWrap(nodes,fruit,proof,handVelocity={x:0,y:0}){
  const anchor=proof.tethers[0].node,a=nodes[anchor],ar=Math.floor(anchor/9),ac=anchor%9,az=a.z-fruit.z,theta=Math.atan2(a.x-fruit.x,a.y-fruit.y),radius=Math.hypot(a.x-fruit.x,a.y-fruit.y,a.z-fruit.z),fv={x:(fruit.x-fruit.px)*240,y:(fruit.y-fruit.py)*240,z:(fruit.z-fruit.pz)*240};
  return{anchor,progress:0,nodes:nodes.map((p,i)=>{const row=Math.floor(i/9),col=i%9,d=Math.hypot(row-ar,(col-ac)*.8),z=col<=ac?-22+(az+22)*col/Math.max(1,ac):az+(22-az)*(col-ac)/Math.max(1,8-ac),angle=row<=ar?theta+2.05*(ar-row)/Math.max(1,ar):theta-2.3*(row-ar)/Math.max(1,11-ar),r=radius+(25-radius)*Math.min(1,d/3),cross=Math.sqrt(Math.max(1,r*r-z*z));return{offset:{x:p.x-fruit.x,y:p.y-fruit.y,z:p.z-fruit.z},velocity:{x:(p.w?(p.x-p.px)*240:handVelocity.x)-fv.x,y:(p.w?(p.y-p.py)*240:handVelocity.y)-fv.y,z:(p.w?(p.z-p.pz)*240:0)-fv.z},target:i===anchor?{x:a.x-fruit.x,y:a.y-fruit.y,z:az}:{x:cross*Math.sin(angle),y:cross*Math.cos(angle),z},delay:i===anchor?0:Math.min(.15,d*.018)}})};
@@ -9,8 +15,8 @@ export function advanceWrap(nodes,fruit,wrap,time,links=[]){
  wrap.progress=Math.min(1,time/WRAP_SECONDS);
  for(let i=0;i<nodes.length;i++){const p=nodes[i],n=wrap.nodes[i],u=ease((time-n.delay)/(WRAP_SECONDS-n.delay)),inertia=time*Math.exp(-time/.095),old={x:p.x,y:p.y,z:p.z};let q={...n.target};
  if(i!==wrap.anchor){
-  const keys=['x','y','z'],r=Math.hypot(n.offset.x,n.offset.y,n.offset.z)||1,d=keys.map(k=>n.offset[k]/r),v=keys.map(k=>n.velocity[k]),radial=v.reduce((a,b,j)=>a+b*d[j],0),tangent=v.map((v,j)=>v-radial*d[j]),tv=Math.hypot(...tangent),angle=tv*inertia/r,dir=d.map((v,j)=>v*Math.cos(angle)+(tv?tangent[j]/tv*Math.sin(angle):0)),tr=Math.hypot(n.target.x,n.target.y,n.target.z),target=keys.map(k=>n.target[k]/tr),dot=Math.max(-1,Math.min(1,dir.reduce((a,b,j)=>a+b*target[j],0))),theta=Math.acos(dot),sin=Math.sin(theta);
-  const direction=theta<.0001?target:dir.map((v,j)=>(v*Math.sin((1-u)*theta)+target[j]*Math.sin(u*theta))/sin),radius=Math.max(21,r+radial*inertia)*(1-u)+tr*u;
+  const keys=['x','y','z'],r=Math.hypot(n.offset.x,n.offset.y,n.offset.z)||1,d=keys.map(k=>n.offset[k]/r),v=keys.map(k=>n.velocity[k]),radial=v.reduce((a,b,j)=>a+b*d[j],0),tangent=v.map((v,j)=>v-radial*d[j]),tv=Math.hypot(...tangent),angle=tv*inertia/r,dir=d.map((v,j)=>v*Math.cos(angle)+(tv?tangent[j]/tv*Math.sin(angle):0)),tr=Math.hypot(n.target.x,n.target.y,n.target.z),target=keys.map(k=>n.target[k]/tr);
+  const direction=sphericalDirection(dir,target,u),radius=Math.max(21,r+radial*inertia)*(1-u)+tr*u;
   q=Object.fromEntries(keys.map((k,j)=>[k,direction[j]*radius]));
  }
  for(const k of['x','y','z']){p[k]=fruit[k]+q[k];p['p'+k]=old[k];}
