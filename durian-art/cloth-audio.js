@@ -30,6 +30,13 @@ export class ClothAudio {
  reset(){for(const voice of [...this._voices])voice.stop();}
  async pause(){this._paused=true;this._unlocked=false;this.reset();try{if(this.context&&this.context.state!=='closed')await this.context.suspend();}catch{} }
  async dispose(){this._disposed=true;this._paused=true;this._unlocked=false;this.reset();try{await this.context?.close();}catch{} }
+ coin(id,amount){
+  const key='coin:'+id;if(this._seen.has(key))return false;this._seen.add(key);if(!this.ready||!amount)return false;
+  const c=this.context,t=c.currentTime,nodes=[],sources=[];let done=false;
+  const voice={stop:()=>{if(done)return;done=true;for(const n of sources)try{n.stop()}catch{}for(const n of nodes)try{n.disconnect()}catch{}this._voices.delete(voice)}};this._voices.add(voice);
+  try{const g=c.createGain(),o=c.createOscillator();nodes.push(g,o);sources.push(o);o.type=amount<0?'triangle':'sine';o.frequency.setValueAtTime(amount<0?170:660,t);o.frequency.exponentialRampToValueAtTime(amount<0?70:990,t+.16);g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.075,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+.24);o.connect(g);g.connect(c.destination);o.onended=()=>voice.stop();o.start(t);o.stop(t+.25);return true;}catch{voice.stop();return false;}
+ }
+
  snap(roundId){
   if((typeof roundId!=='string'&&typeof roundId!=='number')||roundId===''||(typeof roundId==='number'&&!Number.isFinite(roundId)))return false;
   if(this._seen.has(roundId))return false;

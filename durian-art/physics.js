@@ -1,28 +1,31 @@
-import{LANDING,nextRandom}from'./random.js?v=r11';
-import{castHand,driveGrip,curve,makeLoadedSweep,loadedCloth}from'./circle-motion.js?v=r11';
+import{sweepBody,studyBodyPose}from'./body-collision.js?v=r12';
+import{LANDING,nextRandom}from'./random.js?v=r12';
+import{castHand,driveGrip,curve,makeLoadedSweep,loadedCloth}from'./circle-motion.js?v=r12';
 export const STEP=1/240;
 export function classifyImpact(e){if(e.caught)return'intact';return e.speed>=650||(!e.hadClothContact&&e.dropDistance>700)?'shattered':'partial'}
 export const MATERIAL={clothDamping:.996,fruitInverseMass:.018,gravity:600};
 export function integrateParticle(p,dt,damp,gravity=MATERIAL.gravity){let x=p.x,y=p.y,z=p.z;p.x+=(p.x-p.px)*damp;p.y+=(p.y-p.py)*damp+gravity*dt*dt;p.z+=(p.z-p.pz)*damp;p.px=x;p.py=y;p.pz=z}
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export class Study{
- constructor({seed=12345}={}){this.rngState=seed>>>0;this.totals={whole:0,pulp:0,snacks:0};this.round=0;this.reset()}
- reset(){this.controller=null;this.circleStart=null;this.alignment=0;this.alignmentTarget=0;this.circleCancelled=false;this.catchLocked=false;this.controlledPlacement=false;this.groundContactSpeed=null;this.catchProof=null;this.bounce=null;this.impactTier=null;this.impactEvidence=null;this.lastContactY=null;this.lastContactTime=null;this.supportReleaseY=null;this.dropOriginY=-850;this.partialCredited=false;this.snagHoldTime=0;this.stage="ready";this.outcome=null;this.eaten=false;this.collectReady=false;this.collection=null;this.credited=false;this.impactSpeed=0;this.arrivalSpeed=0;this.peakFruitSpeed=0;this.time=0;this.acc=0;this.running=false;this.demo=false;this.contactTime=null;this.maxStrain=0;this.broken=false;this.success=false;this.grounded=false;this.wrapEstablished=false;this.supportTime=0;this.strictSupportTime=0;this.lastSupportEvidence=-Infinity;this.unsupportedTime=0;this.contactHand=null;this.heldTime=0;this.yielded=false;this.snagCooldown=new Map();this.checkpoint=false;this.continueMode=false;this.hand={x:335,y:425};this.target={...this.hand};this.nodes=[];this.links=[];this.snags=[];this.fruit={x:408,y:-850,z:0,px:408,py:-850,pz:0,r:19,w:MATERIAL.fruitInverseMass};this.cols=9;this.rows=12;
+ constructor({seed=12345}={}){this.rngState=seed>>>0;this.pulpRngState=(seed^0x9e3779b9)>>>0;this.coins=0;this.coinEvents=[];this.coinSerial=0;this.totals={whole:0,pulp:0,snacks:0};this.round=0;this.reset()}
+ reset(){this.injured=false;this.injury=null;this.pulpCount=1;this.controller=null;this.circleStart=null;this.alignment=0;this.alignmentTarget=0;this.circleCancelled=false;this.catchLocked=false;this.controlledPlacement=false;this.groundContactSpeed=null;this.catchProof=null;this.bounce=null;this.impactTier=null;this.impactEvidence=null;this.lastContactY=null;this.lastContactTime=null;this.supportReleaseY=null;this.dropOriginY=-850;this.partialCredited=false;this.snagHoldTime=0;this.stage="ready";this.outcome=null;this.eaten=false;this.collectReady=false;this.collection=null;this.credited=false;this.impactSpeed=0;this.arrivalSpeed=0;this.peakFruitSpeed=0;this.time=0;this.acc=0;this.running=false;this.demo=false;this.contactTime=null;this.maxStrain=0;this.broken=false;this.success=false;this.grounded=false;this.wrapEstablished=false;this.supportTime=0;this.strictSupportTime=0;this.lastSupportEvidence=-Infinity;this.unsupportedTime=0;this.contactHand=null;this.heldTime=0;this.yielded=false;this.snagCooldown=new Map();this.checkpoint=false;this.continueMode=false;this.hand={x:335,y:425};this.target={...this.hand};this.nodes=[];this.links=[];this.snags=[];this.fruit={x:408,y:-850,z:0,px:408,py:-850,pz:0,r:19,w:MATERIAL.fruitInverseMass};this.cols=9;this.rows=12;
  for(let j=0;j<this.rows;j++)for(let i=0;i<this.cols;i++){let x=335+(j<=6?j*6:36+(j-6)*10)+Math.sin(i*1.8+j*.7),y=425+j*.1+Math.sin(i*1.8+j*.7)*1.5,z=(i-4)*12;this.nodes.push({x,y,z,px:x,py:y,pz:z,w:j===0&&(i===0||i===8)?0:1});}
  for(let i of[0,8])Object.assign(this.nodes[i],{x:335,px:335,y:425,py:425,z:(i-4)*6,pz:(i-4)*6});
  const add=(a,b,k=1)=>{let p=this.nodes[a],q=this.nodes[b];this.links.push({a,b,d:Math.hypot(p.x-q.x,p.y-q.y,p.z-q.z),k})};
  for(let j=0;j<12;j++)for(let i=0;i<9;i++){let a=j*9+i;if(i<8)add(a,a+1);if(j<11)add(a,a+9);if(i<8&&j<11){add(a,a+10,.25);add(a+1,a+9,.25)}if(j<10)add(a,a+18,.002)}
  }
- start(demo=false,{landingX}={}){const sample=nextRandom(this.rngState);this.rngState=sample.state;this.reset();this.round++;this.landingX=landingX??LANDING.min+(LANDING.max-LANDING.min)*sample.value;this.fruit.x=this.fruit.px=this.landingX;this.running=true;this.demo=demo;this.isDemoRound=demo;this.stage="falling"}
+ start(demo=false,{landingX}={}){const sample=nextRandom(this.rngState);this.rngState=sample.state;this.reset();this.round++;const pulp=nextRandom(this.pulpRngState);this.pulpRngState=pulp.state;this.pulpCount=1+Math.floor(pulp.value*5);this.landingX=landingX??LANDING.min+(LANDING.max-LANDING.min)*sample.value;this.fruit.x=this.fruit.px=this.landingX;this.running=true;this.demo=demo;this.isDemoRound=demo;this.stage="falling"}
  setAlignment(landingX){if(this.collection||this.outcome)return;this.alignmentTarget=clamp(landingX-LANDING.center,-70,70)}
  get inputOpen(){return this.running&&this.time>=1.45&&!this.collection&&!this.bounce&&!this.catchLocked&&!this.outcome}
  get canEat(){return this.outcome==="pulp"&&!this.eaten}
  get catchClock(){return Math.max(0,(this.time-1.45)/.6)}
- resetTotals(){this.totals={whole:0,pulp:0,snacks:0}}
+ resetTotals(){this.coins=0;this.coinEvents=[];this.totals={whole:0,pulp:0,snacks:0}}
  eat(){if(!this.canEat)return false;this.eaten=true;if(!this.isDemoRound){this.totals.pulp=Math.max(0,this.totals.pulp-1);this.totals.snacks++;}return true}
  requestCollect(){if(!this.catchLocked||this.outcome||this.collection||!this.running)return false;this.collectReady=false;this.collection={time:0,origin:{x:this.fruit.x,y:this.fruit.y,z:this.fruit.z},handOrigin:{...this.hand},target:{x:this.fruit.x-128,y:533,z:0},settle:0,automatic:true,catchProof:this.catchProof,sweep:makeLoadedSweep(this)};this.stage="collecting";this.snags=[];this.broken=true;return true}
 
- finish(outcome){if(this.outcome||this.catchLocked&&outcome!=='whole')return;this.outcome=outcome;this.stage="result";this.running=false;this.collectReady=false;if(outcome==="whole"&&!this.credited){this.credited=true;if(!this.isDemoRound)this.totals.whole++;}if(outcome==='pulp'&&!this.partialCredited){this.partialCredited=true;if(!this.isDemoRound)this.totals.pulp++;}}
+ award(amount,reason){if(this.isDemoRound||!amount)return;this.coins+=amount;this.coinEvents.push(Object.freeze({id:++this.coinSerial,amount,reason,round:this.round,time:this.time}));}
+ hurt(hit){if(this.catchLocked||this.injured||this.outcome)return false;this.injured=true;this.injury=Object.freeze({...hit,time:this.time,round:this.round});this.award(-20,'injury');return true;}
+ finish(outcome){if(this.outcome||this.catchLocked&&outcome!=='whole')return;this.outcome=outcome;this.stage="result";this.running=false;this.collectReady=false;if(outcome==="whole"&&!this.credited){this.credited=true;if(!this.isDemoRound)this.totals.whole++;this.award(10,'whole');}if(outcome==='pulp'&&!this.partialCredited){this.partialCredited=true;if(!this.isDemoRound)this.totals.pulp++;this.award(this.pulpCount,'pulp');}}
  aim(x,y){if(!this.inputOpen)return false;this.target={x:clamp(x,225,470),y:clamp(y,265,475)};return true}
  cancel(){if(this.collection||this.outcome)return;this.circleCancelled=true;this.alignmentTarget=this.alignment;this.target={...this.hand};this.demo=false}
  demoTarget(t){t=(t-1.45)/.6;const points=[[0,315,405],[.28,315,410],[.58,423,285],[.77,428,305],[1.14,320,430],[1.5,280,470],[3,300,400],[6,300,400]];for(let i=1;i<points.length;i++){if(t<=points[i][0]){let a=points[i-1],b=points[i],u=clamp((t-a[0])/(b[0]-a[0]),0,1);u=u*u*(3-2*u);return{x:a[1]+(b[1]-a[1])*u,y:a[2]+(b[2]-a[2])*u}}}return{x:300,y:400}}
@@ -31,6 +34,7 @@ export class Study{
  if(this.bounce){this.stepBounce(dt);return;}if(this.collection){this.stepCollection(dt);return;}
  this.stage=this.time<1.45?'falling':this.contactTime===null?'window':'catching';
  if(this.demo){this.setAlignment(this.landingX);if(this.time>=1.82)this.circleStart??=1.82;this.target=castHand(this.time,this.circleStart,this.alignment);}else if(!this.circleStart&&!this.controller)this.target={x:335+this.alignment,y:425};let dx=this.target.x-this.hand.x,dy=this.target.y-this.hand.y,d=Math.hypot(dx,dy),f=Math.min(1,780*dt/(d||1));this.handVelocity={x:dx*f/dt,y:dy*f/dt};this.hand.x+=dx*f;this.hand.y+=dy*f;
+ const bodyFrom={...this.fruit};
  driveGrip(this,dt);
  const integrate=(p,damp)=>integrateParticle(p,dt,damp);for(const p of this.nodes)if(p.w)integrate(p,MATERIAL.clothDamping);integrate(this.fruit,1);
  const pin=()=>{for(const i of [0,8]){let p=this.nodes[i];p.x=this.hand.x;p.y=this.hand.y;p.z=(i-4)*6}};
@@ -56,6 +60,7 @@ export class Study{
  this.snagHoldTime=localSnags.length&&!this.grounded?this.snagHoldTime+dt:0;
  if(!this.catchLocked&&this.contactTime!==null&&localSnags.length>0&&!this.grounded){this.catchLocked=true;this.catchProof={at:this.time,contactTime:this.contactTime,persistentTime:this.snagHoldTime,tethers:localSnags.map(sn=>({node:sn.i,created:sn.created,distance:Math.hypot(this.nodes[sn.i].x-this.fruit.x,this.nodes[sn.i].y-this.fruit.y,this.nodes[sn.i].z-this.fruit.z)})),fruit:{...this.fruit},hand:{...this.hand}};this.collectReady=true;this.requestCollect();return;}
 
+ if(!this.injured){const hit=sweepBody(bodyFrom,this.fruit,studyBodyPose(this),this.fruit.r);if(hit)this.hurt(hit);}
  const yielded=this.contactHand&&this.hand.y-this.contactHand.y>65&&this.contactHand.x-this.hand.x>65;
  if(yielded)this.yielded=true;
  const speed=Math.hypot(this.fruit.x-this.fruit.px,this.fruit.y-this.fruit.py,this.fruit.z-this.fruit.pz)/dt;
