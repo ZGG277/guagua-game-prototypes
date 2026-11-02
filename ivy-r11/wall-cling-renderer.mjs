@@ -1,4 +1,5 @@
-import {clingingPose,airbornePose,paintClingingGirl} from './wall-cling-pose.mjs?v=20261101-cling-r11';
+import {clingingPose,airbornePose} from './wall-arrietty-pose.mjs?v=20261102-human-r11-1';
+import {paintArriettyGirl as paintClingingGirl} from './wall-arrietty-paint.mjs?v=20261102-human-r11-1';
 import {ATLAS,ART_STATUS,PROJECTION,projectXYZ,characterPose} from './wall-atlas.mjs?v=20261101-cling-r11';
 import {mesh,worldPositions,TRAVEL_Z} from './wall-physics.mjs?v=20261101-cling-r11';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
@@ -102,7 +103,7 @@ export function createRenderer(canvas,{images=null,pixelRatio=null}={}){
  function character(wall){
   const acquiring=wall.body.plannedHands?.length===2,held=wall.body.hands?.length===2;
   if(held||acquiring)releaseAt=null;else if(wall.body.grounded&&releaseAt===null)releaseAt=wall.time;
-  const f=project(wall.body),releaseReference=lastCling?.reference.map(p=>({x:f.x+p.x-lastCling.foot.x,y:f.y+p.y-lastCling.foot.y}));
+  const f=project(wall.body),releaseReference=lastCling?.hands.map(p=>({x:f.x+p.x-lastCling.foot.x,y:f.y+p.y-lastCling.foot.y}));
   let posed=clingingPose(wall,project,{width,overview,overviewScale:projection.sy/PROJECTION.sy,releaseReference,releaseProgress:clamp((wall.time-(releaseAt??wall.time))/.12,0,1)});
   if(posed){flightSeed=null;if(held||acquiring)lastCling=posed;posed.bootAngles=wall.body.feet.map(f=>Math.atan2(projection.sy*f.normal.x,projection.sx*f.normal.y));}
   else{if(!flightSeed&&girl?.grounded)flightSeed=girl;posed=airbornePose(wall,project,{width,overview,overviewScale:projection.sy/PROJECTION.sy,seed:flightSeed});lastCling=null;releaseAt=null;}
