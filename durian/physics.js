@@ -1,5 +1,5 @@
-import{LANDING,nextRandom}from'./random.js?v=r9_1';
-import{castHand,driveGrip,curve,makeLoadedSweep,loadedCloth}from'./circle-motion.js?v=r9_1';
+import{LANDING,nextRandom}from'./random.js?v=r10b';
+import{castHand,driveGrip,curve,makeLoadedSweep,loadedCloth}from'./circle-motion.js?v=r10b';
 export const STEP=1/240;
 export function classifyImpact(e){if(e.caught)return'intact';return e.speed>=650||(!e.hadClothContact&&e.dropDistance>700)?'shattered':'partial'}
 export const MATERIAL={clothDamping:.996,fruitInverseMass:.018,gravity:600};
@@ -7,9 +7,9 @@ export function integrateParticle(p,dt,damp,gravity=MATERIAL.gravity){let x=p.x,
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export class Study{
  constructor({seed=12345}={}){this.rngState=seed>>>0;this.totals={whole:0,pulp:0,snacks:0};this.round=0;this.reset()}
- reset(){this.controller=null;this.circleStart=null;this.alignment=0;this.alignmentTarget=0;this.circleCancelled=false;this.catchLocked=false;this.controlledPlacement=false;this.groundContactSpeed=null;this.catchProof=null;this.bounce=null;this.impactTier=null;this.impactEvidence=null;this.lastContactY=null;this.lastContactTime=null;this.supportReleaseY=null;this.dropOriginY=-850;this.partialCredited=false;this.snagHoldTime=0;this.stage="ready";this.outcome=null;this.eaten=false;this.collectReady=false;this.collection=null;this.credited=false;this.impactSpeed=0;this.arrivalSpeed=0;this.peakFruitSpeed=0;this.time=0;this.acc=0;this.running=false;this.demo=false;this.contactTime=null;this.maxStrain=0;this.broken=false;this.success=false;this.grounded=false;this.wrapEstablished=false;this.supportTime=0;this.strictSupportTime=0;this.lastSupportEvidence=-Infinity;this.unsupportedTime=0;this.contactHand=null;this.heldTime=0;this.yielded=false;this.snagCooldown=new Map();this.checkpoint=false;this.continueMode=false;this.hand={x:335,y:380};this.target={...this.hand};this.nodes=[];this.links=[];this.snags=[];this.fruit={x:408,y:-850,z:0,px:408,py:-850,pz:0,r:19,w:MATERIAL.fruitInverseMass};this.cols=9;this.rows=12;
- for(let j=0;j<this.rows;j++)for(let i=0;i<this.cols;i++){let x=335+(j<=6?j*6:36+(j-6)*10)+Math.sin(i*1.8+j*.7),y=380+j*.1+Math.sin(i*1.8+j*.7)*1.5,z=(i-4)*12;this.nodes.push({x,y,z,px:x,py:y,pz:z,w:j===0&&(i===0||i===8)?0:1});}
- for(let i of[0,8])Object.assign(this.nodes[i],{x:335,px:335,y:380,py:380,z:(i-4)*6,pz:(i-4)*6});
+ reset(){this.controller=null;this.circleStart=null;this.alignment=0;this.alignmentTarget=0;this.circleCancelled=false;this.catchLocked=false;this.controlledPlacement=false;this.groundContactSpeed=null;this.catchProof=null;this.bounce=null;this.impactTier=null;this.impactEvidence=null;this.lastContactY=null;this.lastContactTime=null;this.supportReleaseY=null;this.dropOriginY=-850;this.partialCredited=false;this.snagHoldTime=0;this.stage="ready";this.outcome=null;this.eaten=false;this.collectReady=false;this.collection=null;this.credited=false;this.impactSpeed=0;this.arrivalSpeed=0;this.peakFruitSpeed=0;this.time=0;this.acc=0;this.running=false;this.demo=false;this.contactTime=null;this.maxStrain=0;this.broken=false;this.success=false;this.grounded=false;this.wrapEstablished=false;this.supportTime=0;this.strictSupportTime=0;this.lastSupportEvidence=-Infinity;this.unsupportedTime=0;this.contactHand=null;this.heldTime=0;this.yielded=false;this.snagCooldown=new Map();this.checkpoint=false;this.continueMode=false;this.hand={x:335,y:425};this.target={...this.hand};this.nodes=[];this.links=[];this.snags=[];this.fruit={x:408,y:-850,z:0,px:408,py:-850,pz:0,r:19,w:MATERIAL.fruitInverseMass};this.cols=9;this.rows=12;
+ for(let j=0;j<this.rows;j++)for(let i=0;i<this.cols;i++){let x=335+(j<=6?j*6:36+(j-6)*10)+Math.sin(i*1.8+j*.7),y=425+j*.1+Math.sin(i*1.8+j*.7)*1.5,z=(i-4)*12;this.nodes.push({x,y,z,px:x,py:y,pz:z,w:j===0&&(i===0||i===8)?0:1});}
+ for(let i of[0,8])Object.assign(this.nodes[i],{x:335,px:335,y:425,py:425,z:(i-4)*6,pz:(i-4)*6});
  const add=(a,b,k=1)=>{let p=this.nodes[a],q=this.nodes[b];this.links.push({a,b,d:Math.hypot(p.x-q.x,p.y-q.y,p.z-q.z),k})};
  for(let j=0;j<12;j++)for(let i=0;i<9;i++){let a=j*9+i;if(i<8)add(a,a+1);if(j<11)add(a,a+9);if(i<8&&j<11){add(a,a+10,.25);add(a+1,a+9,.25)}if(j<10)add(a,a+18,.002)}
  }
@@ -30,7 +30,7 @@ export class Study{
  step(){if(!this.running)return;const dt=STEP;this.time+=dt;this.alignment+=clamp(this.alignmentTarget-this.alignment,-200*dt,200*dt);if(this.controller)this.controller.update(this,dt);
  if(this.bounce){this.stepBounce(dt);return;}if(this.collection){this.stepCollection(dt);return;}
  this.stage=this.time<1.45?'falling':this.contactTime===null?'window':'catching';
- if(this.demo){this.setAlignment(this.landingX);if(this.time>=1.82)this.circleStart??=1.82;this.target=castHand(this.time,this.circleStart,this.alignment);}else if(!this.circleStart&&!this.controller)this.target={x:335+this.alignment,y:380};let dx=this.target.x-this.hand.x,dy=this.target.y-this.hand.y,d=Math.hypot(dx,dy),f=Math.min(1,780*dt/(d||1));this.handVelocity={x:dx*f/dt,y:dy*f/dt};this.hand.x+=dx*f;this.hand.y+=dy*f;
+ if(this.demo){this.setAlignment(this.landingX);if(this.time>=1.82)this.circleStart??=1.82;this.target=castHand(this.time,this.circleStart,this.alignment);}else if(!this.circleStart&&!this.controller)this.target={x:335+this.alignment,y:425};let dx=this.target.x-this.hand.x,dy=this.target.y-this.hand.y,d=Math.hypot(dx,dy),f=Math.min(1,780*dt/(d||1));this.handVelocity={x:dx*f/dt,y:dy*f/dt};this.hand.x+=dx*f;this.hand.y+=dy*f;
  driveGrip(this,dt);
  const integrate=(p,damp)=>integrateParticle(p,dt,damp);for(const p of this.nodes)if(p.w)integrate(p,MATERIAL.clothDamping);integrate(this.fruit,1);
  const pin=()=>{for(const i of [0,8]){let p=this.nodes[i];p.x=this.hand.x;p.y=this.hand.y;p.z=(i-4)*6}};
@@ -76,7 +76,7 @@ export class Study{
   this.hand.x=hand.p.x;this.hand.y=hand.p.y;
   const speed=Math.hypot(f.x-f.px,f.y-f.py,f.z-f.pz)/dt;c.settle=this.grounded&&speed<10?c.settle+dt:0;
   if(c.settle>.3&&c.releaseTime===undefined){c.releaseTime=c.time;c.recoveryHand={...this.hand};}
-  if(c.releaseTime!==undefined){const u=Math.min(1,(c.time-c.releaseTime)/.65),e=u*u*(3-2*u);this.hand.x=c.recoveryHand.x+(315+this.alignment-c.recoveryHand.x)*e;this.hand.y=c.recoveryHand.y+(405-c.recoveryHand.y)*e;c.phase='recover';}
+  if(c.releaseTime!==undefined){const u=Math.min(1,(c.time-c.releaseTime)/.65),e=u*u*(3-2*u);this.hand.x=c.recoveryHand.x+(335+this.alignment-c.recoveryHand.x)*e;this.hand.y=c.recoveryHand.y+(425-c.recoveryHand.y)*e;c.phase='recover';}
   loadedCloth(this,dt,c.releaseTime!==undefined);
   if(c.releaseTime!==undefined&&c.time-c.releaseTime>=.65){this.success=true;this.finish('whole');}
 

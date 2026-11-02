@@ -1,7 +1,7 @@
-// R9: folded cloth preparation, compact forward scoop, brace and rearward recoil.
+// R10: low prepared grips visibly drive an upward scoop, then brace and yield.
 export const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const ease=u=>{u=clamp(u,0,1);return u*u*(3-2*u)};
-export function castHand(time,start=null,alignment=0){if(start===null)return{x:335+alignment,y:380};const age=time-start,forward=age<.12?ease(age/.12):age<.28?1:1-ease((age-.28)/.18);return{x:335+alignment+32*forward,y:380-10*forward}}
+export function castHand(time,start=null,alignment=0){if(start===null)return{x:335+alignment,y:425};const age=time-start,forward=age<.12?ease(age/.12):age<.28?1:1-ease((age-.28)/.18);return{x:335+alignment+32*forward,y:425-55*forward}}
 export function driveGrip(s,dt){if(s.collection)return;const age=s.circleStart===null?-1:s.time-s.circleStart,scoop=!s.circleCancelled&&age>=0&&age<.4?Math.sin(Math.PI*clamp(age/.4,0,1)):0,angle=-.12-.16*scoop;s.gripDriveAngle=angle;
  // Folded burlap is held approximately flat; only the gripped end is driven.
  for(let row=1;row<=6;row++)for(let col=0;col<9;col++){const p=s.nodes[row*9+col],r=row*6,goal={x:s.hand.x+Math.cos(angle)*r,y:s.hand.y+Math.sin(angle)*r,z:(col-4)*11};for(const k of['x','y','z']){const v=(p[k]-p['p'+k])/dt,acc=clamp((goal[k]-p[k])*1800-v*45,-9000,9000);p['p'+k]-=acc*dt*dt;}}
@@ -9,9 +9,9 @@ export function driveGrip(s,dt){if(s.collection)return;const age=s.circleStart==
 
 function tangent(points,i,k){if(i===0)return points[0].v?.[k]||0;if(i===points.length-1)return 0;return(points[i+1][k]-points[i-1][k])/(points[i+1].t-points[i-1].t)}
 export function curve(points,time){let i=0;while(i<points.length-2&&time>points[i+1].t)i++;const a=points[i],b=points[i+1],dt=b.t-a.t,u=clamp((time-a.t)/dt,0,1),p={},v={},acc={};for(const k of['x','y','z']){const av=a[k]||0,bv=b[k]||0,m0=tangent(points,i,k)*dt,m1=tangent(points,i+1,k)*dt;p[k]=(2*u**3-3*u*u+1)*av+(u**3-2*u*u+u)*m0+(-2*u**3+3*u*u)*bv+(u**3-u*u)*m1;v[k]=((6*u*u-6*u)*av+(3*u*u-4*u+1)*m0+(-6*u*u+6*u)*bv+(3*u*u-2*u)*m1)/dt;acc[k]=((12*u-6)*av+(6*u-4)*m0+(-12*u+6)*bv+(6*u-2)*m1)/(dt*dt)}if(time>=points.at(-1).t)for(const k of['x','y','z']){v[k]=0;acc[k]=0}return{p,v,acc};}
-export function makeLoadedSweep(s){const f=s.fruit,h=s.hand,v={x:(f.x-f.px)*240,y:(f.y-f.py)*240,z:(f.z-f.pz)*240},back=f.x-68;return{
- fruitPath:[{t:0,x:f.x,y:f.y,z:f.z,v},{t:.16,x:f.x-35,y:Math.min(470,f.y+55),z:-10},{t:.4,x:back-12,y:490,z:-18},{t:.75,x:back,y:510,z:-8},{t:1.45,x:back+8,y:535,z:0}],
- handPath:[{t:0,x:h.x,y:h.y,z:0,v:s.handVelocity},{t:.08,x:h.x-4,y:h.y+2,z:0},{t:.25,x:h.x-25,y:h.y+18,z:0},{t:.6,x:back-10,y:448,z:0},{t:1.45,x:back,y:485,z:0}],
+export function makeLoadedSweep(s){const f=s.fruit,h=s.hand,v={x:(f.x-f.px)*240,y:(f.y-f.py)*240,z:(f.z-f.pz)*240},back=f.x-130;return{
+ fruitPath:[{t:0,x:f.x,y:f.y,z:f.z,v},{t:.16,x:f.x-35,y:Math.min(470,f.y+55),z:-10},{t:.4,x:back,y:490,z:-60},{t:.75,x:back+8,y:510,z:-55},{t:1.15,x:f.x-60,y:523,z:0},{t:1.3,x:f.x-60,y:527,z:0},{t:1.8,x:f.x-60,y:535,z:0}],
+ handPath:[{t:0,x:h.x,y:h.y,z:0,v:s.handVelocity},{t:.08,x:h.x-4,y:h.y+2,z:0},{t:.25,x:h.x-35,y:h.y+30,z:0},{t:.6,x:back+20,y:482,z:0},{t:1.45,x:f.x-70,y:485,z:0}],
  anchors:s.catchProof.tethers.map(t=>({i:t.node,offset:{x:s.nodes[t.node].x-f.x,y:s.nodes[t.node].y-f.y,z:s.nodes[t.node].z-f.z}}))};}
 
 export function loadedCloth(s,dt,released=false){const n=s.nodes,f=s.fruit,old=n.map(p=>({x:p.x,y:p.y,z:p.z})),anchors=s.collection.sweep.anchors,anchorIDs=new Set(anchors.map(a=>a.i)),pinned=i=>anchorIDs.has(i)||(!released&&(i===0||i===8));

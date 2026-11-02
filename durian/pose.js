@@ -13,16 +13,16 @@ export function catcherPose(hand,collecting=false,motion={}){
  const cast=smooth(0,1,clamp((405-hand.y)/125,0,1));
  // A single critically damped compression: onset is continuous, with no repeated bounce.
  const impact=age>=0?(age/.12)*Math.exp(1-age/.12):0;
- const hinge=motion.circle&&age>=0?smooth(.12,.65,age)*(1-smooth(1.7,2.65,age)):0;
+ const hinge=motion.circle&&age>=0?smooth(.12,.65,age)*(1-smooth(1.7,2.65,age))*(1-smooth(0,1,motion.recoveryProgress||0)):0;
  const carried=collecting&&!motion.circle?smooth(0,1,clamp((315-hand.x)/65,0,1)):0;
  const bend=clamp((hand.y-340)/130,0,1);
- const hip={x:267+clamp((hand.x-315)*.2,-26,30)+cast*5-prep*5-impact*3-hinge*15,y:440+bend*31+prep*7-cast*5+impact*9+hinge*9};
- const angle=Math.atan2((hand.x-315)*.65+20+clamp(vx*.008,-4,4)-impact*9,105)+hinge*.75;
+ const hip={x:267+clamp((hand.x-315)*.2,-26,30)+cast*5-prep*5-impact*3-hinge*3,y:440+bend*31+prep*7-cast*5+impact*9+hinge*(8-bend*13)};
+ const angle=Math.atan2((hand.x-315)*.65+20+clamp(vx*.008,-4,4)-impact*9,105)+hinge*.08;
  const shoulder={x:hip.x+Math.sin(angle)*105-impact*3,y:hip.y-Math.cos(angle)*105+clamp(vy*.006,-3,3)+impact*4};
  const hands=[{x:hand.x-11.52,y:hand.y+5.76},{x:hand.x+11.52,y:hand.y-5.76}];
  // Project the shoulder into both arms' reachable disks with a little elbow slack.
  for(let pass=0;pass<4;pass++)for(let i=0;i<2;i++){const h=hands[i],ax=shoulder.x+(i?7:-7),ay=shoulder.y+5,dx=h.x-ax,dy=h.y-ay,d=Math.hypot(dx,dy);if(d>126){shoulder.x+=dx*(d-126)/d;shoulder.y+=dy*(d-126)/d}}
- const arms=hands.map((h,i)=>{const a={x:shoulder.x+(i?7:-7),y:shoulder.y+5};let e=elbow(a,h,i?1:-1);if(motion.circle){const dx=h.x-a.x,dy=h.y-a.y,d=Math.max(.001,Math.hypot(dx,dy)),height=Math.sqrt(Math.max(0,ARM*ARM-d*d/4)),swivel=Math.PI*smooth(-30,30,dy),side=.7*Math.cos(swivel);e={x:(a.x+h.x)/2-dy/d*height*side,y:(a.y+h.y)/2+dx/d*height*side,z:Math.sqrt(1-side*side)*height};}return{shoulder:a,elbow:e,hand:h}});
+ const arms=hands.map((h,i)=>{const a={x:shoulder.x+(i?7:-7),y:shoulder.y+5};let e=elbow(a,h,i?1:-1);if(motion.circle){const dx=h.x-a.x,dy=h.y-a.y,d=Math.max(.001,Math.hypot(dx,dy)),height=Math.sqrt(Math.max(0,ARM*ARM-d*d/4)),side=.7;e={x:(a.x+h.x)/2-dy/d*height*side,y:(a.y+h.y)/2+dx/d*height*side,z:Math.sqrt(1-side*side)*height};}return{shoulder:a,elbow:e,hand:h}});
  // Eyes, nose and hair rotate through a front-facing intermediate pose, not a flip.
  const facing=1-2*carried;
  const head={x:shoulder.x+4-9*carried-clamp(vx*.006,-3,3),y:shoulder.y-36-clamp(vy*.005,-2.5,2.5)-impact*2};
