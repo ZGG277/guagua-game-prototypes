@@ -1,4 +1,4 @@
-import{catcherPose}from'./pose.js?v=r12_1';
+import{catcherPose}from'./pose.js?v=r12_2';
 // Gameplay hurt volumes follow the articulated drawing. They do not add a hidden
 // force or turn near cloth contact into adhesion. Depth gate keeps the loaded
 // rear swing outside the body's plane (caught fruit is separately immune).

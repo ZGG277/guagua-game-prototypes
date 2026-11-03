@@ -1,6 +1,6 @@
-import{cameraFor,screenToWorld,worldToScreen}from'./camera.js?v=r12_1';
-import{castHand}from'./circle-motion.js?v=r12_1';
-import {STEP} from './physics.js?v=r12_1';
+import{cameraFor,screenToWorld,worldToScreen}from'./camera.js?v=r12_2';
+import{castHand}from'./circle-motion.js?v=r12_2';
+import {STEP} from './physics.js?v=r12_2';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function path(points,t){for(let i=1;i<points.length;i++)if(t<=points[i][0]){const a=points[i-1],b=points[i];let u=clamp((t-a[0])/(b[0]-a[0]),0,1);u=u*u*(3-2*u);return{x:a[1]+(b[1]-a[1])*u,y:a[2]+(b[2]-a[2])*u}}const p=points.at(-1);return{x:p[1],y:p[2]}}
 export class HalfArcController{

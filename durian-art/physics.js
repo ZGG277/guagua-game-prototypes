@@ -1,6 +1,6 @@
-import{sweepBody,studyBodyPose}from'./body-collision.js?v=r12_1';
-import{LANDING,nextRandom}from'./random.js?v=r12_1';
-import{castHand,driveGrip,curve,makeLoadedSweep,loadedCloth}from'./circle-motion.js?v=r12_1';
+import{sweepBody,studyBodyPose}from'./body-collision.js?v=r12_2';
+import{LANDING,nextRandom}from'./random.js?v=r12_2';
+import{castHand,driveGrip,curve,makeLoadedSweep,loadedCloth}from'./circle-motion.js?v=r12_2';
 export const STEP=1/240;
 export function classifyImpact(e){if(e.caught)return'intact';return e.speed>=650||(!e.hadClothContact&&e.dropDistance>700)?'shattered':'partial'}
 export const MATERIAL={clothDamping:.996,fruitInverseMass:.018,gravity:600};

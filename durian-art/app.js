@@ -1,14 +1,14 @@
-import{drawClothPanel,drawFruitSpikes}from'./material-art.js?v=r12_1';
-import{HarvestLoop}from'./harvest-loop.js?v=r12_1';
-import{drawCharacter}from'./character-art.js?v=r12_1';
-import{artReady,drawOrchard,drawFruitSprite}from'./art-assets.js?v=r12_1';
-import{freshSeed}from'./random.js?v=r12_1';
-import{ClothAudio}from'./cloth-audio.js?v=r12_1';
-import{Study}from'./physics.js?v=r12_1';
-import{cameraFor}from'./camera.js?v=r12_1';
-import{catcherPose}from'./pose.js?v=r12_1';
-import{HalfArcController}from'./gesture.js?v=r12_1';
-const canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d'),sim=new Study({seed:freshSeed()});const sound=new ClothAudio();window.clothSound=sound;window.artReady=artReady;window.study=sim;const controller=new HalfArcController();window.gesture=controller;
+import{drawClothPanel}from'./material-art.js?v=r12_2';
+import{HarvestLoop}from'./harvest-loop.js?v=r12_2';
+import{drawCharacter}from'./character-art.js?v=r12_2';
+
+import{freshSeed}from'./random.js?v=r12_2';
+import{ClothAudio}from'./cloth-audio.js?v=r12_2';
+import{Study}from'./physics.js?v=r12_2';
+import{cameraFor}from'./camera.js?v=r12_2';
+import{catcherPose}from'./pose.js?v=r12_2';
+import{HalfArcController}from'./gesture.js?v=r12_2';
+const canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d'),sim=new Study({seed:freshSeed()});const sound=new ClothAudio();window.clothSound=sound;window.artReady=Promise.resolve([]);window.study=sim;const controller=new HalfArcController();window.gesture=controller;
 const harvestLoop=new HarvestLoop();window.harvestLoop=harvestLoop;let focused=true,paused=false,coinSeen=0,coinFloats=[],injuryAt=null;
 let slow=false,mesh=false,drag=null,last=0,visualTime=0,impactAt=null,impactPoint=null,lastOutcome=null,heardRound=null,arcTrace=[];
 const $=s=>document.querySelector(s),P=p=>({x:p.x+(p.z||0)*.48,y:p.y-(p.z||0)*.24});
@@ -16,17 +16,17 @@ function line(points,color,width){ctx.beginPath();points.forEach((p,i)=>i?ctx.li
 function ellipse(x,y,rx,ry,c,angle=0){ctx.beginPath();ctx.ellipse(x,y,Math.max(0,rx),Math.max(0,ry),angle,0,Math.PI*2);ctx.fillStyle=c;ctx.fill();if(rx>12&&ry>9){ctx.strokeStyle='#173e3a';ctx.lineWidth=1.8;ctx.stroke()}}
 function poly(points,c){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fillStyle=c;ctx.fill()}
 function leaf(x,y,length,width,angle,color='#216356'){ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.beginPath();ctx.moveTo(0,0);ctx.bezierCurveTo(-width,-length*.23,-width*.65,-length*.8,0,-length);ctx.bezierCurveTo(width*.7,-length*.75,width,-length*.22,0,0);ctx.fillStyle=color;ctx.fill();ctx.strokeStyle='#173e3a';ctx.lineWidth=3;ctx.stroke();line([{x:0,y:-6},{x:0,y:-length+8}],'#f1dfb5',1.8);for(let j=1;j<6;j++){let v=j/6;line([{x:0,y:-length*v},{x:width*.63*(1-v*.4),y:-length*v-length*.14}],'#f1dfb5',1.2);line([{x:0,y:-length*v},{x:-width*.63*(1-v*.4),y:-length*v-length*.14}],'#f1dfb5',1.2)}ctx.restore()}
-function background(){if(drawOrchard(ctx))return;ctx.fillStyle='#f1dfb5';ctx.fillRect(-1800,-1800,4000,4000);
+function background(){ctx.fillStyle='#f1dfb5';ctx.fillRect(-1800,-1800,4000,4000);
  // Flat overprinted plates, a carved sun and a monumental orchard tree.
  ellipse(-130,-930,145,145,'#cb472a');for(let i=0;i<13;i++)line([{x:-260,y:-1030+i*16},{x:5,y:-1040+i*16}],'#f1dfb526',2);
- for(let i=0;i<9;i++){let x=-750+i*235;line([{x,y:-380-(i%3)*100},{x:x-25,y:530}],'#76906c',9);for(let j=0;j<3;j++)leaf(x,-190-j*70,220,65,(j-1)*.65,'#76906c')}
+ for(let i=0;i<5;i++){let x=-750+i*470;line([{x,y:-380-(i%3)*100},{x:x-25,y:530}],'#76906c',9);for(let j=0;j<3;j++)leaf(x,-190-j*70,220,65,(j-1)*.65,'#76906c')}
  poly([{x:-1800,y:520},{x:-500,y:480},{x:180,y:493},{x:700,y:469},{x:1800,y:490},{x:1800,y:1800},{x:-1800,y:1800}],'#d8a033');
- for(let i=0;i<90;i++){let x=(i*137)%2200-700,y=505+(i*31)%220;line([{x:x-5,y:y-5},{x,y},{x:x+8,y:y-8}],'#173e3a',1.6)}
+ for(let i=0;i<42;i++){let x=(i*137)%2200-700,y=505+(i*31)%220;line([{x:x-5,y:y-5},{x,y},{x:x+8,y:y-8}],'#173e3a',1.6)}
  line([{x:595,y:555},{x:565,y:220},{x:579,y:-180},{x:550,y:-590},{x:565,y:-1030}],'#9a6335',65);
  for(let i=0;i<9;i++){let x=545+i*5;line([{x:x+34,y:530},{x:x+8,y:190},{x:x+18,y:-180},{x:x-6,y:-590},{x:x+5,y:-1010}],i%2?'#d8a033':'#173e3a',i%3?1.5:3)}
  poly([{x:565,y:470},{x:533,y:553},{x:483,y:568},{x:574,y:551},{x:624,y:569},{x:655,y:561},{x:607,y:537},{x:600,y:477}],'#173e3a');
  line([{x:557,y:-525},{x:400,y:-680},{x:229,y:-755},{x:145,y:-918}],'#9a6335',33);line([{x:556,y:-775},{x:439,y:-885},{x:405,y:-907}],'#9a6335',19);line([{x:571,y:-320},{x:707,y:-485},{x:865,y:-567}],'#9a6335',30);line([{x:568,y:-920},{x:736,y:-1027},{x:899,y:-1030}],'#9a6335',25);line([{x:408,y:-900},{x:408,y:-877}],'#173e3a',4);
- for(let i=0;i<24;i++){let x=70+(i*173)%1060,y=-835+(i*79)%195;leaf(x,y,230+(i%4)*32,65+(i%3)*12,Math.sin(i*1.8)*1.4,i%4===0?'#76906c':'#216356')}
+ for(let i=0;i<15;i++){let x=70+(i*173)%1060,y=-835+(i*79)%195;leaf(x,y,230+(i%4)*32,65+(i%3)*12,Math.sin(i*1.8)*1.4,i%4===0?'#76906c':'#216356')}
  // Oversized banana / pandan leaves frame the lower working space, not the hands.
  for(let side of[-1,1]){let x=side<0?72:755;for(let i=0;i<5;i++)leaf(x,548,120+i*25,24+i*5,side*(.35+i*.19),'#216356');line([{x,y:548},{x:x-side*15,y:409}],'#173e3a',6)}
  ellipse(290,551,115,9,'#173e3a24');let shadow=Math.max(0,1-(550-sim.fruit.y)/450);ellipse(sim.fruit.x,551,22+Math.max(0,550-sim.fruit.y)*.025,5+shadow*3,`rgba(23,62,58,${shadow*.3})`);
@@ -49,11 +49,11 @@ function debris(){if(!impactPoint)return;const tier=sim.impactTier||(sim.outcome
 function person(){const old=person.motion,dt=old?sim.time-old.time:0;let vx=0,vy=0;if(old&&dt>0&&dt<.2){const a=1-Math.exp(-dt/.07);vx=old.vx+((sim.hand.x-old.x)/dt-old.vx)*a;vy=old.vy+((sim.hand.y-old.y)/dt-old.vy)*a}else if(old&&dt===0){vx=old.vx;vy=old.vy}person.motion={time:sim.time,x:sim.hand.x,y:sim.hand.y,vx,vy};const pose=catcherPose(sim.hand,!!sim.collection,{time:sim.time,catchAge:sim.contactTime===null?-1:sim.time-sim.contactTime,handVelocity:{x:vx,y:vy},collectionProgress:sim.collection?.time||0,recoveryProgress:sim.collection?.releaseTime===undefined?0:Math.min(1,(sim.collection.time-sim.collection.releaseTime)/.65),catchLocked:!!sim.catchLocked,circle:true,alignment:sim.alignment}),{hip,shoulder,head,arms,knees,feet}=pose;
  const hurt=injuryAt!==null?Math.max(0,1-(visualTime-injuryAt)/.65):0;ctx.save();if(hurt)ctx.translate(Math.sin((1-hurt)*25)*hurt*3,0);drawCharacter(ctx,pose);if(hurt){ctx.globalAlpha=hurt;line([{x:pose.head.x-20,y:pose.head.y-18},{x:pose.head.x-27,y:pose.head.y-25}],'#cb472a',3);line([{x:pose.head.x+20,y:pose.head.y-18},{x:pose.head.x+27,y:pose.head.y-25}],'#cb472a',3);}ctx.restore();
 }
-function drawFruitAt(obj=sim.fruit,small=1){drawFruitSpikes(ctx,obj,small);if(drawFruitSprite(ctx,obj,small))return;let f=P(obj);ctx.save();ctx.translate(f.x,f.y);ctx.scale(small,small);ctx.rotate((obj.x-408)*.017);for(let i=0;i<22;i++){let a=i/22*Math.PI*2;poly([{x:Math.cos(a-.1)*18,y:Math.sin(a-.1)*20},{x:Math.cos(a)*25,y:Math.sin(a)*27},{x:Math.cos(a+.1)*18,y:Math.sin(a+.1)*20}],'#173e3a')};ellipse(0,0,19,22,'#d8a033');for(let i=0;i<26;i++){let a=i*2.399,r=Math.sqrt(i/26)*17,x=Math.cos(a)*r,y=Math.sin(a)*r*1.1;poly([{x:x-3,y:y+2},{x,y:y-4},{x:x+3,y:y+2}],i%2?'#216356':'#f1dfb5')}line([{x:0,y:-20},{x:3,y:-28}],'#79744a',3);ctx.restore()}
+function drawFruitAt(obj=sim.fruit,small=1){let f=P(obj);ctx.save();ctx.translate(f.x,f.y);ctx.scale(small,small);ctx.rotate((obj.x-408)*.017);for(let i=0;i<22;i++){let a=i/22*Math.PI*2;poly([{x:Math.cos(a-.1)*18,y:Math.sin(a-.1)*20},{x:Math.cos(a)*25,y:Math.sin(a)*27},{x:Math.cos(a+.1)*18,y:Math.sin(a+.1)*20}],'#173e3a')};ellipse(0,0,19,22,'#d8a033');for(let i=0;i<26;i++){let a=i*2.399,r=Math.sqrt(i/26)*17,x=Math.cos(a)*r,y=Math.sin(a)*r*1.1;poly([{x:x-3,y:y+2},{x,y:y-4},{x:x+3,y:y+2}],i%2?'#216356':'#f1dfb5')}line([{x:0,y:-20},{x:3,y:-28}],'#79744a',3);ctx.restore()}
 function bundle(front){const f=P(sim.fruit);ctx.save();ctx.translate(f.x,f.y);ctx.beginPath();ctx.moveTo(-28,-10);ctx.bezierCurveTo(-40,6,-28,33,0,34);ctx.bezierCurveTo(28,33,39,7,27,-10);ctx.bezierCurveTo(17,front?18:-1,-16,front?20:-4,-28,-10);ctx.fillStyle=front?'#d8a033':'#9a6335';ctx.fill();for(let i=-3;i<=3;i++)line([{x:i*7,y:front?17:2},{x:i*5,y:30}],'#d0ad745c',1);line([{x:-28,y:-10},{x:-19,y:12},{x:-9,y:20},{x:10,y:20},{x:23,y:9},{x:27,y:-10}],'#f1dfb5',1.3);ctx.restore()}
 function cloth(front,layer){clothMesh(front,layer)}
 function clothMesh(front,layer){for(let j=0;j<11;j++)for(let i=0;i<8;i++){let ns=[sim.nodes[j*9+i],sim.nodes[j*9+i+1],sim.nodes[(j+1)*9+i+1],sim.nodes[(j+1)*9+i]],z=ns.reduce((a,n)=>a+n.z,0)/4;if((z>=sim.fruit.z)!==front||layer==='behind'&&z>=0||layer==='front'&&z<0)continue;let ps=ns.map(P);drawClothPanel(ctx,ps,ns,mesh)}
- for(let row of[0,11]){let ns=sim.nodes.slice(row*9,row*9+9);if((ns[4].z>=sim.fruit.z)===front&&!(layer==='behind'&&ns[4].z>=0||layer==='front'&&ns[4].z<0))line(ns.map(P),'#173e3a',1.5)}}
+ for(let row of[0,11]){let ns=sim.nodes.slice(row*9,row*9+9);if((ns[4].z>=sim.fruit.z)===front&&!(layer==='behind'&&ns[4].z>=0||layer==='front'&&ns[4].z<0)){line(ns.map(P),'#5e452b',row===11?3:2);line(ns.map(P),'#c5a26c',.8)}}}
 function actionInk(){if(arcTrace.length>1){ctx.save();ctx.globalAlpha=.5;line(arcTrace.map(p=>({x:p.x,y:p.y})),'#cb472a',2);ctx.restore()}}
 function paperGrain(){ctx.save();ctx.strokeStyle='#173e3a';ctx.globalAlpha=.065;ctx.lineWidth=.55;for(let i=0;i<160;i++){let x=(i*167.3)%640,y=(i*71.9)%600;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+3+(i%6),y-.6);ctx.stroke()}ctx.restore()}
 function ui(){

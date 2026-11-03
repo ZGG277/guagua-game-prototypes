@@ -1,5 +1,9 @@
-// R10: low prepared grips visibly drive an upward scoop, then brace and yield.
+// R12.2: keep the proven scoop/contact window; dissipate flutter only under load.
 export const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+// Velocity retained per 1/240 s after genuine local contact. The loaded burlap
+// loses half its free velocity in 0.287 s (previously 0.721 s), while positions,
+// local attachment offsets and the unactuated free hem remain continuous.
+export const LOADED_CLOTH_DAMPING=.99;
 const ease=u=>{u=clamp(u,0,1);return u*u*(3-2*u)};
 export function castHand(time,start=null,alignment=0){if(start===null)return{x:335+alignment,y:425};const age=time-start,forward=age<.12?ease(age/.12):age<.28?1:1-ease((age-.28)/.18);return{x:335+alignment+32*forward,y:425-55*forward}}
 export function driveGrip(s,dt){if(s.collection)return;const age=s.circleStart===null?-1:s.time-s.circleStart,scoop=!s.circleCancelled&&age>=0&&age<.4?Math.sin(Math.PI*clamp(age/.4,0,1)):0,angle=-.12-.16*scoop;s.gripDriveAngle=angle;
@@ -14,8 +18,8 @@ export function makeLoadedSweep(s){const f=s.fruit,h=s.hand,v={x:(f.x-f.px)*240,
  handPath:[{t:0,x:h.x,y:h.y,z:0,v:s.handVelocity},{t:.08,x:h.x-4,y:h.y+2,z:0},{t:.25,x:h.x-35,y:h.y+30,z:0},{t:.6,x:back+20,y:482,z:0},{t:1.45,x:f.x-70,y:485,z:0}],
  anchors:s.catchProof.tethers.map(t=>({i:t.node,offset:{x:s.nodes[t.node].x-f.x,y:s.nodes[t.node].y-f.y,z:s.nodes[t.node].z-f.z}}))};}
 
-export function loadedCloth(s,dt,released=false){const n=s.nodes,f=s.fruit,old=n.map(p=>({x:p.x,y:p.y,z:p.z})),anchors=s.collection.sweep.anchors,anchorIDs=new Set(anchors.map(a=>a.i)),pinned=i=>anchorIDs.has(i)||(!released&&(i===0||i===8));
- for(let i=0;i<n.length;i++)if(!pinned(i)){const p=n[i],x=p.x,y=p.y,z=p.z;p.x+=(p.x-p.px)*.996;p.y+=(p.y-p.py)*.996+600*dt*dt;p.z+=(p.z-p.pz)*.996;p.px=x;p.py=y;p.pz=z;}
+export function loadedCloth(s,dt,released=false){const n=s.nodes,f=s.fruit,old=n.map(p=>({x:p.x,y:p.y,z:p.z})),anchors=s.collection.sweep.anchors,anchorIDs=new Set(anchors.map(a=>a.i)),pinned=i=>anchorIDs.has(i)||(!released&&(i===0||i===8)),damping=LOADED_CLOTH_DAMPING**(dt*240);
+ for(let i=0;i<n.length;i++)if(!pinned(i)){const p=n[i],x=p.x,y=p.y,z=p.z;p.x+=(p.x-p.px)*damping;p.y+=(p.y-p.py)*damping+600*dt*dt;p.z+=(p.z-p.pz)*damping;p.px=x;p.py=y;p.pz=z;}
  const pin=()=>{if(!released)for(let i of[0,8])Object.assign(n[i],{x:s.hand.x,y:s.hand.y,z:(i-4)*6});for(let a of anchors)for(let k of['x','y','z'])n[a.i][k]=f[k]+a.offset[k]};
  for(let pass=0;pass<10;pass++){pin();for(let l of s.links){let a=n[l.a],b=n[l.b],dx=b.x-a.x,dy=b.y-a.y,dz=b.z-a.z,d=Math.hypot(dx,dy,dz)||1,wa=pinned(l.a)?0:1,wb=pinned(l.b)?0:1,w=wa+wb;if(!w)continue;let c=(d-l.d)/d*l.k/w;for(let[k,v]of[['x',dx],['y',dy],['z',dz]]){a[k]+=v*c*wa;b[k]-=v*c*wb;}}
  for(let i=0;i<n.length;i++){if(pinned(i))continue;let p=n[i],dx=p.x-f.x,dy=p.y-f.y,dz=p.z-f.z,d=Math.hypot(dx,dy,dz);if(d<21&&d>.001){p.x=f.x+dx*21/d;p.y=f.y+dy*21/d;p.z=f.z+dz*21/d;}if(p.y>555){p.y=555;p.py=555;p.px=p.x-(p.x-p.px)*.85;}}
