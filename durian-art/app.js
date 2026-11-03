@@ -1,14 +1,14 @@
-import{drawClothPanel}from'./material-art.js?v=r12_2';
-import{HarvestLoop}from'./harvest-loop.js?v=r12_2';
-import{drawCharacter}from'./character-art.js?v=r12_2';
+import{drawClothPanel}from'./material-art.js?v=r12_3';
+import{HarvestLoop}from'./harvest-loop.js?v=r12_3';
+import{drawCharacter}from'./character-art.js?v=r12_3';
 
-import{freshSeed}from'./random.js?v=r12_2';
-import{ClothAudio}from'./cloth-audio.js?v=r12_2';
-import{Study}from'./physics.js?v=r12_2';
-import{cameraFor}from'./camera.js?v=r12_2';
-import{catcherPose}from'./pose.js?v=r12_2';
-import{HalfArcController}from'./gesture.js?v=r12_2';
-const canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d'),sim=new Study({seed:freshSeed()});const sound=new ClothAudio();window.clothSound=sound;window.artReady=Promise.resolve([]);window.study=sim;const controller=new HalfArcController();window.gesture=controller;
+import{freshSeed}from'./random.js?v=r12_3';
+import{ClothAudio}from'./cloth-audio.js?v=r12_3';
+import{Study}from'./physics.js?v=r12_3';
+import{cameraFor}from'./camera.js?v=r12_3';
+import{catcherPose}from'./pose.js?v=r12_3';
+import{HalfArcController}from'./gesture.js?v=r12_3';
+const canvas=document.querySelector('canvas'),ctx=canvas.getContext('2d'),sim=new Study({seed:freshSeed(),adaptive:true});const sound=new ClothAudio();window.clothSound=sound;window.artReady=Promise.resolve([]);window.study=sim;const controller=new HalfArcController();window.gesture=controller;
 const harvestLoop=new HarvestLoop();window.harvestLoop=harvestLoop;let focused=true,paused=false,coinSeen=0,coinFloats=[],injuryAt=null;
 let slow=false,mesh=false,drag=null,last=0,visualTime=0,impactAt=null,impactPoint=null,lastOutcome=null,heardRound=null,arcTrace=[];
 const $=s=>document.querySelector(s),P=p=>({x:p.x+(p.z||0)*.48,y:p.y-(p.z||0)*.24});
@@ -58,12 +58,12 @@ function actionInk(){if(arcTrace.length>1){ctx.save();ctx.globalAlpha=.5;line(ar
 function paperGrain(){ctx.save();ctx.strokeStyle='#173e3a';ctx.globalAlpha=.065;ctx.lineWidth=.55;for(let i=0;i<160;i++){let x=(i*167.3)%640,y=(i*71.9)%600;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+3+(i%6),y-.6);ctx.stroke()}ctx.restore()}
 function ui(){
  for(const [id,value]of[['coin-count',sim.coins||0],['whole-count',sim.totals.whole],['pulp-count',sim.totals.pulp],['snack-count',sim.totals.snacks]]){const el=$('#'+id),next=String(value);if(el.textContent!==next){el.textContent=next;el.animate?.([{transform:'scale(1)'},{transform:'scale(1.35)'},{transform:'scale(1)'}],{duration:360});}}
- $('#guide').hidden=sim.round>0;$('#eat').hidden=!sim.canEat;$('#start').textContent=sim.stage==='ready'?'开始':sim.running?'重来':'继续';const demo=sim.isDemoRound&&sim.running;$('#demo').textContent=demo?'示范中':'示范';$('#demo').setAttribute('aria-pressed',String(!!demo));
+ $('#difficulty').textContent=sim.profile?.label||'起步练习';$('#guide').hidden=sim.round>0;$('#eat').hidden=!sim.canEat;$('#start').textContent=sim.stage==='ready'?'开始':sim.running?'重来':'继续';const demo=sim.isDemoRound&&sim.running;$('#demo').textContent=demo?'示范中':'示范';$('#demo').setAttribute('aria-pressed',String(!!demo));
 }
 function draw(){const rect=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2),w=Math.round(rect.width*dpr),h=Math.round(rect.height*dpr);if(canvas.width!==w)canvas.width=w;if(canvas.height!==h)canvas.height=h;const scale=Math.min(w/640,h/600),offsetX=(w-640*scale)/2,offsetY=(h-600*scale)/2;ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#f1dfb5';ctx.fillRect(0,0,w,h);ctx.setTransform(scale,0,0,scale,offsetX,offsetY);const cam=cameraFor(sim);ctx.save();ctx.translate(320,300);ctx.scale(cam.zoom,cam.zoom);ctx.translate(-cam.x,-cam.y);background();basket();trail();cloth(false,'behind');if(sim.fruit.z<0&&(!sim.outcome||sim.outcome==='whole'))drawFruitAt();cloth(true,'behind');person();cloth(false,'front');if(sim.fruit.z>=0&&(!sim.outcome||sim.outcome==='whole'))drawFruitAt();cloth(true,'front');if(sim.impactTier==='intact'||sim.outcome==='pulp'||sim.outcome==='smashed')debris();actionInk();
 
 
- if(sim.running&&!sim.collection&&!sim.outcome){const aim=408+sim.alignment;line([{x:aim-9,y:548},{x:aim+9,y:548}],'#cb472a',2);line([{x:aim,y:543},{x:aim,y:552}],'#cb472a',2);}
+ if(sim.running&&!sim.collection&&!sim.outcome){const aim=408+sim.alignment;line([{x:aim-14,y:548},{x:aim+14,y:548}],controller.phase==='armed'?'#216356':'#cb472a',controller.phase==='armed'?4:2);line([{x:aim,y:543},{x:aim,y:552}],'#cb472a',2);}
  ctx.restore();paperGrain();coinFloats=coinFloats.filter(e=>visualTime-e.at<1.2);for(let i=0;i<coinFloats.length;i++){const e=coinFloats[i],age=visualTime-e.at;ctx.save();ctx.globalAlpha=Math.max(0,1-age/1.2);ctx.font='bold 26px sans-serif';ctx.textAlign='center';ctx.fillStyle=e.amount<0?'#b43727':'#276348';ctx.fillText((e.amount>0?'+':'')+e.amount,320+(i-(coinFloats.length-1)/2)*65,70-age*30);ctx.restore();}ui();}
 function frame(t){const dt=last?Math.min((t-last)/1000,.1):0;last=t;if(!document.hidden&&focused&&!paused){const elapsed=dt*(slow?.35:1);visualTime+=elapsed;controller.advance(sim,dt,slow?.35:1);if(sim.catchLocked&&heardRound!==sim.round){heardRound=sim.round;sound.snap(sim.round);}if(sim.running&&!sim.collection&&['casting','yielding'].includes(controller.phase))arcTrace.push({...P({...sim.hand,z:0}),t:visualTime});arcTrace=arcTrace.filter(p=>visualTime-p.t<.34).slice(-25);if(impactAt===null&&(sim.bounce||sim.outcome==='pulp'||sim.outcome==='smashed')){impactAt=visualTime;impactPoint=P(sim.fruit)}if(sim.outcome!==lastOutcome)lastOutcome=sim.outcome;for(const e of sim.coinEvents||[]){if(e.id>coinSeen){coinSeen=e.id;coinFloats.push({amount:e.amount,at:visualTime});sound.coin?.(e.id,e.amount);}}if(sim.injury&&injuryAt===null)injuryAt=visualTime;harvestLoop.advance(sim,dt,start);}draw();requestAnimationFrame(frame)}requestAnimationFrame(frame);
 function start(demo){focused=true;paused=false;$('#pause').textContent='暂停';harvestLoop.begin();release();sound.reset();sim.start(demo);sim.demo=false;controller.reset();controller.demo=demo;sim.controller=controller;impactAt=null;impactPoint=null;lastOutcome=null;arcTrace=[];injuryAt=null;}
@@ -74,6 +74,6 @@ canvas.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return
 function release(e){if(!drag&&controller.demo&&e&&['blur','resize','visibility'].includes(e.type))return;const pointer=e&&e.pointerId!==undefined;if(pointer&&(!drag||e.pointerId!==drag.id))return;if(drag){const id=drag.id;drag=null;if(canvas.hasPointerCapture(id))canvas.releasePointerCapture(id)}if(e&&(e.type==='pointerup'||e.type==='pointercancel')&&Number.isFinite(e.timeStamp))controller.queue(e.type==='pointerup'?'finish':'cancel',null,eventClock(e));else controller.cancel(sim)}
 canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',release);canvas.addEventListener('lostpointercapture',release);window.addEventListener('blur',release);window.addEventListener('resize',release);document.addEventListener('visibilitychange',()=>{if(document.hidden){release({type:'visibility'});sound.pause();}last=0});
 $('#pause').onclick=()=>{paused=!paused;$('#pause').textContent=paused?'继续':'暂停';last=0;if(paused){release();sound.pause()}else sound.unlock()};
-$('#start').onclick=()=>{sound.unlock();start(false)};$('#demo').onclick=()=>{sound.unlock();start(true)};$('#eat').onclick=()=>sim.eat();$('#reset-totals').onclick=()=>sim.resetTotals();$('#slow').onclick=e=>{sound.unlock();slow=!slow;e.currentTarget.setAttribute('aria-pressed',String(slow));e.currentTarget.textContent=slow?'速度 0.35×':'速度 1×'};
+$('#start').onclick=()=>{sound.unlock();start(false)};$('#demo').onclick=()=>{sound.unlock();start(true)};$('#eat').onclick=()=>sim.eat();$('#reset-totals').onclick=()=>{sim.resetTotals();start(false)};$('#slow').onclick=e=>{sound.unlock();slow=!slow;e.currentTarget.setAttribute('aria-pressed',String(slow));e.currentTarget.textContent=slow?'速度 0.35×':'速度 1×'};
 
 $('#sound').onclick=e=>{sound.setMuted(!sound.muted);e.currentTarget.setAttribute('aria-pressed',String(sound.muted));e.currentTarget.textContent=sound.muted?'声音 关':'声音 开';e.currentTarget.setAttribute('aria-label',sound.muted?'开启布料撞击声':'关闭布料撞击声');if(!sound.muted)sound.unlock()};window.addEventListener('blur',()=>{focused=false;last=0;sound.pause()});window.addEventListener('focus',()=>{focused=true;last=0});
