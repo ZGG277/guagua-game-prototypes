@@ -1,0 +1,14 @@
+import {NETWORK,REGIONS,routesAt,locationAt} from './resort-network.js';
+import {surfaceAt} from './terrain.js';
+export const mapPoint=(x,z)=>({x:130+x*.33,y:20+(z-NETWORK.start)/(NETWORK.end-NETWORK.start)*286});
+export function mapHeading(s){const f=surfaceAt(s.x,s.z),x=f.xx*Math.sin(s.heading),z=f.xz*Math.sin(s.heading)+f.zz*Math.cos(s.heading);return 180-Math.atan2(x*.33,z*286/(NETWORK.end-NETWORK.start))*180/Math.PI;}
+export function createResortMap(onExpand){
+ const root=document.querySelector('#resort-map'),svg=document.querySelector('#map-svg'),toggle=document.querySelector('#map-toggle'),name=document.querySelector('#map-region');let expanded=false,lastDraw=0,location=null;
+ const path=(id,from,to)=>{let d='';for(let z=from;z<=to;z+=25){const rs=routesAt(z),r=rs.find(q=>q.id===id)||rs[0],p=mapPoint(r.x,z);d+=(d?'L':'M')+p.x.toFixed(2)+','+p.y.toFixed(2);}const rs=routesAt(to),p=mapPoint((rs.find(q=>q.id===id)||rs[0]).x,to);return d+'L'+p.x+','+p.y;};
+ svg.innerHTML=`<path d="M50 43 97 8 115 42 145 12 188 51 225 20" fill="none" stroke="#c5d4d0" stroke-width="1.5"/><text x="12" y="18" class="map-label">山顶 ↑</text><path d="${path('spruce',8,2008)}" fill="none" stroke="#70bfa1" stroke-width="6" stroke-linecap="round"/><path d="${path('forest',2008,4808)}" fill="none" stroke="#70bfa1" stroke-width="6"/><path d="${path('crest',2008,4808)}" fill="none" stroke="#dfa77a" stroke-width="6"/><path d="${path('ridge',4808,10008)}" fill="none" stroke="#c49b82" stroke-width="6" stroke-linecap="round"/><text x="143" y="57" class="map-area">云杉</text><text x="45" y="115" class="map-label">松林</text><text x="176" y="115" class="map-label">雪脊</text><text x="143" y="195" class="map-area">谷地</text><text x="145" y="307" class="map-label">缓冲区</text><g id="map-position" class="map-rider"><circle r="7" fill="#fff"/><path id="map-heading" d="M0-6 4 5 0 3-4 5Z" fill="#164968"/></g>`;
+ const marker=svg.querySelector('#map-position'),arrow=svg.querySelector('#map-heading');
+ function setExpanded(value){expanded=value;root.classList.toggle('expanded',expanded);toggle.setAttribute('aria-expanded',String(expanded));toggle.setAttribute('aria-label',expanded?'收起雪场总图':'展开雪场总图');if(expanded)onExpand?.();}
+ toggle.onclick=()=>setExpanded(!expanded);
+ addEventListener('keydown',e=>{if(e.key==='Escape')setExpanded(false);});
+ return {toggle:()=>setExpanded(!expanded),update(s){const now=performance.now();if(now-lastDraw<70)return;lastDraw=now;location=locationAt(s.x,s.z);const p=mapPoint(s.x,s.z);marker.setAttribute('transform',`translate(${p.x},${p.y})`);arrow.setAttribute('transform',`rotate(${mapHeading(s)})`);name.textContent=location.region.name;svg.setAttribute('aria-label',`当前位置：${location.region.name}，${location.route.name}`);},state:()=>({expanded,location,point:location?mapPoint(location.world.x,location.world.z):null})};
+}

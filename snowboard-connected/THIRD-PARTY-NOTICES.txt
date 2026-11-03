@@ -1,0 +1,7 @@
+Connected Snowfield playtest
+
+Three.js and bundled loaders/utilities: MIT. See THREE-LICENSE.txt and vendor/license.html.
+
+Quaternius Ultimate Modular Men / Casual_Hoodie: CC0 1.0 Universal. The license is preserved at assets/quaternius-license.txt. Official pack: https://quaternius.com/packs/ultimatemodularcharacters.html
+
+Original game code and procedural assets are shared for this public playtest. All rights reserved where no separate license is provided. Third-party licenses remain applicable to their respective materials.
