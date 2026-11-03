@@ -31,7 +31,7 @@ function draw(){const t=g.time;const bg=ctx.createLinearGradient(0,0,W,H);bg.add
  // Bottom air lane and fan.
  ctx.strokeStyle='#cee5d32a';ctx.setLineDash([2,7]);ctx.beginPath();ctx.moveTo(38,674);ctx.lineTo(W-38,674);ctx.stroke();ctx.setLineDash([]);
  const fx=floating?g.fanX:W/2;const wind=g.wind;
- if(wind>.02){for(let i=0;i<9;i++){let a=(t*1.1+i*.13)%1;let yy=699-a*460;ctx.strokeStyle=`rgba(207,238,222,${wind*(1-a)*.2})`;ctx.beginPath();ctx.moveTo(fx+(i-4)*6,yy);ctx.quadraticCurveTo(fx+(i-4)*12+Math.sin(a*5+i)*10,yy-25,fx+(i-4)*14,yy-50);ctx.stroke()}}
+ if(wind>.02){for(let i=0;i<9;i++){let a=(t*1.1+i*.13)%1;let yy=699-a*460;ctx.strokeStyle=`rgba(207,238,222,${wind*(1-a)*.2})`;ctx.beginPath();ctx.moveTo(fx+(i-4)*6,yy);ctx.quadraticCurveTo(fx+(i-4)*(12+a*17),yy-25,fx+(i-4)*(14+a*20),yy-50);ctx.stroke()}}
  ctx.save();ctx.translate(fx,719);ctx.rotate(Math.sin(t*2)*.04);ctx.fillStyle='#d0cf9c';ctx.fillRect(-3,0,6,27);ctx.strokeStyle='#e3e1bc';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,23,Math.PI,0);ctx.lineTo(0,7);ctx.closePath();ctx.fillStyle='#b3c4a7';ctx.fill();ctx.stroke();for(let i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(0,7);ctx.lineTo(i*9,-Math.sqrt(23**2-(i*9)**2));ctx.strokeStyle='#738c7d';ctx.lineWidth=1;ctx.stroke()}ctx.restore();
  if(g.phase==='ready'||g.phase==='inflate'){ctx.strokeStyle='#b8cba7';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(W/2,638);ctx.lineTo(W/2,590);ctx.stroke();ctx.beginPath();ctx.ellipse(W/2,585,19,6,0,0,Math.PI*2);ctx.stroke()}
  if(g.phase!=='pop'){let r=g.r,x=g.x,y=g.y;if(g.phase==='ready'){r=15+Math.sin(t*2)*1.4;y=569}let danger=g.phase==='inflate'?Math.max(0,(r-SAFE_R)/(MAX_R-SAFE_R)):0;x+=Math.sin(t*73)*danger*2.3;y+=Math.cos(t*81)*danger*1.6;
@@ -39,6 +39,6 @@ function draw(){const t=g.time;const bg=ctx.createLinearGradient(0,0,W,H);bg.add
  const ring=ctx.createConicGradient(t*.13,x,y);['#b5edfc','#dfa6ed','#f5e7ad','#b0e4c2','#9edbe9','#dda3dc','#b5edfc'].forEach((s,i)=>ring.addColorStop(i/6,s));ctx.strokeStyle=ring;ctx.lineWidth=1.5+danger;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();ctx.lineWidth=3;ctx.strokeStyle='#fffde1a8';ctx.beginPath();ctx.arc(x,y,r*.87,Math.PI*1.14,Math.PI*1.48);ctx.stroke();ctx.strokeStyle='#e7bce466';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,r*.94,.2,.95);ctx.stroke();ellipse(x-r*.42,y-r*.5,r*.09,r*.04,'#f3ffe9b0');
  if(danger>0){ctx.fillStyle=`rgba(255,208,167,${.6+Math.sin(t*14)*.2})`;ctx.font='12px system-ui';ctx.textAlign='center';ctx.fillText('要满了，松手',x,y-r-20)}}
  for(const p of particles){ellipse(p.x,p.y,1.6,1.6,p.color+Math.max(0,p.life)+')')}
- $('#score').textContent=g.score.toFixed(1);$('#readout').textContent=g.phase==='inflate'?`${(g.r/MIN_R)**2<1?1:((g.r/MIN_R)**2).toFixed(1)}× 大小`:floating?'按住底部滑动送风 · 松手收风':'';
+ $('#score').textContent=g.score.toFixed(1);$('#readout').textContent=g.phase==='inflate'?`${(g.r/MIN_R)**2<1?1:((g.r/MIN_R)**2).toFixed(1)}× 大小`:floating?'右下送风 ↖ · 左下送风 ↗ · 松手收风':'';
 }
 function frame(now){let dt=last?Math.min((now-last)/1000,.1):0;last=now;if(!paused&&!document.hidden&&!$('#panel').open){micStep(dt);g.step(dt,input.fan||keyFan);if(g.phase==='pop'&&!shown)pop();for(const p of particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=70*dt;p.life-=dt}particles=particles.filter(p=>p.life>0)}draw();requestAnimationFrame(frame)}resize();requestAnimationFrame(frame);
