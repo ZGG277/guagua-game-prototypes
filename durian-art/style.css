@@ -3,3 +3,5 @@
 .harvest{gap:15px}.coins b{color:#9a6335}.coins span{color:#805719}@media(max-width:600px){.harvest{gap:9px;padding:8px}.harvest>div{gap:3px}.harvest b{font-size:18px}.harvest span{font-size:10px}.reset{font-size:10px;padding:4px}}
 
 .difficulty-row{text-align:right;padding:3px 12px;font-size:11px;color:#527566}.difficulty-row span:before{content:"◆ ";font-size:9px}
+
+.hearts{display:flex;gap:7px;position:absolute;top:58px;left:16px;z-index:1;pointer-events:none}.heart{position:relative;color:#af6e59;font-size:27px;line-height:1}.heart>span{position:absolute;left:0;top:0;overflow:hidden;white-space:nowrap;color:#c7432c}.difficulty-row{display:flex;justify-content:space-between;gap:12px}.result{text-align:center;font-weight:bold;padding:8px}.harvest>div:nth-of-type(n+3){display:none}.play{position:relative}

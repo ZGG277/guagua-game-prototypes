@@ -14,7 +14,7 @@ export function catcherPose(hand,collecting=false,motion={}){
  // A single critically damped compression: onset is continuous, with no repeated bounce.
  const impact=age>=0?(age/.12)*Math.exp(1-age/.12):0;
  const hinge=motion.circle&&age>=0?smooth(.12,.65,age)*(1-smooth(1.7,2.65,age))*(1-smooth(0,1,motion.recoveryProgress||0)):0;
- const carried=collecting&&!motion.circle?smooth(0,1,clamp((315-hand.x)/65,0,1)):0;
+ const carried=collecting?smooth(.35,1.1,collectionTime)*smooth(0,1,clamp((315-hand.x)/95,0,1))*(1-smooth(0,1,motion.recoveryProgress||0)):0;
  const bend=clamp((hand.y-340)/130,0,1);
  const hip={x:267+clamp((hand.x-315)*.2,-26,30)+cast*5-prep*5-impact*3-hinge*3,y:440+bend*31+prep*7-cast*5+impact*9+hinge*(8-bend*13)};
  const angle=Math.atan2((hand.x-315)*.65+20+clamp(vx*.008,-4,4)-impact*9,105)+hinge*.08;
@@ -27,5 +27,8 @@ export function catcherPose(hand,collecting=false,motion={}){
  const facing=1-2*carried;
  const head={x:shoulder.x+4-9*carried-clamp(vx*.006,-3,3),y:shoulder.y-36-clamp(vy*.005,-2.5,2.5)-impact*2};
  const knees=[{x:hip.x-32-bend*8-prep*3,y:500+bend*5+impact*2},{x:hip.x+28+cast*3,y:499+bend*8+impact*2}];
- const feet=[{x:234,y:539},{x:293,y:541}];if(alignment){for(const p of[hip,shoulder,head,...knees,...feet])p.x+=alignment;for(const a of arms)for(const p of[a.shoulder,a.elbow,a.hand])p.x+=alignment;}return{bend,hip,shoulder,head,arms,knees,feet,facing,anticipation:prep,catchCompression:impact,carryBlend:carried};
+ const feet=[{x:234,y:539},{x:293,y:541}];
+ // Step the stance clear of the fixed rear basket before lowering into it.
+ const basketStep=collecting?smooth(.85,1.5,collectionTime)*(20+Math.max(0,-alignment))*(1-smooth(0,1,motion.recoveryProgress||0)):0;
+ for(const p of[...knees,...feet])p.x+=basketStep;if(alignment){for(const p of[hip,shoulder,head,...knees,...feet])p.x+=alignment;for(const a of arms)for(const p of[a.shoulder,a.elbow,a.hand])p.x+=alignment;}return{bend,hip,shoulder,head,arms,knees,feet,facing,anticipation:prep,catchCompression:impact,carryBlend:carried};
 }

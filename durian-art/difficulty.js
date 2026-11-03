@@ -6,7 +6,7 @@ export const DIFFICULTY_PROFILES = Object.freeze([
   {label: '小幅换位', landingRadius: 35, fruitGravity: 600, restSeconds: 3},
   {label: '左右判断', landingRadius: 70, fruitGravity: 600, restSeconds: 3},
   {label: '落果加速', landingRadius: 70, fruitGravity: 630, restSeconds: 3},
-  {label: '连采挑战', landingRadius: 70, fruitGravity: 630, restSeconds: 2.4},
+  {label: '连采挑战', landingRadius: 70, fruitGravity: 630, restSeconds: 3},
 ].map((profile, level) => Object.freeze({
   level, ...profile, timingAssistFloor: 1.72, timingBuffer: .4,
 })));
