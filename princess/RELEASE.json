@@ -1,19 +1,20 @@
 {
   "product": "公主请开球",
-  "version": "1.0.9",
-  "variant": "ivory-guide-release-20261103",
-  "sourceFingerprint": "ba5a2d8c0c82f426f602c67f8e847d559fb5583b71d29305608516f087ee8875",
-  "runtimeBundle": "assets/index-Da9HTewe.js",
+  "version": "ball-clarity-20261105",
+  "variant": "ball-clarity-release-r3-20261104",
+  "sourceFingerprint": "ddfeac9811e3bf563684699fd1c606dadd62bd49999d2707cd23d9ab8664de52",
+  "runtimeBundle": "accepted offline MiniTool release package, same runtime bytes",
+  "zipSha256": "3d4fd91b7f97d1bc080c68a443ad16a2de78e1d49b90daa5e6aa7593b99b9fa0",
   "fileSha256": {
-    "FONT_LICENSE.txt": "0333a85fe077b6849f8e417acc44e8bd879442ceb681e271acf93e2d57fd4e2e",
-    "README.md": "efc508fe8d7ba765be97f85688d330b6114291330abddb14c07645bbcec930f6",
+    "BUILD_PROVENANCE.json": "fb27d15fd59a7d65e69e3594eb015c54bf69372625e7da418361abf3ef71b75c",
+    "OPENING_ASSET_PROVENANCE.json": "14aa5cb672ee070074da51f8567fe4d1e785f3b89c8c1006221d2c5bccc7e43a",
     "THIRD_PARTY_NOTICES.json": "8400f835735e562ae585f5d4705609d52b1811a4e87162dd23367aa96f615f21",
-    "assets/arrival-CU9AqX97.webp": "baf1740c19e634e626b96d94cc49f1908132bb884e91c7f311b22f824569f440",
+    "assets/arrival-B0ig5gSF.webp": "1ff57efac3f204c11b90718d7c98f87de247b4452a2f16ce6e62f542744ba618",
     "assets/castle-share-distance-DSjvKtl3.jpg": "65b38b0196ea82c48a2493d556acd0ade828a517feb82d4f23057eaa7b83ed3a",
     "assets/favicon.svg": "b7231aca6d5328a80cc2cba74e722932765a6b87a2ecb54eb5b356dfe14506a6",
     "assets/gu-yanchuan-DYehzQwx.webp": "2f26941f22511d1c7834ebd91b1abd9769f8e4f87ed44a762fb5b9ef1cdab9d0",
     "assets/gu-yanchuan-s8i1xKna.webp": "4781b6e05eeb88b45b9e7906dd58e3a2fba473e087f51787bea811fddb1806e2",
-    "assets/index-Da9HTewe.js": "1c29f2cef5a7aee9121d0f394fc7a298ca1103313448a8a921df2c6216f63107",
+    "assets/index-Igl2yB-U.js": "08c9bfdc00a53641e933c7b208a0ee35b4ed83faa60fb93ed60bcefe4a010313",
     "assets/jiang-yueheng-Butev20y.webp": "6969e584a27e80a058d974432c993cc33ad9484348819b9b73e0c312da66bce3",
     "assets/jiang-yueheng-D4byMYEB.webp": "3651f070f82cc75f1afaaf76df1ed85e1c53e5f95abeb71bc14eee610e39bc28",
     "assets/lu-jingchen-CU2nD36m.webp": "afb29ea7e1903031da3f6d5852a56bd2e5f33d23fe61475db50b8c08f84fa8d3",
@@ -70,6 +71,9 @@
     "assets/xu-qinghe-CC0zOrG9.webp": "c0a0588de1a770d4e40b7ce8f1c8dda10f1955145e2092b66fab9b3db5cbbf8b",
     "assets/zhou-mubai-BomTSa5x.webp": "faa0e97c52a319ce19f2439e525ea0e521d0bc04104de82838b8fd245d483d47",
     "assets/zhou-mubai-CWvl34Lf.webp": "a6bfddd84cbd40cacd0af0d5bd8b407853f8c6367ad4a7c702d1df72d3d9824d",
-    "index.html": "8a11c9ef906c653515ba8d99715c88abff43c43c242a1f546824b3d35d860334"
-  }
+    "index.html": "63984ad422c592bb7bc3e0a0b58a36565ac0d213202120f4cb014a3502792059",
+    "mini_tool.json": "70c36181858716b53390f76eb8a7b48026ce19d1025485eef62e96a0727a43a6"
+  },
+  "sourceRepository": "https://github.com/ZGG277/bj8-optimized/tree/release/princess-ball-clarity-20261105/variants/princess-daylight",
+  "platformStatus": "Separate Xiaohongshu receipt required; GitHub update does not prove mini-tool release"
 }
