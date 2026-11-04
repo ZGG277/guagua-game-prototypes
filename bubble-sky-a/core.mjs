@@ -22,14 +22,14 @@ export class Game{
  const reach=Math.exp(-((dx/spread)**2))*(.72+.28*Math.exp(-height/700));
  const ax=Math.max(-90,Math.min(90,dx*2.4))*this.wind*reach;
  const pace=Math.min(1,this.coins/16);
- const ay=22-(this.r-18)*.2-4*Math.exp(-this.age/3)-(62+20*pace)*this.wind*reach;
- this.vx=(this.vx+ax*dt)*Math.exp(-dt*.65);this.vy=Math.max(-205,(this.vy+ay*dt)*Math.exp(-dt*.24));
+ const ay=22-(this.r-18)*.2-4*Math.exp(-this.age/3)-(62+32*pace)*this.wind*reach;
+ this.vx=(this.vx+ax*dt)*Math.exp(-dt*.65);this.vy=Math.max(-280,(this.vy+ay*dt)*Math.exp(-dt*.24));
  const px=this.x,py=this.y,oldAge=this.age;this.x+=this.vx*dt;this.y+=this.vy*dt;this.age+=dt;
  for(const q of this.gates){if(rimHit(px,py,this.x,this.y,this.r,q)){this.pop('gold');return}}
  for(const q of this.gates){if(this.birds&&q.id>=4&&q.id%3===1){const a=bird(q.id,oldAge,q.y),b=bird(q.id,this.age,q.y);if(segmentDistance(px-a.x,py-a.y,this.x-b.x,this.y-b.y,0,0)<=this.r+b.r){this.pop('bird');return}}}
  if(this.x-this.r<=0||this.x+this.r>=W||this.y+this.r>=this.camera+H){this.pop('edge');return}
  // Entire bubble plus post depth must clear the gate, once only. Going around earns nothing.
- for(const q of this.gates){if(!q.passed&&py+this.r>=q.y-POST-RIM&&this.y+this.r<q.y-POST-RIM&&Math.abs(this.x-q.x)+this.r<q.half){q.passed=true;this.coins++;this.score=this.coins;this.vy=Math.max(-205,this.vy-(12+Math.min(16,this.coins*1.2)));this.events.push({type:'coin',x:q.x,y:q.y,id:q.id,half:q.half})}}
+ for(const q of this.gates){if(!q.passed&&py+this.r>=q.y-POST-RIM&&this.y+this.r<q.y-POST-RIM&&Math.abs(this.x-q.x)+this.r<q.half){q.passed=true;this.coins++;this.score=this.coins;this.vy=Math.max(-280,this.vy-(65+Math.min(25,this.coins*2)));this.events.push({type:'coin',x:q.x,y:q.y,id:q.id,half:q.half})}}
  this.height+=Math.hypot(this.x-px,this.y-py)/10;this.camera=Math.min(this.camera,this.y-400);
  while(this.gates[this.gates.length-1].y>this.camera-1400)this.gates.push(gate(this.nextGate++,this.seed));
  this.gates=this.gates.filter(q=>q.y<this.camera+H+600);
