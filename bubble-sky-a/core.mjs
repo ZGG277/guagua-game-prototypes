@@ -29,7 +29,7 @@ export class Game{
  if(this.x-this.r<=0||this.x+this.r>=W||this.y+this.r>=this.camera+H){this.pop('edge');return}
  // Entire bubble plus post depth must clear the gate, once only. Going around earns nothing.
  for(const q of this.gates){if(!q.passed&&py+this.r>=q.y-POST-RIM&&this.y+this.r<q.y-POST-RIM&&Math.abs(this.x-q.x)+this.r<q.half){q.passed=true;this.coins++;this.score=this.coins;this.events.push({type:'coin',x:q.x,y:q.y,id:q.id})}}
- this.height=Math.max(this.height,(568-this.y)/10);this.camera=Math.min(this.camera,this.y-400);
+ this.height+=Math.hypot(this.x-px,this.y-py)/10;this.camera=Math.min(this.camera,this.y-400);
  while(this.gates[this.gates.length-1].y>this.camera-1400)this.gates.push(gate(this.nextGate++,this.seed));
  this.gates=this.gates.filter(q=>q.y<this.camera+H+600);
  }
