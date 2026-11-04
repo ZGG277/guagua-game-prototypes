@@ -1,0 +1,15 @@
+{
+  "title": "Voice_AdultMale_PainGrunts_09.wav",
+  "creator": "MrFossy",
+  "source": "https://freesound.org/people/MrFossy/sounds/547209/",
+  "public_preview": "https://cdn.freesound.org/previews/547/547209_129727-hq.mp3",
+  "license": "CC0 1.0",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "verified": "2026-11-04",
+  "recording": "Primary author describes male grunts and screams recorded with Tascam DR-40x for game impact sounds.",
+  "changes": "Public HQ MP3 preview decoded to mono 48 kHz PCM16 WAV, gain -5 dB, 3 ms attack and 19 ms endpoint fades. No pitch change or synthesized vocal.",
+  "subjective_review": "Not listened to with available tools. Human audition required for specific ah/oh character.",
+  "sha256": "45a7ed9b799e0dceafa5e1de0664b380e5dc98dbb3c759f97b86e17f8072691c",
+  "duration": 0.31964583333333335,
+  "peak": 0.457061767578125
+}
