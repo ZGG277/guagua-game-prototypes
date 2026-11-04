@@ -1,7 +1,7 @@
 export const W=390,H=780,MIN_R=18,SAFE_R=53,MAX_R=67;
 export const RIM=8,POST=18;
 const rand=(i,seed)=>{let n=Math.sin((i+1)*127.1+seed*311.7)*43758.5453;return n-Math.floor(n)};
-export function gate(i,seed=0){let y=260;for(let j=1;j<=i;j++)y-=j<3?400:400+(rand(j,seed)-.5)*Math.min(90,(j-2)*12);return{id:i,y,x:i<3?195:195+22*Math.sin((i-2)*.8+seed),half:i<3?120:Math.max(104,112-(i-3)*2),passed:false}}
+export function gate(i,seed=0){let y=260;for(let j=1;j<=i;j++)y-=j<3?400:400+(rand(j,seed)-.5)*Math.min(90,(j-2)*12);return{id:i,y,x:i<3?195:195+22*Math.sin((i-2)*.8+seed),half:i<3?120:Math.max(96,112-Math.min(12,(i-3)*1.2)+(rand(i+987,seed)-.5)*Math.min(20,(i-2)*3)),passed:false}}
 export function bird(i,t,y=gate(i).y){return{x:195+165*Math.sin(t*.48+i*1.7),y:y-140,r:18,id:i}}
 // Segment-to-point distance, used in relative motion for swept circle collision.
 export function segmentDistance(ax,ay,bx,by,x,y){let dx=bx-ax,dy=by-ay,q=dx*dx+dy*dy;let t=q?Math.max(0,Math.min(1,((x-ax)*dx+(y-ay)*dy)/q)):0;return Math.hypot(ax+t*dx-x,ay+t*dy-y)}
@@ -21,14 +21,15 @@ export class Game{
  const dx=this.x-this.fanX,height=Math.max(0,719-(this.y-this.camera)),spread=90+height*.55;
  const reach=Math.exp(-((dx/spread)**2))*(.72+.28*Math.exp(-height/700));
  const ax=Math.max(-90,Math.min(90,dx*2.4))*this.wind*reach;
- const ay=22-(this.r-18)*.2-4*Math.exp(-this.age/3)-62*this.wind*reach;
- this.vx=(this.vx+ax*dt)*Math.exp(-dt*.65);this.vy=(this.vy+ay*dt)*Math.exp(-dt*.24);
+ const pace=Math.min(1,this.coins/16);
+ const ay=22-(this.r-18)*.2-4*Math.exp(-this.age/3)-(62+20*pace)*this.wind*reach;
+ this.vx=(this.vx+ax*dt)*Math.exp(-dt*.65);this.vy=Math.max(-205,(this.vy+ay*dt)*Math.exp(-dt*.24));
  const px=this.x,py=this.y,oldAge=this.age;this.x+=this.vx*dt;this.y+=this.vy*dt;this.age+=dt;
  for(const q of this.gates){if(rimHit(px,py,this.x,this.y,this.r,q)){this.pop('gold');return}}
  for(const q of this.gates){if(this.birds&&q.id>=4&&q.id%3===1){const a=bird(q.id,oldAge,q.y),b=bird(q.id,this.age,q.y);if(segmentDistance(px-a.x,py-a.y,this.x-b.x,this.y-b.y,0,0)<=this.r+b.r){this.pop('bird');return}}}
  if(this.x-this.r<=0||this.x+this.r>=W||this.y+this.r>=this.camera+H){this.pop('edge');return}
  // Entire bubble plus post depth must clear the gate, once only. Going around earns nothing.
- for(const q of this.gates){if(!q.passed&&py+this.r>=q.y-POST-RIM&&this.y+this.r<q.y-POST-RIM&&Math.abs(this.x-q.x)+this.r<q.half){q.passed=true;this.coins++;this.score=this.coins;this.events.push({type:'coin',x:q.x,y:q.y,id:q.id})}}
+ for(const q of this.gates){if(!q.passed&&py+this.r>=q.y-POST-RIM&&this.y+this.r<q.y-POST-RIM&&Math.abs(this.x-q.x)+this.r<q.half){q.passed=true;this.coins++;this.score=this.coins;this.vy=Math.max(-205,this.vy-(12+Math.min(16,this.coins*1.2)));this.events.push({type:'coin',x:q.x,y:q.y,id:q.id,half:q.half})}}
  this.height+=Math.hypot(this.x-px,this.y-py)/10;this.camera=Math.min(this.camera,this.y-400);
  while(this.gates[this.gates.length-1].y>this.camera-1400)this.gates.push(gate(this.nextGate++,this.seed));
  this.gates=this.gates.filter(q=>q.y<this.camera+H+600);
