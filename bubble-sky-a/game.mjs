@@ -32,8 +32,8 @@ function draw(){const t=g.time;const bg=ctx.createLinearGradient(0,0,0,H);bg.add
  // Continuous concentric color bands follow the entire circumference of the loop.
  for(const q of g.gates){const y=q.y-g.camera;if(y<-100||y>H+100||q.passed)continue;
  ctx.save();const rx=(q.half+RIM)/Math.cos(.45),ry=POST/Math.sin(.45);
- const bands=['rgba(208,115,116,.35)','rgba(229,155,118,.35)','rgba(234,205,145,.35)','rgba(181,204,158,.35)','rgba(137,181,201,.35)','rgba(158,160,205,.35)','rgba(193,158,196,.35)'];ctx.shadowBlur=0;
- ctx.globalAlpha=.52;for(let k=0;k<bands.length;k++){ctx.lineWidth=19-k*2.5;ctx.strokeStyle=bands[k];ctx.beginPath();ctx.ellipse(q.x,y,rx,ry,0,0,Math.PI*2);ctx.stroke()}ctx.globalAlpha=1;
+ const bands=['rgba(208,115,116,.53)','rgba(229,155,118,.53)','rgba(234,205,145,.53)','rgba(181,204,158,.53)','rgba(137,181,201,.53)','rgba(158,160,205,.53)','rgba(193,158,196,.53)'];ctx.shadowBlur=0;
+ ctx.globalAlpha=.85;for(let k=0;k<bands.length;k++){const offset=7.5-k*2.5;ctx.lineWidth=2.5;ctx.strokeStyle=bands[k];ctx.beginPath();ctx.ellipse(q.x,y,rx+offset,ry+offset,0,0,Math.PI*2);ctx.stroke()}ctx.globalAlpha=1;
  // A moving broad translucent sheen creates a wet, glassy surface.
  ctx.shadowBlur=0;ctx.lineWidth=1.5;ctx.strokeStyle='rgba(255,255,255,.4)';ctx.beginPath();ctx.ellipse(q.x,y-2,rx,ry-1,0,Math.PI*1.07,Math.PI*1.92);ctx.stroke();
  for(let k=0;k<8;k++){let a=t*.5+k*Math.PI*2/8+q.id;let x=q.x+Math.cos(a)*rx,yy=y+Math.sin(a)*ry,shine=.3+.6*(.5+.5*Math.sin(t*4+k*1.7));ctx.fillStyle=`rgba(255,255,255,${shine})`;ctx.fillRect(x-1,yy-4,2,8);ctx.fillRect(x-4,yy-1,8,2)}ctx.restore()}
