@@ -1,0 +1,17 @@
+{
+  "candidate": "1.0.3-reconstruction.1",
+  "originalPublishedVersion": "1.0.3",
+  "originalSourceRecovered": false,
+  "basedOn": "1.0.2",
+  "backgroundMusic": false,
+  "artwork": "newly generated reconstruction, different from original",
+  "automatedChecksPassed": 60,
+  "browserDOMCheck": "not completed: Chromium launch unavailable in test environment",
+  "realDeviceChecks": "not performed",
+  "staticAudit": {
+    "files": 7,
+    "errors": 0,
+    "warnings": 0
+  },
+  "baseZipSha256": "ed15c82dd9a9c839f7be33b73903da4cb666f227e80b679c72bc7785109c61df"
+}

@@ -1,0 +1,11 @@
+{
+  "passed": 5,
+  "checks": [
+    "one loss event starts one sound; replay suppressed",
+    "muted loss consumed, not replayed after unmute",
+    "background pause stops voices and rejects loss",
+    "resume plays new loss only",
+    "loss has distinct descending three-hit synthesis, 340 ms bounded signal"
+  ],
+  "realListening": false
+}

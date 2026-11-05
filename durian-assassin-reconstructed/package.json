@@ -1,0 +1,17 @@
+{
+  "name": "durian-assassin-reconstructed",
+  "version": "1.0.3-reconstruction.1",
+  "private": true,
+  "description": "Reconstructed candidate based on 1.0.2. Not original published 1.0.3. No background music.",
+  "scripts": {
+    "build": "node scripts/build.cjs",
+    "pretest": "node -e \"require('fs').mkdirSync('reports/v102',{recursive:true})\"",
+    "test": "node scripts/mechanics.cjs && node scripts/audio-loss-tests.cjs && node scripts/layout-tests.cjs && node scripts/test-vm.cjs && node scripts/share-tests.cjs",
+    "test:browser": "node scripts/browser-smoke.cjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.0",
+    "@napi-rs/canvas": "0.1.100",
+    "playwright": "1.62.1"
+  }
+}

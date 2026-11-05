@@ -1,0 +1,21 @@
+{
+  "passed": 15,
+  "checks": [
+    "app initializes and renders",
+    "all seven half-drop states preserve exactly three gray outlines",
+    "start and 40 fixed render frames",
+    "pre-end share blocked",
+    "settlement share uses square generated poster, all four metrics, and topics",
+    "double tap does not duplicate",
+    "restart resets hearts and hides share",
+    "pause icon freezes simulation and resumes",
+    "audio icon toggles mute",
+    "broken fruit triggers visible loss and single negative coin event",
+    "full app finishes twentieth outcome, never starts 21",
+    "full app fatal sixth impact waits then counts broken fruit",
+    "hidden stops RAF; visible resumes",
+    "failed/cancelled share releases busy flag",
+    "missing platform explains unavailable share"
+  ],
+  "scope": "VM Canvas and mocked JS API, not platform or device validation"
+}

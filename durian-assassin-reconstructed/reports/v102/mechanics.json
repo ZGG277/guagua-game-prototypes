@@ -1,0 +1,14 @@
+{
+  "passed": 9,
+  "checks": [
+    "20 fruit settle before harvest end; no 21st",
+    "all smashed yields negative -200 exactly once",
+    "sixth injury awaits same fruit result and includes -10",
+    "simultaneous fatal injury/result counts final broken fruit",
+    "injury repeated frames costs half drop once",
+    "restart resets issued settled hearts and result ledgers",
+    "best writes only whole-run final, supports negatives",
+    "canopy contains exactly 20 unique fruit; never renews",
+    "physics whole +20, pulp/smashed -10 with duplicate finish guarded"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "passed": 7,
+  "checks": [
+    "missing image blocks sharing, explains retry, releases busy flag",
+    "image failure can retry and preserves negative totals and fatal hit count",
+    "share uses immutable click-time snapshot even when a new run begins while rendering",
+    "invalid temporary-file result blocks post and releases busy flag",
+    "missing temporary-file API uses supported data URI",
+    "all titles and captions respect postNote length limits",
+    "perfect harvest and zero hits serialize correctly"
+  ],
+  "scope": "Unit tests with mocked platform APIs; not real-device verification"
+}
