@@ -1,12 +1,13 @@
 {
   "product": "公主请开球",
-  "version": "ball-clarity-20261105",
-  "variant": "ball-clarity-release-r3-20261104",
-  "sourceFingerprint": "ddfeac9811e3bf563684699fd1c606dadd62bd49999d2707cd23d9ab8664de52",
-  "runtimeBundle": "accepted offline MiniTool release package, same runtime bytes",
-  "zipSha256": "3d4fd91b7f97d1bc080c68a443ad16a2de78e1d49b90daa5e6aa7593b99b9fa0",
+  "version": "interaction-emotion-20261105",
+  "variant": "interaction-release-r1-20261105",
+  "sourceFingerprint": "076c4d3fd70c3832372df514bf2e6f5329ce86bf9d78a13a6564ecdcc5cc65b9",
+  "packageSourceFingerprint": "4b320719602cfbb19b636161951649145df0c45fe81f6bcf33014f8961b75ef5",
+  "runtimeBundle": "Production offline MiniTool package, acceptance handles removed",
+  "zipSha256": "6387e804a6f9eeac83448fa8e96b9e169c4d0874f01750224eb393591b7dfb5d",
   "fileSha256": {
-    "BUILD_PROVENANCE.json": "fb27d15fd59a7d65e69e3594eb015c54bf69372625e7da418361abf3ef71b75c",
+    "BUILD_PROVENANCE.json": "737360f3bee40613d03f57898945a6c7220ebfdc11e3d1c7a1bdcb3c5dad2e0f",
     "OPENING_ASSET_PROVENANCE.json": "14aa5cb672ee070074da51f8567fe4d1e785f3b89c8c1006221d2c5bccc7e43a",
     "THIRD_PARTY_NOTICES.json": "8400f835735e562ae585f5d4705609d52b1811a4e87162dd23367aa96f615f21",
     "assets/arrival-B0ig5gSF.webp": "1ff57efac3f204c11b90718d7c98f87de247b4452a2f16ce6e62f542744ba618",
@@ -14,7 +15,7 @@
     "assets/favicon.svg": "b7231aca6d5328a80cc2cba74e722932765a6b87a2ecb54eb5b356dfe14506a6",
     "assets/gu-yanchuan-DYehzQwx.webp": "2f26941f22511d1c7834ebd91b1abd9769f8e4f87ed44a762fb5b9ef1cdab9d0",
     "assets/gu-yanchuan-s8i1xKna.webp": "4781b6e05eeb88b45b9e7906dd58e3a2fba473e087f51787bea811fddb1806e2",
-    "assets/index-Igl2yB-U.js": "08c9bfdc00a53641e933c7b208a0ee35b4ed83faa60fb93ed60bcefe4a010313",
+    "assets/index-H-MJi70J.js": "fdbb2d82ad4c6a0b285fe9fdd11de3533ba6a9fd5be6e5d25ab9903f32f90dab",
     "assets/jiang-yueheng-Butev20y.webp": "6969e584a27e80a058d974432c993cc33ad9484348819b9b73e0c312da66bce3",
     "assets/jiang-yueheng-D4byMYEB.webp": "3651f070f82cc75f1afaaf76df1ed85e1c53e5f95abeb71bc14eee610e39bc28",
     "assets/lu-jingchen-CU2nD36m.webp": "afb29ea7e1903031da3f6d5852a56bd2e5f33d23fe61475db50b8c08f84fa8d3",
@@ -61,7 +62,7 @@
     "assets/shen-yubai-DLpu1ADP.webp": "fbac2dd8f0785eb3498143cbaa385d60ef19f8cb197471f50316619f9302d6f0",
     "assets/song-yucheng-BAb-0PkV.webp": "da7075f04a5ea3b9bd9648e19ba3c6df3eb918327404dbe3e188045e9f54fd76",
     "assets/song-yucheng-BP_97dsU.webp": "e9dff09b3c24a1f363477867234bd2dec3c22b07eeabd51b962c9be2e9083c34",
-    "assets/style-DgoBOJoo.css": "fa191b8c33c98d0c0c25763b9d64053bb34084910d4e81298c4082a76c352d1c",
+    "assets/style-DFaZa6nU.css": "96f1e5a4361db071db17d89ec04b9b329f0920b18e8249770271da4ed1607396",
     "assets/valley-poster-BdQGk8Zr.jpg": "11393fb131ab140dd20b4af346b9bd55ac0d66411235f23fa31ecb7259dda2db",
     "assets/wen-xingye-CQsEn-nt.webp": "9e9cd3092537c9d38dbca715b1e6758b4a5d7f1e88b2e383316cc33f5d487eb7",
     "assets/wen-xingye-D8GkRKeL.webp": "736e29ace00bcb39633f6140421f3667c73373160df3fe6cf5128d27a042860d",
@@ -71,9 +72,9 @@
     "assets/xu-qinghe-CC0zOrG9.webp": "c0a0588de1a770d4e40b7ce8f1c8dda10f1955145e2092b66fab9b3db5cbbf8b",
     "assets/zhou-mubai-BomTSa5x.webp": "faa0e97c52a319ce19f2439e525ea0e521d0bc04104de82838b8fd245d483d47",
     "assets/zhou-mubai-CWvl34Lf.webp": "a6bfddd84cbd40cacd0af0d5bd8b407853f8c6367ad4a7c702d1df72d3d9824d",
-    "index.html": "63984ad422c592bb7bc3e0a0b58a36565ac0d213202120f4cb014a3502792059",
+    "index.html": "23bc62da1a55d23e40bb4155ae5dec26697de96c55bf54fdb1f0accdbbfea7df",
     "mini_tool.json": "70c36181858716b53390f76eb8a7b48026ce19d1025485eef62e96a0727a43a6"
   },
-  "sourceRepository": "https://github.com/ZGG277/bj8-optimized/tree/release/princess-ball-clarity-20261105/variants/princess-daylight",
-  "platformStatus": "Separate Xiaohongshu receipt required; GitHub update does not prove mini-tool release"
+  "sourceRepository": "https://github.com/ZGG277/bj8-optimized/tree/release/princess-interaction-20261105/variants/princess-daylight",
+  "platformStatus": "Separate Xiaohongshu upload/preview/submission evidence; Pages deployment does not imply MiniTool release"
 }
