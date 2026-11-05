@@ -1,7 +1,7 @@
-# 公主请开球
+# Princess billiards
 
-固定试玩：https://zgg277.github.io/guagua-game-prototypes/princess/
+Play: https://zgg277.github.io/guagua-game-prototypes/princess/
 
-本版加入蓄力球杆跟手后拉、犯规原因、触摸自由球光圈、十位陪练反馈和真实局后亮点。暖象牙、彩球、开场及统一赞美卡保留。实际生产静态包与小工具待上传ZIP逐文件一致；版本及SHA见RELEASE.json。
+Mobile keeps the scoreboard at the top and docks small tool/view buttons on the right. Stationary long-press drags controls, edge docking and saved positions are supported. Cue pull-back, touch free-ball halo, companion moments and factual result highlights remain.
 
-此GitHub部署和小红书的预览/审核/发布状态分别记录。
+Runtime bytes match the production MiniTool package. Source, build hashes and ZIP identity are in RELEASE.json. Original WenKai font license is retained. Platform phone preview, submission and release status have separate receipts.
