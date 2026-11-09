@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "acorn": "8.19.0",
+    "esbuild": "0.28.2"
+  },
+  "devDependencies": {
+    "linkedom": "^0.18.12"
+  }
+}

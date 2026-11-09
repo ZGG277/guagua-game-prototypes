@@ -1,0 +1,46 @@
+{
+  "version": "1.0.3",
+  "variant": "simple-leaderboard",
+  "files": {
+    "app.css": {
+      "bytes": 11752,
+      "sha256": "1fc614771dfee45258caf9b98ad9f9c826348941a7efbcef0d7eab3e69ae6848"
+    },
+    "app.js": {
+      "bytes": 5454130,
+      "sha256": "e553ad9d5612e9eb51cfc62278b99787535c577a77d6bdc42647d08b58f5dea5"
+    },
+    "assets/character/texture-0.jpg": {
+      "bytes": 284784,
+      "sha256": "826995614e26e503732754546fa01232397a62d32b0430fc9ca323149290eefd"
+    },
+    "assets/r10/girl-poses.webp": {
+      "bytes": 38452,
+      "sha256": "1b62d9c846320a88ffc51d333b57e8297c2637228179959327451aee7088cb65"
+    },
+    "assets/r10/ivy-leaves.webp": {
+      "bytes": 80944,
+      "sha256": "94d6f21449ef81303b6d8ee89d3c852efe69580b8034e3a88c368638796a72fc"
+    },
+    "assets/r10/light-speck.webp": {
+      "bytes": 614,
+      "sha256": "eefab4feb2f1195189ad0015069e1099250b94ae104b6476489ae452840c8df2"
+    },
+    "assets/r112/ivy-wall-a.webp": {
+      "bytes": 353768,
+      "sha256": "467a68a0f6abed8c59ca3555537ebacc61e33b095a2f58e6ee5b9407dc758998"
+    },
+    "assets/r112/ivy-wall-b.webp": {
+      "bytes": 333764,
+      "sha256": "c39696ae8c5f1f1094ce85f2e80cd777e4d2a8fb56814fea3ddfa26c8c4396e5"
+    },
+    "index.html": {
+      "bytes": 7965,
+      "sha256": "998370380f35c808baba2294523342a29480170d551bc44d607bdee48dd53260"
+    },
+    "mini_tool.json": {
+      "bytes": 35,
+      "sha256": "150612cacd6ef8fa5fa700b2d18086c68a1bb7169b4d588563c95ad0c6b16c93"
+    }
+  }
+}
