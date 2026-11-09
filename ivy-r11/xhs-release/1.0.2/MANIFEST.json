@@ -1,0 +1,36 @@
+{
+  "version": "1.0.2",
+  "phase": "local-m4-review",
+  "sha256": "8e5bcabac38a1c62b1160562e9b7aec6853e9f2ec55cff3ec0dd3c6b489bfb02",
+  "assets": [
+    {
+      "code": "A4",
+      "title": "hup.wav",
+      "author": "maxmakessounds",
+      "source": "https://freesound.org/people/maxmakessounds/sounds/353542/",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "inputSha256": "24c5498982ccc312578af70fdf6c232765b0d507d819868a6512a4cdafeecb29",
+      "edits": "0.829s–1.089s, fades, gain, mono 24 kHz"
+    },
+    {
+      "code": "B4",
+      "title": "Water_drop_7.wav",
+      "author": "deleted_user_2104797",
+      "source": "https://freesound.org/people/deleted_user_2104797/sounds/166319/",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "inputSha256": "0691ea11785dd49072c0452ef872f63fddb851c8dec52a24994feb292c37586a",
+      "edits": "0.300s–0.580s, fades, gain, mono 24 kHz"
+    }
+  ],
+  "evidence": "evidence/check.json",
+  "music": {
+    "code": "M4",
+    "title": "Intro Music",
+    "author": "RonyDkid",
+    "page": "https://opengameart.org/content/intro-music-0",
+    "license": "CC0-1.0",
+    "sourceSha256": "23c68e45ad6555288856f052b1cd2ab49d018bcc618cf8fdccc804e99a2727b9",
+    "edit": "whole track, mono 24kHz, short start/end fades, 48 kbps MP3",
+    "loopSeconds": 82.29
+  }
+}
