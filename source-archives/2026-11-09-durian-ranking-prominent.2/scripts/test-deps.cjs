@@ -1,0 +1,2 @@
+const path=require('path'),fs=require('fs');
+exports.load=function(name){try{return require(name)}catch(e){let dir=__dirname;while(dir!==path.dirname(dir)){const local=path.join(dir,'catchball-release/r16-source/node_modules',name);if(fs.existsSync(local))return require(local);dir=path.dirname(dir);}return require('/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/'+name)}};

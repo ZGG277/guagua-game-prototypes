@@ -1,0 +1,21 @@
+{
+  "name": "durian-assassin-ranking-prominent",
+  "version": "1.0.4-ranking-prominent.2",
+  "private": true,
+  "description": "Isolated ranking integration on authorized Nov 9 reconstructed candidate; not original live 1.0.3 and not uploaded.",
+  "scripts": {
+    "build": "python3 scripts/build.py",
+    "test": "node scripts/mechanics.cjs && node scripts/audio-loss-tests.cjs && node scripts/layout-tests.cjs && node scripts/test-vm.cjs && node scripts/share-tests.cjs && node scripts/share-recovery-tests.cjs && node scripts/release-feature-tests.cjs",
+    "test:browser": "node scripts/browser-smoke.cjs",
+    "audit": "python3 scripts/audit-reconstruction.py",
+    "test:response": "node scripts/response-tests.cjs",
+    "test:harvest": "node scripts/full-harvest-tests.cjs",
+    "test:leaderboard": "node scripts/leaderboard-tests.cjs",
+    "test:share-rank": "node scripts/share-rank-tests.cjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.0",
+    "@napi-rs/canvas": "0.1.100",
+    "playwright": "1.62.1"
+  }
+}

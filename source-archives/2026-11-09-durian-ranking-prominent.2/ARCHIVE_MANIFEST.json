@@ -1,0 +1,607 @@
+{
+  "schemaVersion": 1,
+  "archivedOn": "2026-11-09",
+  "version": "1.0.4-ranking-prominent.2",
+  "releaseStatus": "source archive only; no publication, submission, merge or deployment",
+  "origin": "Recovered retained cloud source ZIP and independently retained runtime ZIP",
+  "originalLive103Recovered": false,
+  "sourceInput": {
+    "file": "durian-ranking-prominent-source-20261109.zip",
+    "bytes": 4407526,
+    "sha256": "eb4e9d85641e36ff0a16cddb5b44a59432b19b5edb944f8c2bdadaea09e7b2d0"
+  },
+  "runtimeInput": {
+    "file": "durian-assassin-ranking-prominent-candidate.zip",
+    "bytes": 202647,
+    "sha256": "eea0ae82cc03fd9a09387e77f1d409b7c1f78a94345b46fce7ff7daf7f3584c5"
+  },
+  "verification": {
+    "rebuiltRuntimeZipByteEqual": true,
+    "commands": [
+      "npm run build",
+      "npm test",
+      "npm run test:leaderboard",
+      "npm run test:share-rank",
+      "npm run audit"
+    ],
+    "passedChecks": {
+      "base": 94,
+      "leaderboardGroups": 55,
+      "shareRankGroups": 11,
+      "staticAuditErrors": 0,
+      "staticAuditWarnings": 0
+    },
+    "dependenciesUsed": {
+      "@napi-rs/canvas": "0.1.100",
+      "esbuild": "0.28.0",
+      "playwright": "1.62.1"
+    },
+    "limitations": [
+      "No new browser or real device validation",
+      "Offline and mocked tests are not live platform acceptance",
+      "No live leaderboard or native sharing acceptance"
+    ],
+    "additionalSourceChecks": {
+      "commands": [
+        "npm run test:response",
+        "npm run test:harvest"
+      ],
+      "responseCases": 150,
+      "responseChecks": 7,
+      "harvestFruits": 20,
+      "harvestResult": {
+        "whole": 15,
+        "smashed": 5,
+        "coins": 250,
+        "starts21st": false
+      },
+      "scope": "Run against byte-identical recovered source before archive copy, not repeated on archive tree."
+    },
+    "whitespaceCheck": {
+      "status": "warnings preserved from original source; no code reformatted",
+      "warnings": [
+        "baseline/source/physics.js and source/physics.js: existing trailing whitespace line 67",
+        "scripts/build.py: existing trailing whitespace line 17"
+      ]
+    }
+  },
+  "sourceComparison": {
+    "unchangedFromSourceZip": [
+      "REVISION.md",
+      "SOURCE_NOTES.md",
+      "assets/share-hero-reconstructed.jpg",
+      "assets/share-hero-reconstructed.png",
+      "assets/share-hero-reconstructed.prompt.txt",
+      "baseline/README.md",
+      "baseline/dist/app.js",
+      "baseline/dist/assets/share-hero-reconstructed.jpg",
+      "baseline/dist/index.html",
+      "baseline/dist/mini_tool.json",
+      "baseline/dist/platform.js",
+      "baseline/dist/share-card.js",
+      "baseline/dist/style.css",
+      "baseline/source/app.js",
+      "baseline/source/assets/audio/PROVENANCE.json",
+      "baseline/source/assets/audio/README.md",
+      "baseline/source/assets/audio/hurt-human.wav",
+      "baseline/source/body-collision.js",
+      "baseline/source/camera.js",
+      "baseline/source/canopy.js",
+      "baseline/source/character-art.js",
+      "baseline/source/circle-motion.js",
+      "baseline/source/cloth-audio.js",
+      "baseline/source/difficulty.js",
+      "baseline/source/gesture.js",
+      "baseline/source/harvest-loop.js",
+      "baseline/source/index.html",
+      "baseline/source/material-art.js",
+      "baseline/source/orchard-art.js",
+      "baseline/source/physics.js",
+      "baseline/source/pose.js",
+      "baseline/source/random.js",
+      "baseline/source/share-card.js",
+      "baseline/source/style.css",
+      "baseline/source/survival.js",
+      "baseline/source/wrap.js",
+      "package.json",
+      "scripts/audio-loss-tests.cjs",
+      "scripts/audit-reconstruction.py",
+      "scripts/browser-smoke.cjs",
+      "scripts/build.py",
+      "scripts/canvas-preview.cjs",
+      "scripts/equivalence.cjs",
+      "scripts/full-harvest-tests.cjs",
+      "scripts/layout-tests.cjs",
+      "scripts/leaderboard-tests.cjs",
+      "scripts/mechanics.cjs",
+      "scripts/platform.js",
+      "scripts/release-feature-tests.cjs",
+      "scripts/render-assets.cjs",
+      "scripts/render-blood.cjs",
+      "scripts/response-tests.cjs",
+      "scripts/share-browser-tests.cjs",
+      "scripts/share-rank-tests.cjs",
+      "scripts/share-recovery-tests.cjs",
+      "scripts/share-test-harness.cjs",
+      "scripts/share-tests.cjs",
+      "scripts/test-deps.cjs",
+      "scripts/test-vm.cjs",
+      "scripts/test.cjs",
+      "source/app.js",
+      "source/assets/audio/PROVENANCE.json",
+      "source/assets/audio/README.md",
+      "source/assets/audio/hurt-human.wav",
+      "source/body-collision.js",
+      "source/camera.js",
+      "source/canopy.js",
+      "source/character-art.js",
+      "source/circle-motion.js",
+      "source/cloth-audio.js",
+      "source/difficulty.js",
+      "source/gesture.js",
+      "source/harvest-loop.js",
+      "source/index.html",
+      "source/input-response.js",
+      "source/leaderboard.js",
+      "source/material-art.js",
+      "source/orchard-art.js",
+      "source/physics.js",
+      "source/pose.js",
+      "source/random.js",
+      "source/share-card.js",
+      "source/style.css",
+      "source/survival.js",
+      "source/wrap.js"
+    ],
+    "modifiedFromSourceZip": [
+      "README.md"
+    ],
+    "addedArchiveSupport": [
+      ".gitignore"
+    ]
+  },
+  "omitted": [
+    "Publishing and account/session records",
+    "Preview QR codes",
+    "Generated current build artifacts and duplicate ZIPs",
+    "Generated screenshots and private workspace metadata",
+    "node_modules and caches"
+  ],
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 70,
+      "sha256": "64f15612b0b1d79fe813d14b111f9647c1a9b1b39235c6804a96abece33a12d0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2216,
+      "sha256": "2dff906930ff1963abe6d99fef63f863a83c31efef9909d5b7710868899c5a40"
+    },
+    {
+      "path": "REVISION.md",
+      "bytes": 173,
+      "sha256": "be7a2b58f432f7f369ba7fa241a6cdf97d9bd765ed104ebdf16deb7374a7224d"
+    },
+    {
+      "path": "SOURCE_NOTES.md",
+      "bytes": 3404,
+      "sha256": "cb5756708a56f14b8cb4ba8784129a2e870cc1059329976bbb67ebc86925f52a"
+    },
+    {
+      "path": "assets/share-hero-reconstructed.jpg",
+      "bytes": 121833,
+      "sha256": "1128e3fd11083b7e61077a71ed29070567a006fb56219780fd67e8e23baa7a76"
+    },
+    {
+      "path": "assets/share-hero-reconstructed.png",
+      "bytes": 2005445,
+      "sha256": "071ebd771564faf5dc06d38bfbae723159d825b9c24a4a831e37ad072548ecd9"
+    },
+    {
+      "path": "assets/share-hero-reconstructed.prompt.txt",
+      "bytes": 1346,
+      "sha256": "f875d94bd78b334c3d681502449e1cc459bedf53662e62ee006aab09708f2754"
+    },
+    {
+      "path": "baseline/README.md",
+      "bytes": 4354,
+      "sha256": "69b9e14388081d0929a4e2e8126a6251082af4ad6fe442139cb18c7b0a28fd00"
+    },
+    {
+      "path": "baseline/dist/app.js",
+      "bytes": 157942,
+      "sha256": "c026195f2b00e0215b28aff8e7ff4018420f49fd986469f83e5659deb8fc7e14"
+    },
+    {
+      "path": "baseline/dist/assets/share-hero-reconstructed.jpg",
+      "bytes": 121833,
+      "sha256": "1128e3fd11083b7e61077a71ed29070567a006fb56219780fd67e8e23baa7a76"
+    },
+    {
+      "path": "baseline/dist/index.html",
+      "bytes": 3278,
+      "sha256": "5d76f8e2117960ddf191f32e3741e668ac76327f7c7cc6a4fc99acf3c697db7c"
+    },
+    {
+      "path": "baseline/dist/mini_tool.json",
+      "bytes": 36,
+      "sha256": "70c36181858716b53390f76eb8a7b48026ce19d1025485eef62e96a0727a43a6"
+    },
+    {
+      "path": "baseline/dist/platform.js",
+      "bytes": 3856,
+      "sha256": "77520a7fa033d91aa78c5aaab91e5d77d4d0c47719e7d1b708442ca65caada5c"
+    },
+    {
+      "path": "baseline/dist/share-card.js",
+      "bytes": 2858,
+      "sha256": "aa800ee6c333825b461f30cb0f28edc7d30ae435b74ffb1e5a5df15392fe4243"
+    },
+    {
+      "path": "baseline/dist/style.css",
+      "bytes": 4143,
+      "sha256": "c49caed6ef333768967f16c1a35e09206c1c87c7c5a253096bf4c5b0d54db7b9"
+    },
+    {
+      "path": "baseline/source/app.js",
+      "bytes": 21318,
+      "sha256": "c6d81a37a5cd76cb2cf6721b179f93b334ba7db2c501e887e8422e3b143c1a2d"
+    },
+    {
+      "path": "baseline/source/assets/audio/PROVENANCE.json",
+      "bytes": 889,
+      "sha256": "5377855e93cb208933a25c69fa342229ae082c3b4e1fb2b9d4b5515680a3543f"
+    },
+    {
+      "path": "baseline/source/assets/audio/README.md",
+      "bytes": 368,
+      "sha256": "30beaa19743d464b3149713fe83706a558497c147e9a4382ffc81872c05b8420"
+    },
+    {
+      "path": "baseline/source/assets/audio/hurt-human.wav",
+      "bytes": 30764,
+      "sha256": "45a7ed9b799e0dceafa5e1de0664b380e5dc98dbb3c759f97b86e17f8072691c"
+    },
+    {
+      "path": "baseline/source/body-collision.js",
+      "bytes": 1604,
+      "sha256": "4f7c1767aae013b74a2d1f19f897c384e0e0eabfe3af9db0a34940c2f581cd2e"
+    },
+    {
+      "path": "baseline/source/camera.js",
+      "bytes": 1524,
+      "sha256": "51e1e1014222a40daaa242c393545f8cc0809bde7ab064292fdfcb0f325f0224"
+    },
+    {
+      "path": "baseline/source/canopy.js",
+      "bytes": 1209,
+      "sha256": "f58a143a6fa315e1bfd87e03996a92f945f64c8b4f756bdfd240193af21ae91c"
+    },
+    {
+      "path": "baseline/source/character-art.js",
+      "bytes": 3066,
+      "sha256": "b2304bb52193fb251d7838930668872276ed033da2af925ddc1aa6cea4daeb57"
+    },
+    {
+      "path": "baseline/source/circle-motion.js",
+      "bytes": 4743,
+      "sha256": "138bac32039ca160ac1c049afc5ad1b9adf83a6802440a0af5dee0fadd6b7190"
+    },
+    {
+      "path": "baseline/source/cloth-audio.js",
+      "bytes": 50249,
+      "sha256": "270f85a0bb32d7afc51890d673dc24f9818979ea5b5bef7abcf52c2d27358e38"
+    },
+    {
+      "path": "baseline/source/difficulty.js",
+      "bytes": 3275,
+      "sha256": "f5aca18b930e4d4eee907b00b6afe1dbc250f0e2adaf6f8e58b0373a1fd866dc"
+    },
+    {
+      "path": "baseline/source/gesture.js",
+      "bytes": 7676,
+      "sha256": "cf0935d027ed49f05dd200b3207e66206665f812b4d8c855e26f1c2102e138ee"
+    },
+    {
+      "path": "baseline/source/harvest-loop.js",
+      "bytes": 1026,
+      "sha256": "4324b89a071c761a34f2d271f7f33d708bdad4b73a953941319fcb8b9cb21f1c"
+    },
+    {
+      "path": "baseline/source/index.html",
+      "bytes": 3278,
+      "sha256": "5d76f8e2117960ddf191f32e3741e668ac76327f7c7cc6a4fc99acf3c697db7c"
+    },
+    {
+      "path": "baseline/source/material-art.js",
+      "bytes": 5138,
+      "sha256": "4cd7017cff4b2d146a2e451f1286744fbca0aa27a121a5fb4012b0f31efb8690"
+    },
+    {
+      "path": "baseline/source/orchard-art.js",
+      "bytes": 6263,
+      "sha256": "5fbdb61d8638e0b1a128ec4c8950ad6a72279b65b5ce4350023dd07d1f1f4476"
+    },
+    {
+      "path": "baseline/source/physics.js",
+      "bytes": 19564,
+      "sha256": "f92f03780486812f38dff01c03be6bddfe17cbe3d779d7767a5a203468e2420b"
+    },
+    {
+      "path": "baseline/source/pose.js",
+      "bytes": 3811,
+      "sha256": "d5bd26593a078bbcf5784e9fe1429de189ee64dc292d4ab1e66506e533b1ffc2"
+    },
+    {
+      "path": "baseline/source/random.js",
+      "bytes": 360,
+      "sha256": "c2e3a910443681459e49072c7597f60a458f7eefb3776d2865e91e2dac94674c"
+    },
+    {
+      "path": "baseline/source/share-card.js",
+      "bytes": 2858,
+      "sha256": "aa800ee6c333825b461f30cb0f28edc7d30ae435b74ffb1e5a5df15392fe4243"
+    },
+    {
+      "path": "baseline/source/style.css",
+      "bytes": 4143,
+      "sha256": "c49caed6ef333768967f16c1a35e09206c1c87c7c5a253096bf4c5b0d54db7b9"
+    },
+    {
+      "path": "baseline/source/survival.js",
+      "bytes": 2516,
+      "sha256": "de2b91b41d3c903efada819949c7aa4c7866f4e1caf5e1db47491c7679b9f812"
+    },
+    {
+      "path": "baseline/source/wrap.js",
+      "bytes": 3704,
+      "sha256": "83fbe2becc75bf92af069ec20950420ed05d6bc6ebad0230e61adbc365e3e5fc"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1023,
+      "sha256": "68aaff7b27170ff4c9666e4db1a0f61b990bd59784935d4012c5e3bb317502e0"
+    },
+    {
+      "path": "scripts/audio-loss-tests.cjs",
+      "bytes": 2735,
+      "sha256": "f2d0f08abb9229424251da898a7fdefdd6c29135f6b08b24560103ef4b4b3c08"
+    },
+    {
+      "path": "scripts/audit-reconstruction.py",
+      "bytes": 3515,
+      "sha256": "3537215e76038e526e88341a9030240ff6e374e819fe49e608989d2b2377ac64"
+    },
+    {
+      "path": "scripts/browser-smoke.cjs",
+      "bytes": 2951,
+      "sha256": "b6149cdd9f80029ba85a04ffb752cde21083f5017ff5cad3d08a6fe9fbeed989"
+    },
+    {
+      "path": "scripts/build.py",
+      "bytes": 1770,
+      "sha256": "74ecee320f8813b5bebf7b051a0de2127cf962f35e151b9f9ae2068deafcc06c"
+    },
+    {
+      "path": "scripts/canvas-preview.cjs",
+      "bytes": 5089,
+      "sha256": "225228529ae355145667e147c37c376b8485046776a390585408f699d660d972"
+    },
+    {
+      "path": "scripts/equivalence.cjs",
+      "bytes": 1479,
+      "sha256": "653e75bc0fd67798dc63ddba54c489ed660b6d7f4b03792bd221d64b26f79bca"
+    },
+    {
+      "path": "scripts/full-harvest-tests.cjs",
+      "bytes": 2101,
+      "sha256": "ffe1c535ece2dd8ea85fe152cc5d3e3111b5afe242e5e7c2441cd1ba8b9fdcc1"
+    },
+    {
+      "path": "scripts/layout-tests.cjs",
+      "bytes": 1397,
+      "sha256": "eeed23954240ab63fbcfbe634aeb9806cda01c06f0d2582e2c143dea52e1538a"
+    },
+    {
+      "path": "scripts/leaderboard-tests.cjs",
+      "bytes": 51726,
+      "sha256": "4c9bb038a368d08bad388f97a2751c756558a9238e50f412ab10b84b847fc6b8"
+    },
+    {
+      "path": "scripts/mechanics.cjs",
+      "bytes": 3701,
+      "sha256": "ae0a3e49c9f1eafb78d439f69559f7dee3dbb4318f0cbe48a9fe0d616d135c98"
+    },
+    {
+      "path": "scripts/platform.js",
+      "bytes": 8338,
+      "sha256": "997e1379ad742394211ec8cd4c144d2f576af2521c272cfb4e84d6d9c5ae331f"
+    },
+    {
+      "path": "scripts/release-feature-tests.cjs",
+      "bytes": 2434,
+      "sha256": "055cd50ece16981ae1e8a4a7794d715cd486222214e8900a956b2af79bda41b9"
+    },
+    {
+      "path": "scripts/render-assets.cjs",
+      "bytes": 2014,
+      "sha256": "238fbe6541ed3febd9d5023536e57d3e062d61563aac93606791d0eabc9891d3"
+    },
+    {
+      "path": "scripts/render-blood.cjs",
+      "bytes": 819,
+      "sha256": "377af230047ed018bb48394ac651424d58ab2fc20f6e60781ea5a7522ed4f392"
+    },
+    {
+      "path": "scripts/response-tests.cjs",
+      "bytes": 6112,
+      "sha256": "781ec837b7076aa5f93daaf7d7ed71d17579e645a17fa8cfbc44a082b1cf8407"
+    },
+    {
+      "path": "scripts/share-browser-tests.cjs",
+      "bytes": 7678,
+      "sha256": "930f539e27e4d36ceae26c025985c4123c11032d0cdcdc750a9546a327c85b3c"
+    },
+    {
+      "path": "scripts/share-rank-tests.cjs",
+      "bytes": 13691,
+      "sha256": "7c66ef3dc3b9bc3fb8aeca292802ac54606387ae06f04610c93fdd9f13ff116a"
+    },
+    {
+      "path": "scripts/share-recovery-tests.cjs",
+      "bytes": 7626,
+      "sha256": "ec92394e9ac5f322e08af345a53c69e7e973c5cb04bc9cc63fbc12e8c8f15dc8"
+    },
+    {
+      "path": "scripts/share-test-harness.cjs",
+      "bytes": 3650,
+      "sha256": "e3c9cef5948788fbc3fbf2bc9ee951c32764de05eefff862eb8e85e9bdb3c541"
+    },
+    {
+      "path": "scripts/share-tests.cjs",
+      "bytes": 4148,
+      "sha256": "e5675d73acbbc6682f6347b48b379ebc14efb63440b2c955e3971fe625440411"
+    },
+    {
+      "path": "scripts/test-deps.cjs",
+      "bytes": 401,
+      "sha256": "eff5d63c0ccb90af23098ea81fde90d24b9791a41a27577ea3ed913c102852b6"
+    },
+    {
+      "path": "scripts/test-vm.cjs",
+      "bytes": 9396,
+      "sha256": "0c90d134e4b80eeb1df3e9c46aa8e2146f030043e2201c732404c0abc3a3c461"
+    },
+    {
+      "path": "scripts/test.cjs",
+      "bytes": 2455,
+      "sha256": "bb25d2d362ca2946d3953d1acda67ab017babf276947739bf572bfbdda05ea37"
+    },
+    {
+      "path": "source/app.js",
+      "bytes": 21998,
+      "sha256": "9ae74cb9ba859e09279a185a1b916d870bfea7847e7b5a16d717dc59e5d35e4d"
+    },
+    {
+      "path": "source/assets/audio/PROVENANCE.json",
+      "bytes": 889,
+      "sha256": "5377855e93cb208933a25c69fa342229ae082c3b4e1fb2b9d4b5515680a3543f"
+    },
+    {
+      "path": "source/assets/audio/README.md",
+      "bytes": 368,
+      "sha256": "30beaa19743d464b3149713fe83706a558497c147e9a4382ffc81872c05b8420"
+    },
+    {
+      "path": "source/assets/audio/hurt-human.wav",
+      "bytes": 30764,
+      "sha256": "45a7ed9b799e0dceafa5e1de0664b380e5dc98dbb3c759f97b86e17f8072691c"
+    },
+    {
+      "path": "source/body-collision.js",
+      "bytes": 1604,
+      "sha256": "4f7c1767aae013b74a2d1f19f897c384e0e0eabfe3af9db0a34940c2f581cd2e"
+    },
+    {
+      "path": "source/camera.js",
+      "bytes": 1524,
+      "sha256": "51e1e1014222a40daaa242c393545f8cc0809bde7ab064292fdfcb0f325f0224"
+    },
+    {
+      "path": "source/canopy.js",
+      "bytes": 1209,
+      "sha256": "f58a143a6fa315e1bfd87e03996a92f945f64c8b4f756bdfd240193af21ae91c"
+    },
+    {
+      "path": "source/character-art.js",
+      "bytes": 3066,
+      "sha256": "b2304bb52193fb251d7838930668872276ed033da2af925ddc1aa6cea4daeb57"
+    },
+    {
+      "path": "source/circle-motion.js",
+      "bytes": 4743,
+      "sha256": "138bac32039ca160ac1c049afc5ad1b9adf83a6802440a0af5dee0fadd6b7190"
+    },
+    {
+      "path": "source/cloth-audio.js",
+      "bytes": 50366,
+      "sha256": "3d033bea9a1e8482b0509b463cade9de5b6a7da27efd86db7c3072c3142c96e0"
+    },
+    {
+      "path": "source/difficulty.js",
+      "bytes": 3275,
+      "sha256": "f5aca18b930e4d4eee907b00b6afe1dbc250f0e2adaf6f8e58b0373a1fd866dc"
+    },
+    {
+      "path": "source/gesture.js",
+      "bytes": 9222,
+      "sha256": "139270105f26c5da47ff337618a9e7d1ffc3d4eb605f3811ddbd00dcb57213d1"
+    },
+    {
+      "path": "source/harvest-loop.js",
+      "bytes": 1026,
+      "sha256": "4324b89a071c761a34f2d271f7f33d708bdad4b73a953941319fcb8b9cb21f1c"
+    },
+    {
+      "path": "source/index.html",
+      "bytes": 6340,
+      "sha256": "54c718f015bf4c47945fff22f80202101cf899f138b935069856c0fd5cd18c2b"
+    },
+    {
+      "path": "source/input-response.js",
+      "bytes": 936,
+      "sha256": "aa989bb063fa1a3e7828addf3531b21c8f1162a66dd75d234d66ac94a0c97379"
+    },
+    {
+      "path": "source/leaderboard.js",
+      "bytes": 30190,
+      "sha256": "b859395b101782809d27b04c4657acb5ba83509cf0558d1fb5747657666ec79a"
+    },
+    {
+      "path": "source/material-art.js",
+      "bytes": 5138,
+      "sha256": "4cd7017cff4b2d146a2e451f1286744fbca0aa27a121a5fb4012b0f31efb8690"
+    },
+    {
+      "path": "source/orchard-art.js",
+      "bytes": 6263,
+      "sha256": "5fbdb61d8638e0b1a128ec4c8950ad6a72279b65b5ce4350023dd07d1f1f4476"
+    },
+    {
+      "path": "source/physics.js",
+      "bytes": 19564,
+      "sha256": "f92f03780486812f38dff01c03be6bddfe17cbe3d779d7767a5a203468e2420b"
+    },
+    {
+      "path": "source/pose.js",
+      "bytes": 3811,
+      "sha256": "d5bd26593a078bbcf5784e9fe1429de189ee64dc292d4ab1e66506e533b1ffc2"
+    },
+    {
+      "path": "source/random.js",
+      "bytes": 360,
+      "sha256": "c2e3a910443681459e49072c7597f60a458f7eefb3776d2865e91e2dac94674c"
+    },
+    {
+      "path": "source/share-card.js",
+      "bytes": 11273,
+      "sha256": "ae7536af798e93095a98a45c6dbdb2c70f1677f4fda2e1e9535f2c623195a4ea"
+    },
+    {
+      "path": "source/style.css",
+      "bytes": 10438,
+      "sha256": "0debb9f54c7520e57b39386eb1af79ad21335e541297f1730bb7477a4dfef74b"
+    },
+    {
+      "path": "source/survival.js",
+      "bytes": 2516,
+      "sha256": "de2b91b41d3c903efada819949c7aa4c7866f4e1caf5e1db47491c7679b9f812"
+    },
+    {
+      "path": "source/wrap.js",
+      "bytes": 3704,
+      "sha256": "83fbe2becc75bf92af069ec20950420ed05d6bc6ebad0230e61adbc365e3e5fc"
+    }
+  ]
+}

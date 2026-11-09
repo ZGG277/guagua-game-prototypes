@@ -1,0 +1,30 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f1dfb5"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20fill%3D%22%23f1dfb5%22%2F%3E%3Cpath%20d%3D%22M30%209l5%207%2010-5%201%2012%2011%202-8%2010%205%2010-12%201-3%2012-9-8-11%204-1-12-11-5%2010-8-2-12%2012%203z%22%20fill%3D%22%23173e3a%22%2F%3E%3Cellipse%20cx%3D%2232%22%20cy%3D%2233%22%20rx%3D%2216%22%20ry%3D%2219%22%20fill%3D%22%23d8a033%22%2F%3E%3Cpath%20d%3D%22M26%2020l3%209-7%201m17-6-5%208%208%204m-17%204%207%207%204-7%22%20fill%3D%22none%22%20stroke%3D%22%23173e3a%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20d%3D%22M32%2015l3-10%22%20stroke%3D%22%23cb472a%22%20stroke-width%3D%224%22%2F%3E%3C%2Fsvg%3E"><title>榴莲刺客</title><link rel="stylesheet" href="./style.css"></head><body><main><section class="play" aria-label="榴莲刺客">
+<header class="hud"><div class="coins" aria-label="净赚金币"><span class="coin-symbol" aria-hidden="true"><svg viewBox="0 0 40 40" width="27" height="27"><defs><linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff7a0"/><stop offset=".38" stop-color="#ffd444"/><stop offset=".62" stop-color="#d99713"/><stop offset="1" stop-color="#ffec81"/></linearGradient></defs><circle cx="19" cy="21" r="15" fill="#ad6d13"/><circle cx="19" cy="19" r="15" fill="url(#gold)" stroke="#a16a10" stroke-width="1.5"/><circle cx="19" cy="19" r="11.5" fill="none" stroke="#fff09c" stroke-width="1.5"/><path d="M19 10v18m-5-14h10m-10 5h10m-10 5h10" stroke="#b67c12" stroke-width="2" stroke-linecap="round"/><path class="coin-shine" d="M31 1l1.5 5.5L38 8l-5.5 1.5L31 15l-1.5-5.5L24 8l5.5-1.5Z" fill="#fff8b2" stroke="#d8a033" stroke-width=".7"/></svg></span><b id="coin-count">0</b><span id="coin-loss" class="lost-coin" aria-hidden="true" hidden>−</span></div><div id="hearts" class="hearts" aria-label="剩余生命 3 滴"></div><span id="crop-count" aria-label="已结算榴莲">0/20</span><span id="whole-count" hidden>0</span></header>
+<canvas id="scene" width="1280" height="1800" aria-label="左右拖动对准落点，向上甩布接榴莲"></canvas>
+<p id="guide" class="guide">左右横滑移动；榴莲进入接取区时，向上甩布</p>
+<div class="result-panel"><h2 id="result-title" hidden>本局战绩</h2><div id="result" class="result" hidden></div><section id="settlement-rank" class="settlement-rank" aria-labelledby="settlement-rank-title" hidden>
+ <div class="settlement-rank-heading"><h3 id="settlement-rank-title">净赚总榜</h3><span>历史最高净赚</span></div>
+ <p id="settlement-rank-mine" class="settlement-rank-mine" role="status"></p>
+ <p id="settlement-rank-status" class="settlement-rank-status" role="status"></p>
+ <ol id="settlement-rank-list" class="leaderboard-list settlement-rank-list"></ol>
+ <div class="settlement-rank-actions"><button id="settlement-rank-open" type="button">查看完整排行榜</button><button id="settlement-rank-refresh" type="button">刷新</button></div>
+ <p class="settlement-rank-note">总榜按历史最高净赚排名，不是单独比较本局。</p>
+</section><button id="share" hidden>分享本局</button><button id="share-cancel" type="button" hidden>返回本局</button><span id="share-status" role="status" hidden></span><span id="leaderboard-submit-status" role="status" hidden></span><br><span id="best">本机最佳 —</span></div>
+<button id="leaderboard-open" class="leaderboard-hero-entry" type="button" hidden><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9 4h14v7c0 6-3 9-7 9s-7-3-7-9V4Zm0 3H4v4c0 4 3 6 7 6m12-10h5v4c0 4-3 6-7 6M16 20v6M9 28h14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>净赚排行榜<small>日榜 · 周榜 · 月榜 · 总榜</small></span><b aria-hidden="true">›</b></button>
+<p id="leaderboard-entry-unavailable" class="leaderboard-entry-unavailable" role="status" hidden>净赚排行榜暂不可用，游戏仍可正常游玩。</p>
+<div class="controls"><button id="sound" aria-pressed="false" aria-label="关闭声音">♫</button><button id="start" class="primary">开始</button><button id="pause">Ⅱ</button></div>
+<div class="advanced" hidden><span id="difficulty">起步练习</span><button id="eat" hidden>吃果肉</button><button id="reset-totals" hidden>清空</button><button id="demo" aria-pressed="false">示范</button><button id="slow" aria-pressed="false">速度 1×</button></div>
+</section></main>
+<section id="leaderboard-panel" class="leaderboard-overlay" role="dialog" aria-modal="true" aria-labelledby="leaderboard-title" hidden>
+ <div class="leaderboard-card">
+  <div class="leaderboard-heading"><h2 id="leaderboard-title">净赚榜</h2><button id="leaderboard-close" type="button" aria-label="关闭排行榜">关闭</button></div>
+  <div class="leaderboard-tabs" aria-label="榜单周期"><button id="rank-day" type="button" aria-pressed="false">日榜</button><button id="rank-week" type="button" aria-pressed="false">周榜</button><button id="rank-month" type="button" aria-pressed="false">月榜</button><button id="rank-all" type="button" aria-pressed="true">总榜</button></div>
+  <div class="leaderboard-scroll">
+   <p class="leaderboard-rule">完整接住 +20，破碎 −10。按本期最高净赚排名；同分先提交者在前。</p>
+   <p id="leaderboard-mine" class="leaderboard-mine"></p><p id="leaderboard-local" class="leaderboard-local"></p>
+   <p id="leaderboard-status" role="status"></p><ol id="leaderboard-list" class="leaderboard-list"></ol><button id="leaderboard-more" type="button" hidden>再看 20 名</button>
+   <p class="leaderboard-footnote">日榜北京时间零点更新；周榜周一、月榜每月 1 日更新。昵称由平台提供，仅临时展示。未授权仍可游玩。休闲排行，不用于发奖。</p>
+  </div>
+  <button id="leaderboard-refresh" type="button">刷新榜单</button>
+ </div>
+</section><script src="./share-card.js"></script><script src="./platform.js"></script><script src="./leaderboard.js"></script><script src="./app.js"></script></body></html>
