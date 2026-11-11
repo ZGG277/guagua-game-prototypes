@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 1,
+  "version": "1.0.3-reconstruction.1",
+  "sourceCommit": "fcc901da79614dd9748c507eabfca5f3a38b848b",
+  "files": [
+    {
+      "path": "assets/share-hero-reconstructed.jpg",
+      "sha256": "1128e3fd11083b7e61077a71ed29070567a006fb56219780fd67e8e23baa7a76",
+      "bytes": 121833,
+      "gitBlobSha": "f66bea9c094295a16bccf68bee5fddeacf8ca169",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/assets/share-hero-reconstructed.jpg"
+    },
+    {
+      "path": "package.json",
+      "sha256": "a65148ad55430c5e75b5694e95ff2f3dbb24351146322bae87e33462993dca21",
+      "bytes": 695,
+      "gitBlobSha": "df92031b505b9299222877047751ae13a0784e72",
+      "fromArchive": "overrides/package.json"
+    },
+    {
+      "path": "scripts/audio-loss-tests.cjs",
+      "sha256": "cac5a89e4becbccba584f5062954f656f72cd1179fe4f587142078e66ece9f53",
+      "bytes": 2196,
+      "gitBlobSha": "ffd46ae59f289e4c73daa78d223457f813fc3dc6",
+      "fromArchive": "overrides/scripts/audio-loss-tests.cjs"
+    },
+    {
+      "path": "scripts/audit-reconstruction.py",
+      "sha256": "96291792332f26ef4942d51ec5cf3d9c0c139cbbc5931f88a50d28a2179b5b7f",
+      "bytes": 3503,
+      "gitBlobSha": "6746a5791448e6c058c48855fc2ed0ec51160840",
+      "fromArchive": "overrides/scripts/audit-reconstruction.py"
+    },
+    {
+      "path": "scripts/browser-smoke.cjs",
+      "sha256": "b6149cdd9f80029ba85a04ffb752cde21083f5017ff5cad3d08a6fe9fbeed989",
+      "bytes": 2951,
+      "gitBlobSha": "7ef1db8db23c7ad7070ee70b925171232760400d",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/scripts/browser-smoke.cjs"
+    },
+    {
+      "path": "scripts/build.py",
+      "sha256": "3fcf8cd611001edc91f2eb9bc3781ba34131627efbce18744f32fe2bbb60cac6",
+      "bytes": 1565,
+      "gitBlobSha": "4b610b12ccd15ab643b03968fa9d4adc297dfbce",
+      "fromArchive": "overrides/scripts/build.py"
+    },
+    {
+      "path": "scripts/equivalence.cjs",
+      "sha256": "653e75bc0fd67798dc63ddba54c489ed660b6d7f4b03792bd221d64b26f79bca",
+      "bytes": 1479,
+      "gitBlobSha": "725ed721e2ecfb648d6daefc46b82ffc35c83f3e",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/scripts/equivalence.cjs"
+    },
+    {
+      "path": "scripts/layout-tests.cjs",
+      "sha256": "eeed23954240ab63fbcfbe634aeb9806cda01c06f0d2582e2c143dea52e1538a",
+      "bytes": 1397,
+      "gitBlobSha": "346e9def04b31b4512156a9656691ae6fc1a87c6",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/scripts/layout-tests.cjs"
+    },
+    {
+      "path": "scripts/mechanics.cjs",
+      "sha256": "ae0a3e49c9f1eafb78d439f69559f7dee3dbb4318f0cbe48a9fe0d616d135c98",
+      "bytes": 3701,
+      "gitBlobSha": "082db1c3145a8da66f140a6c0b63b9f536a63f43",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/scripts/mechanics.cjs"
+    },
+    {
+      "path": "scripts/platform.js",
+      "sha256": "77520a7fa033d91aa78c5aaab91e5d77d4d0c47719e7d1b708442ca65caada5c",
+      "bytes": 3856,
+      "gitBlobSha": "ba215394129894c70fd162e23c7b50ff07588860",
+      "fromRepository": "durian-assassin-reconstructed/dist/platform.js"
+    },
+    {
+      "path": "scripts/render-assets.cjs",
+      "sha256": "238fbe6541ed3febd9d5023536e57d3e062d61563aac93606791d0eabc9891d3",
+      "bytes": 2014,
+      "gitBlobSha": "8071cdb92ab89f358d9964f6eb3cc65c867c1ce5",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/scripts/render-assets.cjs"
+    },
+    {
+      "path": "scripts/render-blood.cjs",
+      "sha256": "377af230047ed018bb48394ac651424d58ab2fc20f6e60781ea5a7522ed4f392",
+      "bytes": 819,
+      "gitBlobSha": "2fb6245179dd0be5252eddc3db7c9cd55334c3f2",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/scripts/render-blood.cjs"
+    },
+    {
+      "path": "scripts/share-tests.cjs",
+      "sha256": "dc4a7f2cb9c80ed9367c761b602c59b579fe9b1b56c595d2647600c020dde556",
+      "bytes": 3834,
+      "gitBlobSha": "4202f2636c558672832677658540b26349ab4a44",
+      "fromArchive": "overrides/scripts/share-tests.cjs"
+    },
+    {
+      "path": "scripts/test-deps.cjs",
+      "sha256": "652c88beefe86835b1439c74e26f49b21b13c9e19de88337add0f1746d4ad914",
+      "bytes": 308,
+      "gitBlobSha": "9d9de82400fd91aef3628a05c7a77f9eb2523737",
+      "fromArchive": "overrides/scripts/test-deps.cjs"
+    },
+    {
+      "path": "scripts/test-vm.cjs",
+      "sha256": "16231e992f7bbfb3ea6c4c02f57c063bc1292b67c6f6399a38bc681ede3b7a62",
+      "bytes": 7470,
+      "gitBlobSha": "a7c2f895442314f57b3e355a43bff1b1f86bfac6",
+      "fromArchive": "overrides/scripts/test-vm.cjs"
+    },
+    {
+      "path": "scripts/test.cjs",
+      "sha256": "bb25d2d362ca2946d3953d1acda67ab017babf276947739bf572bfbdda05ea37",
+      "bytes": 2455,
+      "gitBlobSha": "7aa76cd62ae52dedb2286da982cd7b89bd9d76f5",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/scripts/test.cjs"
+    },
+    {
+      "path": "source/app.js",
+      "sha256": "c6d81a37a5cd76cb2cf6721b179f93b334ba7db2c501e887e8422e3b143c1a2d",
+      "bytes": 21318,
+      "gitBlobSha": "580d9f4137943bc51620f4840830fa75bf7e4643",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/app.js"
+    },
+    {
+      "path": "source/assets/audio/PROVENANCE.json",
+      "sha256": "5377855e93cb208933a25c69fa342229ae082c3b4e1fb2b9d4b5515680a3543f",
+      "bytes": 889,
+      "gitBlobSha": "f18aa8343ca42b850d05e1a948a43fbe4882a2cf",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/assets/audio/PROVENANCE.json"
+    },
+    {
+      "path": "source/assets/audio/README.md",
+      "sha256": "30beaa19743d464b3149713fe83706a558497c147e9a4382ffc81872c05b8420",
+      "bytes": 368,
+      "gitBlobSha": "ca597cc06eb49c33c63e035c0a2d364b11a1ea9c",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/assets/audio/README.md"
+    },
+    {
+      "path": "source/assets/audio/hurt-human.wav",
+      "sha256": "45a7ed9b799e0dceafa5e1de0664b380e5dc98dbb3c759f97b86e17f8072691c",
+      "bytes": 30764,
+      "gitBlobSha": "a08f9b0168c4f646eb24d4f4360d90f39e47d7fd",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/assets/audio/hurt-human.wav"
+    },
+    {
+      "path": "source/body-collision.js",
+      "sha256": "4f7c1767aae013b74a2d1f19f897c384e0e0eabfe3af9db0a34940c2f581cd2e",
+      "bytes": 1604,
+      "gitBlobSha": "0a946e3e965927389d475add1c21f0461fa48667",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/body-collision.js"
+    },
+    {
+      "path": "source/camera.js",
+      "sha256": "51e1e1014222a40daaa242c393545f8cc0809bde7ab064292fdfcb0f325f0224",
+      "bytes": 1524,
+      "gitBlobSha": "51cfb6f48adfc2bbf6dbdc69ca8183f3668163c3",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/camera.js"
+    },
+    {
+      "path": "source/canopy.js",
+      "sha256": "f58a143a6fa315e1bfd87e03996a92f945f64c8b4f756bdfd240193af21ae91c",
+      "bytes": 1209,
+      "gitBlobSha": "587249e15c47cdfd391fde176d4305a6e2125d48",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/canopy.js"
+    },
+    {
+      "path": "source/character-art.js",
+      "sha256": "b2304bb52193fb251d7838930668872276ed033da2af925ddc1aa6cea4daeb57",
+      "bytes": 3066,
+      "gitBlobSha": "6373188c996a720f9e2c1144c625a8abc2f12f71",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/character-art.js"
+    },
+    {
+      "path": "source/circle-motion.js",
+      "sha256": "138bac32039ca160ac1c049afc5ad1b9adf83a6802440a0af5dee0fadd6b7190",
+      "bytes": 4743,
+      "gitBlobSha": "830f58fe72f3ade7f0ca6f9bdb3365faf7a1758f",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/circle-motion.js"
+    },
+    {
+      "path": "source/cloth-audio.js",
+      "sha256": "270f85a0bb32d7afc51890d673dc24f9818979ea5b5bef7abcf52c2d27358e38",
+      "bytes": 50249,
+      "gitBlobSha": "9c844bf9980212e745bfdde77c0f77e2e04168b7",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/cloth-audio.js"
+    },
+    {
+      "path": "source/difficulty.js",
+      "sha256": "f5aca18b930e4d4eee907b00b6afe1dbc250f0e2adaf6f8e58b0373a1fd866dc",
+      "bytes": 3275,
+      "gitBlobSha": "43c7e3c77faf58c2aa179f9c2bf836e7bf9cd5ed",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/difficulty.js"
+    },
+    {
+      "path": "source/gesture.js",
+      "sha256": "cf0935d027ed49f05dd200b3207e66206665f812b4d8c855e26f1c2102e138ee",
+      "bytes": 7676,
+      "gitBlobSha": "1127a5a3a3656e88d7d109a9c09b9ab615477e7d",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/gesture.js"
+    },
+    {
+      "path": "source/harvest-loop.js",
+      "sha256": "4324b89a071c761a34f2d271f7f33d708bdad4b73a953941319fcb8b9cb21f1c",
+      "bytes": 1026,
+      "gitBlobSha": "77dccbcd0df72911fe90855d146f217db1991d25",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/harvest-loop.js"
+    },
+    {
+      "path": "source/index.html",
+      "sha256": "5d76f8e2117960ddf191f32e3741e668ac76327f7c7cc6a4fc99acf3c697db7c",
+      "bytes": 3278,
+      "gitBlobSha": "0104732776a3354cf669e397c8947543b4de7458",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/index.html"
+    },
+    {
+      "path": "source/material-art.js",
+      "sha256": "4cd7017cff4b2d146a2e451f1286744fbca0aa27a121a5fb4012b0f31efb8690",
+      "bytes": 5138,
+      "gitBlobSha": "2cbe4067ddd5fe2061b49859a9a29d4a118c8f9a",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/material-art.js"
+    },
+    {
+      "path": "source/orchard-art.js",
+      "sha256": "5fbdb61d8638e0b1a128ec4c8950ad6a72279b65b5ce4350023dd07d1f1f4476",
+      "bytes": 6263,
+      "gitBlobSha": "efb16b269f64b69be3f014d1d31001110093c9bc",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/orchard-art.js"
+    },
+    {
+      "path": "source/physics.js",
+      "sha256": "f92f03780486812f38dff01c03be6bddfe17cbe3d779d7767a5a203468e2420b",
+      "bytes": 19564,
+      "gitBlobSha": "2fa2d13245be7afb207170ec63dcbfa99f532e85",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/physics.js"
+    },
+    {
+      "path": "source/pose.js",
+      "sha256": "d5bd26593a078bbcf5784e9fe1429de189ee64dc292d4ab1e66506e533b1ffc2",
+      "bytes": 3811,
+      "gitBlobSha": "b71afa10fb117053b5f5374a5038f2d12ea41300",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/pose.js"
+    },
+    {
+      "path": "source/random.js",
+      "sha256": "c2e3a910443681459e49072c7597f60a458f7eefb3776d2865e91e2dac94674c",
+      "bytes": 360,
+      "gitBlobSha": "ae402dba56c020b6f418c679abf63df7d069546d",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/random.js"
+    },
+    {
+      "path": "source/share-card.js",
+      "sha256": "aa800ee6c333825b461f30cb0f28edc7d30ae435b74ffb1e5a5df15392fe4243",
+      "bytes": 2858,
+      "gitBlobSha": "7a6ea5a5aaa11f386387789b3ad6ecb4b49aff4a",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/share-card.js"
+    },
+    {
+      "path": "source/style.css",
+      "sha256": "c49caed6ef333768967f16c1a35e09206c1c87c7c5a253096bf4c5b0d54db7b9",
+      "bytes": 4143,
+      "gitBlobSha": "61a0532a03c49698f3837a80e09956044b6c6eb9",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/style.css"
+    },
+    {
+      "path": "source/survival.js",
+      "sha256": "de2b91b41d3c903efada819949c7aa4c7866f4e1caf5e1db47491c7679b9f812",
+      "bytes": 2516,
+      "gitBlobSha": "e8d0e26fffe1ef39bb23f685e3e324045bcfcede",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/survival.js"
+    },
+    {
+      "path": "source/wrap.js",
+      "sha256": "83fbe2becc75bf92af069ec20950420ed05d6bc6ebad0230e61adbc365e3e5fc",
+      "bytes": 3704,
+      "gitBlobSha": "564d57537927300849abb026b91c9df160a7ac06",
+      "fromRepository": "source-archives/2026-11-09-durian-ranking-prominent.2/baseline/source/wrap.js"
+    }
+  ]
+}

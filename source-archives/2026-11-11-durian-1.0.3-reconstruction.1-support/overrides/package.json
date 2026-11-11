@@ -1,0 +1,17 @@
+{
+  "name": "durian-reconstruction-candidate",
+  "version": "1.0.3-reconstruction.1",
+  "private": true,
+  "description": "Reconstruction of known 1.0.3 behaviors using verified 1.0.2; not original published source. No background music.",
+  "scripts": {
+    "build": "python3 scripts/build.py",
+    "test": "node scripts/mechanics.cjs && node scripts/audio-loss-tests.cjs && node scripts/layout-tests.cjs && node scripts/test-vm.cjs && node scripts/share-tests.cjs",
+    "test:browser": "node scripts/browser-smoke.cjs",
+    "audit": "python3 scripts/audit-reconstruction.py"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.0",
+    "@napi-rs/canvas": "0.1.100",
+    "playwright": "1.62.1"
+  }
+}

@@ -1,0 +1,7 @@
+node_modules/
+reports/
+*.zip
+__pycache__/
+.env*
+session*.json
+publish/

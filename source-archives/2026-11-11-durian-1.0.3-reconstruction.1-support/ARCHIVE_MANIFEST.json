@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "archivedOn": "2026-11-11",
+  "description": "Historical reconstruction build/test supplement only",
+  "origin": "Existing cloud project source directories, not a new official game release",
+  "sourceBaseCommit": "fcc901da79614dd9748c507eabfca5f3a38b848b",
+  "sourceRuntimeChanged": false,
+  "deployment": "No main changes, merge, Pages configuration change or platform deployment",
+  "verification": {
+    "restoredInputs": 39,
+    "existingRepositoryInputsReused": 32,
+    "originalMissingInputsRetained": 7,
+    "testsPassed": 60,
+    "staticAuditErrors": 0,
+    "staticAuditWarnings": 0,
+    "runtimeFiles": 7,
+    "payloadByteEqualFiles": 6,
+    "appJsDiff": "Only comment-only source path lines differ; remaining lines exactly equal",
+    "retainedRuntimeZipSha256": "4a969ead44958b45ab1eb7b772126d7ee06ae32815901df65ccf7b35cc2d16c5",
+    "identicalZipBytesClaimed": false,
+    "nativePlatformTested": false
+  },
+  "excluded": [
+    "session files and account credentials",
+    "publish drafts and QR codes",
+    "private evidence and operation logs",
+    "image-generation prompts and unused artwork",
+    "generated screenshots, current build outputs, duplicate ZIPs and installed dependencies"
+  ],
+  "license": "No new license grant introduced; existing repository terms and asset provenance retained. No third-party vendor runtime code added.",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 71,
+      "sha256": "73ed5b77e68582e20d505df955fcef35ab150376c065ae92f0d7c6574fc7d12f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1855,
+      "sha256": "dad04331dfdb235867a476a16aae31a6bb7347298392c94f41257f15d3d74d7f"
+    },
+    {
+      "path": "RESTORE_MAP.json",
+      "bytes": 12613,
+      "sha256": "002cf9745466cfaef90a75e28cb0485565fdf537efbc81b09cdfa8e64848d90e"
+    },
+    {
+      "path": "overrides/package.json",
+      "bytes": 695,
+      "sha256": "a65148ad55430c5e75b5694e95ff2f3dbb24351146322bae87e33462993dca21"
+    },
+    {
+      "path": "overrides/scripts/audio-loss-tests.cjs",
+      "bytes": 2196,
+      "sha256": "cac5a89e4becbccba584f5062954f656f72cd1179fe4f587142078e66ece9f53"
+    },
+    {
+      "path": "overrides/scripts/audit-reconstruction.py",
+      "bytes": 3503,
+      "sha256": "96291792332f26ef4942d51ec5cf3d9c0c139cbbc5931f88a50d28a2179b5b7f"
+    },
+    {
+      "path": "overrides/scripts/build.py",
+      "bytes": 1565,
+      "sha256": "3fcf8cd611001edc91f2eb9bc3781ba34131627efbce18744f32fe2bbb60cac6"
+    },
+    {
+      "path": "overrides/scripts/share-tests.cjs",
+      "bytes": 3834,
+      "sha256": "dc4a7f2cb9c80ed9367c761b602c59b579fe9b1b56c595d2647600c020dde556"
+    },
+    {
+      "path": "overrides/scripts/test-deps.cjs",
+      "bytes": 308,
+      "sha256": "652c88beefe86835b1439c74e26f49b21b13c9e19de88337add0f1746d4ad914"
+    },
+    {
+      "path": "overrides/scripts/test-vm.cjs",
+      "bytes": 7470,
+      "sha256": "16231e992f7bbfb3ea6c4c02f57c063bc1292b67c6f6399a38bc681ede3b7a62"
+    },
+    {
+      "path": "restore.py",
+      "bytes": 850,
+      "sha256": "a3729c53cbba7b4b71ae43aa0759c995b2c0068c24041725634651e5b1008496"
+    }
+  ]
+}
