@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';import{Game,Input,gate,rimHit,bird}from'../core.mjs';
+const run=(g,t,fan=false)=>{for(let i=0;i<Math.round(t*120);i++)g.step(1/120,fan)};const fly=()=>{let g=new Game();g.start();g.release();return g};
+test('inflate and release',()=>{let g=new Game();g.start();run(g,1);assert.ok(g.r>18);g.release();assert.equal(g.phase,'float')});
+test('overblow pops',()=>{let g=new Game();g.start();run(g,4);assert.equal(g.reason,'too-big')});
+test('crossing awards once',()=>{let g=fly();Object.assign(g,{y:250,vy:-80});run(g,.6);assert.equal(g.coins,1);g.y=300;g.vy=-120;run(g,1);assert.equal(g.coins,1)});
+test('rim collision matches side tangent',()=>{const q=gate(0);assert.equal(rimHit(q.x+q.half-18,320,q.x+q.half-18,200,18,q),true);assert.equal(rimHit(q.x,320,q.x,200,18,q),false)});
+test('edge fails, center survives',()=>{let g=fly();g.x=17;g.step(.01);assert.equal(g.reason,'edge')});
+test('birds preserve hit positions',()=>{let g=fly(),q=gate(4);g.gates=[q];let b=bird(4,0,q.y);Object.assign(g,{x:b.x,y:b.y+100,vy:-3000,camera:b.y-350});g.step(.1);assert.equal(g.reason,'bird')});
+test('random geometry clears max bubble',()=>{for(let seed=0;seed<100;seed++)for(let i=0;i<100;i++){let q=gate(i,seed);assert.ok(q.half>93);assert.ok(q.x-q.half-16>0&&q.x+q.half+16<390)}});
+test('input single owner and reset',()=>{let g=new Game(),i=new Input(g);assert.equal(i.down(1,100,400),true);assert.equal(i.down(2,100,400),false);i.up(1);assert.equal(g.phase,'float');g.reset();assert.equal(g.coins,0)});
