@@ -1,0 +1,12 @@
+{
+  "method": "standard-library replacement check; official skill scripts unavailable",
+  "runtimeBytes": 23977,
+  "runtimeSha256": "7be6680331be9591a8d95ee7c7183603f4bf1f08b7b20e7bd2fd80a9c0db6753",
+  "entries": 4,
+  "crc": "pass",
+  "safeUniquePaths": "pass",
+  "localReferences": "pass",
+  "manifest": false,
+  "externalRuntimeResources": false,
+  "manualCapabilityReview": "Canvas2D and WebAudio only; no Worker/OffscreenCanvas/WebAssembly/Unity/Cocos. No sensors or runtime HTTP. Chrome61 syntax via esbuild0.28.0; actual legacy engine untested."
+}

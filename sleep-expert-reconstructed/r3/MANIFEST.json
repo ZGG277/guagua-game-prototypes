@@ -1,0 +1,205 @@
+{
+  "project": "哄睡专家",
+  "kind": "reconstructed-candidate-not-original-1.0.7",
+  "sourceCommit": "6c0a8616618850b4fdda2dff2f563c5b0adcdfcc",
+  "original107Recovered": false,
+  "original107KnownSha256": "e412eac214fcba7b9cea430468c05422c2cf9efd99a3a3ece568356f98ca702a",
+  "runtimeFiles": [
+    "index.html",
+    "style.css",
+    "app.js",
+    "mini_tool.json"
+  ],
+  "candidateRevision": "r3",
+  "createdAt": "2026-11-12",
+  "baseR1SourceZipSha256": "45e7d041e45dfe0d59417fa6701b48c17464f0c1ccee2509e4096befc691f81a",
+  "functionalDelta": [
+    "Exhale audio matches actual hand window",
+    "Ignore stale result callbacks after restart",
+    "Host chrome reserve and injected safe-area support"
+  ],
+  "testSummary": "133 offline passes; real browser blocked before load; platform and devices unverified",
+  "files": [
+    {
+      "path": "QA.md",
+      "bytes": 4390,
+      "sha256": "b09796d7b2d91a4238413883ba8542a053d2157dfcb8a4ae7119a3ea888578c7"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6010,
+      "sha256": "ebb03e17aa931e689ee570364b56cd01b378950a0055f800f898adf1fa6d397d"
+    },
+    {
+      "path": "artifact/app.js",
+      "bytes": 52631,
+      "sha256": "cc7e69200a4f024a5ed91f5d7959184bb20d73902011060803fd02971e7b4d75"
+    },
+    {
+      "path": "artifact/index.html",
+      "bytes": 4179,
+      "sha256": "0054752146250cb1b8daad7940b55f4f9cb53cfa07fe95c9f724817d9eae8af4"
+    },
+    {
+      "path": "artifact/mini_tool.json",
+      "bytes": 36,
+      "sha256": "70c36181858716b53390f76eb8a7b48026ce19d1025485eef62e96a0727a43a6"
+    },
+    {
+      "path": "artifact/style.css",
+      "bytes": 6465,
+      "sha256": "25983d2e95b95054b1516013c2d1b11448736d7ea3ecd26c61b87e1a596b19da"
+    },
+    {
+      "path": "dist/audio.js",
+      "bytes": 5819,
+      "sha256": "e1a63157dc6ddaeeaaa1e851ddae491c88f51e555c6d9ba056906917cec3fe20"
+    },
+    {
+      "path": "dist/engine.js",
+      "bytes": 12696,
+      "sha256": "7b63361150bc07410359e8534451bae96388b739665065220fed5792aa9c9c78"
+    },
+    {
+      "path": "dist/index.html",
+      "bytes": 4179,
+      "sha256": "0054752146250cb1b8daad7940b55f4f9cb53cfa07fe95c9f724817d9eae8af4"
+    },
+    {
+      "path": "dist/input.js",
+      "bytes": 4080,
+      "sha256": "dd0f3b0ebb057c7c15dd8c3609c6f87ac0d69489dd99a406798f1de699894323"
+    },
+    {
+      "path": "dist/main.js",
+      "bytes": 30090,
+      "sha256": "9b9051deedbf003b7957173909adc034b646e5497e68593a83d99fd7648761a0"
+    },
+    {
+      "path": "dist/mini_tool.json",
+      "bytes": 36,
+      "sha256": "70c36181858716b53390f76eb8a7b48026ce19d1025485eef62e96a0727a43a6"
+    },
+    {
+      "path": "dist/platform.js",
+      "bytes": 13494,
+      "sha256": "ab1a572c537b41f3ef9bfaa36e3700dc2a620eccd09624e4041925a560357ef7"
+    },
+    {
+      "path": "dist/style.css",
+      "bytes": 6465,
+      "sha256": "25983d2e95b95054b1516013c2d1b11448736d7ea3ecd26c61b87e1a596b19da"
+    },
+    {
+      "path": "docs/platform-contract.md",
+      "bytes": 7892,
+      "sha256": "fadc1f4f285ffa3f9790f983964a66e79dd4fc47c026feaf409cc50f011727a9"
+    },
+    {
+      "path": "historical/sites-integration.test.mjs",
+      "bytes": 12767,
+      "sha256": "1d94264db5ec29ff794d58ed2b28747c2057b79441055e722518b9810e13d6ec"
+    },
+    {
+      "path": "historical/sites-motion.js",
+      "bytes": 8585,
+      "sha256": "5ee40d1720052309eb849e85ba32caf54a693d2c628108d4bf59ceb58da70508"
+    },
+    {
+      "path": "historical/sites-motion.test.mjs",
+      "bytes": 15829,
+      "sha256": "321981fb533e817b950623894d21aa917eeff86b28dfd647d81b471d6eb90ed7"
+    },
+    {
+      "path": "package.json",
+      "bytes": 230,
+      "sha256": "a5bb1a576652ccf711f0e7135dcefa73400649c914e5e16d91358fdeef169228"
+    },
+    {
+      "path": "reports/artifact-audit-r3.json",
+      "bytes": 553,
+      "sha256": "081a911e1f9269387883adbe4d3b2a2cf33b5e565fb2702a2e9ba4ae2f0e9b14"
+    },
+    {
+      "path": "reports/browser-check-status.md",
+      "bytes": 1094,
+      "sha256": "d40e31e968732560faaca73dd929c50c9d4ba1848f9370591262e4b7e579ebb4"
+    },
+    {
+      "path": "reports/tests-final.txt",
+      "bytes": 10424,
+      "sha256": "1d0691b3fdd7351e5e379b3de1e0dd6c243ed3b0e110bb6ceff7cb56a3872e54"
+    },
+    {
+      "path": "reports/tests-r1.txt",
+      "bytes": 9558,
+      "sha256": "72c0a11eb428e85f7bfefff2a597c1a284c38b205a88f74559f34e54cd647e19"
+    },
+    {
+      "path": "reports/tests-r2-revalidated.txt",
+      "bytes": 10467,
+      "sha256": "62ca530abd24c8b8d009dfd4e6f21ba072431ab7dad5a1f9680d0a54c7c79fa5"
+    },
+    {
+      "path": "reports/tests-r3-final.txt",
+      "bytes": 10875,
+      "sha256": "1fe38abea6928e0364a2819370d98aba74e8c9ab72ddfc981e2573d338387875"
+    },
+    {
+      "path": "scripts/build.mjs",
+      "bytes": 979,
+      "sha256": "cd329348a22ff95b689df60a9c1ebf7f050d4fa61797bfee7b9572a68858cf93"
+    },
+    {
+      "path": "src/drawing-base.js",
+      "bytes": 6260,
+      "sha256": "1140cefeaf350a9ddfa10274cec66593a104133863d39f025a4420a089db056d"
+    },
+    {
+      "path": "src/main-controls.js",
+      "bytes": 14661,
+      "sha256": "a70ee5ec1a7d32470cfc6502b0b9bcabf3b94bd6cc196dc21e9b7a8374321d09"
+    },
+    {
+      "path": "src/main-loop.js",
+      "bytes": 1201,
+      "sha256": "791660ea2194c302068bd660db55c45cea0fb7e619db7e4df6a644b8e1ba6c63"
+    },
+    {
+      "path": "src/main-visual.js",
+      "bytes": 7965,
+      "sha256": "8f52b811c2c386f9297351328fec61f66258e506a22d51310bd364ed18ea62c5"
+    },
+    {
+      "path": "tests/audio.test.mjs",
+      "bytes": 4976,
+      "sha256": "a6d45da16c1b809a8becf9fb4412c0a8019ee6bcca01c1d4375b6ae6d999a0bc"
+    },
+    {
+      "path": "tests/browser-check.cjs",
+      "bytes": 4205,
+      "sha256": "e2acce29a6327b996f4214b35dafd13ce3b04018927dfbde9b4178fa61b86f7e"
+    },
+    {
+      "path": "tests/engine.test.mjs",
+      "bytes": 7709,
+      "sha256": "51382b998943519bfb655642cab385fe82f2cbcee3164d1c15836f5911ad98a8"
+    },
+    {
+      "path": "tests/integration.test.mjs",
+      "bytes": 32502,
+      "sha256": "6687978dfeeb8842967e8c77e30dd0a69a8395b3adadc543f5e89c9e2d46699b"
+    },
+    {
+      "path": "tests/mechanics.test.mjs",
+      "bytes": 4546,
+      "sha256": "4b6f19d793d430b727c46334ef07bf1bcea5f433d14dc8d0d22db9b0cf3136db"
+    },
+    {
+      "path": "tests/platform.test.mjs",
+      "bytes": 11196,
+      "sha256": "4f01b3c826221fc82a10e456af03b238978692e1a4f81766779f57314d176786"
+    }
+  ],
+  "baseR2SourceZipSha256": "9f5b949b28f67abd64eec2d87025d824d880c1de1aa944cd79b9b83d492de966"
+}

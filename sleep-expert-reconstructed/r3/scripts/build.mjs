@@ -1,0 +1,12 @@
+import {readFileSync,writeFileSync,mkdirSync,copyFileSync} from 'node:fs';
+import {execFileSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
+import path from 'node:path';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const parts=['main-controls.js','drawing-base.js','main-visual.js','main-loop.js'];
+writeFileSync(path.join(root,'dist/main.js'),parts.map(p=>readFileSync(path.join(root,'src',p),'utf8')).join('\n'));
+const esbuild=process.env.ESBUILD_BIN||path.join(root,'node_modules/.bin/esbuild');
+mkdirSync(path.join(root,'artifact'),{recursive:true});
+execFileSync(esbuild,[path.join(root,'dist/main.js'),'--bundle','--format=iife','--target=chrome61','--minify',`--outfile=${path.join(root,'artifact/app.js')}`],{stdio:'inherit'});
+for(const f of ['index.html','style.css','mini_tool.json'])copyFileSync(path.join(root,'dist',f),path.join(root,'artifact',f));
+console.log('Classic offline runtime built in artifact/');

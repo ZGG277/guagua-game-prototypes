@@ -1,0 +1,22 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createGame,change,step,tap,ROCK,HAND,rockInfo,handInfo,resetInput} from '../dist/engine.js';
+const run=(s,t,f=()=>({}),fps=60)=>{for(let i=0;i<Math.round(t*fps);i++)step(s,f(s,1/fps),1/fps);};
+for(const side of [0,1])for(const offset of [-.25,0,.25])test(`vertex ${side} offset ${offset}: early/exact/late inward impulse`,()=>{const s=createGame();run(s,.65+side*1.3+offset);assert.ok(rockInfo(s).canTap);const result=tap(s);assert.ok(['queued','good'].includes(result));if(offset<0){assert.equal(s.progress,0);run(s,.3);}assert.ok(s.progress>0);const p=s.progress;run(s,.36);tap(s);assert.equal(s.progress,p);assert.ok(s.rockAmplitude<=.5);});
+test('center misses, spam cannot score and amplitude cannot run away',()=>{const s=createGame();assert.equal(tap(s),'miss');run(s,20,x=>{tap(x);return {};});assert.equal(s.progress,0);assert.ok(s.rockAmplitude<=.5);});
+test('small amplitude restarts without waiting for an invisible vertex',()=>{const s=createGame();run(s,40);assert.ok(s.rockAmplitude<.06);assert.equal(tap(s),'restart');assert.ok(s.rockAmplitude>.1);});
+for(const key of ['leg','head'])test(`${key} exact window boundaries`,()=>{const s=createGame();change(s,key);for(const [t,expected] of [[2.199,false],[2.2,true],[2.2+HAND[key].window-1e-7,true],[2.2+HAND[key].window,false],[6,true]]){s.phaseTime=t;assert.equal(handInfo(s).open,expected);}});
+function ready(key='leg'){const s=createGame();change(s,key);run(s,2.25);return s;}
+test('huge dx, spoofed vx and wrong direction never advance',()=>{for(const dx of [10000,-1,5]){const s=ready();step(s,{down:true,dx,vx:0});assert.equal(s.leg,0);assert.ok(['fast','direction'].includes(s.handReason));}});
+test('continuous held drag cannot ride future windows',()=>{const s=createGame();change(s,'leg');run(s,30,(_,dt)=>({down:true,dx:70*dt}));assert.equal(s.leg,0);});
+test('window violation latches until release; a fresh settled gesture recovers',()=>{const s=ready();step(s,{down:true,dx:100});step(s,{down:true,dx:1});assert.equal(s.leg,0);assert.equal(s.handReason,'release');run(s,.27);step(s,{down:true,dx:1});assert.ok(s.leg>0);});
+test('pause clears queued impulses and requires a new steady hand',()=>{const s=createGame();run(s,.4);tap(s);assert.ok(s.rockPending!==null);resetInput(s);assert.equal(s.rockPending,null);const h=ready();step(h,{down:true,dx:1});const p=h.leg;resetInput(h);step(h,{down:true,dx:1});assert.equal(h.leg,p);assert.equal(h.handReason,'release');});
+function bestHands(fps){const s=createGame();change(s,'leg');const start=s.time;let legTime=0;for(let i=0;i<80*fps&&['leg','head'].includes(s.phase);i++){const h=handInfo(s),cfg=HAND[s.phase],dt=1/fps;const input=h.open&&h.windowLeft>dt&&h.cycleProgress<cfg.cap-1e-8?{down:true,dx:h.direction*(s.phase==='leg'?80:65)*dt}:{};const old=s.phase;step(s,input,dt);if(old==='leg'&&s.phase==='head')legTime=s.time-start;}assert.equal(s.phase,'settle');return {total:s.time-start,leg:legTime};}
+for(const fps of [20,30,60,120])test(`hand minimum cycles / real duration at ${fps} fps`,()=>{const result=bestHands(fps);assert.ok(result.leg>=14);assert.ok(result.total>=30&&result.total<=40,JSON.stringify(result));});
+test('one breath cannot complete, even with multiple released gestures',()=>{const s=ready();run(s,.4,(x,dt)=>({down:true,dx:80*dt}));assert.ok(s.leg<=.25+1e-8);assert.equal(s.handCycles,1);assert.equal(s.phase,'leg');});
+test('guard sleep completes only after sixty actual seconds',()=>{const s=createGame();change(s,'sleeping');const save=x=>{for(const e of x.events)if(e.status==='warning')tap(x,e.id);return {};};run(s,59.9,save);assert.equal(s.complete,false);run(s,.1,save);assert.equal(s.complete,true);});
+
+test('inward impulse preserves angle and increases inward speed without over-amplitude',()=>{const s=createGame();run(s,.8);const before=rockInfo(s);tap(s);const after=rockInfo(s);assert.ok(Math.abs(after.angle-before.angle)<1e-10);assert.ok(Math.abs(after.velocity)>Math.abs(before.velocity));assert.ok(after.angle*after.velocity<0);assert.ok(after.amplitude<=ROCK.maxAmplitude);});
+test('hand movement requires a stop before a new attempt',()=>{const s=ready();step(s,{down:true,dx:-1});step(s,{},1/60);step(s,{down:true,dx:1});assert.equal(s.leg,0);assert.equal(s.handReason,'release');});
+
+test('handInfo only returns hand phase configuration',()=>{const s=createGame();for(const phase of ['rock','pat','lower','settle','sleeping','awake']){s.phase=phase;assert.equal(handInfo(s),null);}});
